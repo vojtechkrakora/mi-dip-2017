@@ -1,0 +1,340 @@
+% options:
+% thesis=B bachelor's thesis
+% thesis=M master's thesis
+% czech thesis in Czech language
+% english thesis in English language
+% hidelinks remove colour boxes around hyperlinks
+
+\documentclass[thesis=M,czech]{FITthesis}[2012/10/20]
+
+ \usepackage[utf8]{inputenc} % LaTeX source encoded as UTF-8
+% \usepackage[latin2]{inputenc} % LaTeX source encoded as ISO-8859-2
+% \usepackage[cp1250]{inputenc} % LaTeX source encoded as Windows-1250
+
+\usepackage{graphicx} %graphics files inclusion
+% \usepackage{subfig} %subfigures
+% \usepackage{amsmath} %advanced maths
+% \usepackage{amssymb} %additional math symbols
+
+\usepackage{dirtree} %directory tree visualisation
+\usepackage{svg}
+\usepackage{amsmath}
+
+% % list of acronyms
+% \usepackage[acronym,nonumberlist,toc,numberedsection=autolabel]{glossaries}
+% \iflanguage{czech}{\renewcommand*{\acronymname}{Seznam pou{\v z}it{\' y}ch zkratek}}{}
+% \makeglossaries
+
+
+\setlength{\fboxsep}{0.005pt}
+\newcommand{\tmpframe}[1]{\fbox{#1}}
+%\renewcommand{\tmpframe}[1]{#1}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
+% EDIT THIS
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
+
+\department{Department of Katedra teoretické informatiky}
+\title{Analýza bezpečnostních rizik aplikací z logů v reálném čase}
+\authorGN{Vojtěch} %author's given name/names
+\authorFN{Krákora} %author's surname
+\author{Vojtěch Krákora} %author's name without academic degrees
+\authorWithDegrees{Bc. Vojtěch Krákora} %author's name with academic degrees
+\supervisor{Pavel Pivoňka, GWCPM}
+\acknowledgements{THANKS (remove entirely in case you do not with to thank anyone)}
+\abstractEN{Summarize the contents and contribution of your work in a few sentences in English language.}
+\abstractCS{V n{\v e}kolika v{\v e}t{\' a}ch shr{\v n}te obsah a p{\v r}{\' i}nos t{\' e}to pr{\' a}ce v {\v c}esk{\' e}m jazyce.}
+\placeForDeclarationOfAuthenticity{Prague}
+\keywordsCS{Replace with comma-separated list of keywords in Czech.}
+\keywordsEN{Replace with comma-separated list of keywords in English.}
+\declarationOfAuthenticityOption{1} %select as appropriate, according to the desired license (integer 1-6)
+% \website{http://site.example/thesis} %optional thesis URL
+
+
+\usepackage{xcolor} 
+\newcommand{\todo}[1]{\textcolor{red}{\textbf{[[#1]]}}}
+
+\usepackage{blindtext}
+\newcommand{\blind}[1][1]{\textcolor{gray}{\Blindtext[#1][1]}}
+
+
+
+\begin{document}
+
+% \newacronym{CVUT}{{\v C}VUT}{{\v C}esk{\' e} vysok{\' e} u{\v c}en{\' i} technick{\' e} v Praze}
+% \newacronym{FIT}{FIT}{Fakulta informa{\v c}n{\' i}ch technologi{\' i}}
+
+\setsecnumdepth{part}
+\chapter{Introduction}
+\todo{Napsat max jednu stranku}
+\blind[2]
+
+
+\setsecnumdepth{all}
+\chapter{Úvod do problematiky}
+	\section{Zjišťování bezpečnostních rizik}
+		\todo{Co to jsou bezp rizika}
+		\todo{Jak se zjišťují}
+		\blind[2]
+	\section{Platforma Unify}
+		\todo{Představení Unify}
+		\blind[1]
+		\begin{figure}[htb]\centering
+			\tmpframe{\includegraphics[width=\textwidth]{./img/todo}}		
+			\caption{High Level Desing architektura Unify.}
+			\label{fig:hld_architecture_unify}
+		\end{figure}
+		\blind[1]
+	\section{Clustering}
+		\todo{Proč použít clustering}
+		\todo{Druhy clusteringu}
+		\todo{Výpočet vzdáleností}
+		\blind[2]
+	\section{Outliner}
+		\todo{Proč použít Outliner}
+		\blind[2]
+	\section{Text mining}
+		\todo{Proč text mining}
+		\todo{Princip text miningu}
+		\blind[2]
+
+\chapter{Návrh řešení}
+	\todo{Nic moc tento odstavec}
+	V této kapitole se zabývám principy, technologiemi algoritmy, které jsem se rozhodl použít, k tomu abych splnil cíle této práce. Tedy vytvoření aplikace, jenž umožní sledovat bezpečností rizika v reálném čase.
+	
+	\todo{Nejspíše dát architekturu jako první.}
+	
+	\section{Microsoft Azure}
+		\label{sec:ms_azure}
+		Na integrační platformě Unify \cite{unify} je předpokládaný provoz 20 požadavků za vteřinu. Vzhledem k takto silnému provozu bude potřeba i přiměřeně velký výpočetní výkon. 
+			
+		Spolupráce se společností Miscrosof \cite{microsoft} mi umožnola jako řešení vyzkoušet její cloudové služby Microsfot Azure \cite{msAzure}.
+			
+		Microsoft Azure je sada integrovaných cloudových služeb. Azure nabízí cloudová řešení pro mnoho činností. Motivací k použití této služby k detekci bezpečnostích rizik je nástroj Microsoft Azure Machine Learning Studio \cite{msAzureStudio}.
+			
+		Microsoft Azure Machine Learning Studio je plně cloudová služba, která umožňuje vytváření prediktivních modelů pro strojové učení \cite{msAzureStudio}. Výhodou studia je to, že veškerý výkon je rozprostřen vevnitř cloudu. Díky grafickému rozhraní je snadné vytvořit učící model, který je následně převeden do modelu prediktivního.
+			
+		Aby měl prediktivní model smysl, je třeba mu poskytovat nějaká data, u kterých je predikce využita. K tomu se využívají webové služby.
+		Prediktivní model se vystaví na specifické URL adrese. Zde je pak očekáván na vstupu konkrétní formát JSONu a služba vrací předem definovanou odpoveď se správnými parametry.
+		
+		Výhodou využití cloudu je přenesení výpočetní zatěže mimo společnost. Naopak rizikem je problém s konektivitou, který může vytvořit výpadek služby a nebude tedy možné po tuto dobu predikovat rizika.
+		
+		\todo{Více rozepsat rozdíl mezi učícím a prediktivním modelem}
+		
+	\section{Jboss-eap}
+		\todo{Popsat co je to jboss}
+		\blind[1]
+		\todo{Popsat proč jboss}
+		\blind[1]	
+
+	\section{Architektura aplikace}
+		\todo{Pozor na duplici s odstavcem v úrovni nad}
+		\todo{Připsat, že to běží nad jboss}
+		Požadavkem na aplikaci je, aby požadavky zpracovávala a predikovala v reálném časem. Proto je princip položen na čtení požadavků proudících přes platformu. Jejich předzpracování a odeslání do cloudového řešení Microsoft Azure (Více v sekci \ref{sec:ms_azure}). Po přijetí odpovědi je výsledek uložen do databáze. Pro vizualizaci dat slouží REST API \cite{rest}, které vypisuje předem definované informace ve formátu pro ideální zobrazení v Google Charts \cite{googleCharts}.
+		
+		Pro snažší představu o architektuře aplikace poslouží obrázek \ref{fig:hld_architecture}, na kterém je vidět High Level Desing \cite{hld_johnson}.
+		
+		\begin{figure}[htb]\centering
+			\tmpframe{\includegraphics[width=\textwidth]{./img/todo}}		
+			\caption{High Level Desing architektura aplikace.}
+			\label{fig:hld_architecture}
+		\end{figure}
+					
+	\section{Logování Unify}
+		\todo{Více zdůraznit co vlastně navruji.}
+		\label{sec:logging_unify}
+		Platforma Unify loguje veškerý průběh do souborových audit logů. Protože celá integrace je založena na Javě, je využít logovací framework Log4j \cite{log4j}. Knihovna Log4j umožňuje nastavit si pattern logování \cite{log4jPatternLayout}. Na Unify je použit pattern \todo{Přidat pattern Log4j}. 
+		
+		Každý požadavek, který na platformu příde je zalogován do audit.logu. Zpráva je vždy na jedné řádce a zároveň na jedné řádce je povolena pouze jedna.
+		
+		\todo{Ukázka logu}
+		
+		\todo{Popsat ukázku logu}
+		
+		
+	\section{Ukládání dat}
+		\todo{Porovnání SQL/NoSQL}
+		Rozhodl jsem se pro ukládání dat využít NoSQL databázi. Protože aplikace Unify momentálně ukládá veškerý svůj provoz do souborů (vyjímečně jsou některé konkrétní služby journalovány do DB), bude databáze využita i pro ukládání veškeré komunikace. To zpřístupní do budoucna snažší operování s jednotlivými zprávami. Popřípadě snažší zpětnou analýzu.
+		\todo{Schéma DB}
+		
+		\todo{Do databáze jsem se rozhodl ukládat tohle protože}
+					
+	\section{Předzpracování dat}
+		\label{sec:preprocessing}
+		Pro snažší prácí s informacemi z logů jsem se rozhodl pro normalizaci jednotlivých požadavků. Normalizace je jeden z požadavků při zpracovávání textu \cite{txtNrmlztn}.
+		
+		V kapitole \ref{sec:logging_unify} jsou vidět informace, které se kromě samotné zprávy logují. V každé zprávě se objevuje takzvaná integrační hlavička. V té jsou základní údaje jako čas odeslání, jednoznačné identifikátory, zdrojové a cilové systémy. Položka jako je timestamp bude zpravidla pro každý požadavek jiná, stejně na tom logicku budou jednoznačné identifikátory. Z tohoto důvodu jsem se rozhodl zvolit jejich nahrazení.
+		
+		\todo{Přidat list toho jak nahrazuji čísla apod.}
+		\todo{Přidat ukázku}
+		\todo{Popsat celý proces, lowecase a podobně}
+			
+	\section{Vytvoření vektoru}
+		\label{sec:construct_vector}
+		\todo{Zde budu psát o tom, jak zprávu zpracouji pomocí algoritmu a převedu ji na číselný vektor}
+		\blind[2]
+		
+		
+	\section{Konstrukce clusteringu}
+		\todo{V této části bude trénovací algoritmus}		
+		\blind[1]
+		\begin{figure}[htb]\centering
+			\tmpframe{\includegraphics[width=\textwidth]{./img/todo}}	
+			\caption{Clustering k-means v prostředí MS AZURE ML Studio.}
+			\label{fig:k-means_azure}
+		\end{figure}
+		\blind[1]
+	\section{Konstrukce outliner}
+		\todo{Popsat}				
+		\blind[1]
+		\begin{figure}[htb]\centering
+			\tmpframe{\includegraphics[width=\textwidth]{./img/todo}}	
+			\caption{Detekce anomálií v prostředí MS AZURE ML Studio.}
+			\label{fig:anomaly_detection_azure}
+		\end{figure}
+		\blind[1]
+		
+	\section{Prezentace dat}
+		\todo{Zde budu psát o tom proč Google charts a co to je Google charts.}
+		\blind[1]
+		
+	\section{Využití dát systémy 3. stran}
+		\todo{Zde popíši, jak je zaručeno, že data budou moct využívat systémy 3. stran}
+		\blind[1]
+		
+\chapter{Realizace}
+	\todo{Sem vepsat nějaký úvod k této kapitole}
+	
+	\section{Nutné přípravy pro jboss}
+		\todo{Popsat jaké moduly}
+		\blind[1]
+		\todo{Popsat jak jak rozchodit správnou REST response}
+		\blind[1]
+	
+	\section{Vytvoření modelu na Azure}
+		\todo{Ukázka URL}
+		\todo{Ukázka Vstupního JSONu a výstupního}
+		\todo{V této části bude Prediktivní algoritmus}
+		\subsection{Clustering v Azure}
+			\todo{Popsat prediktivní experiment}
+			\blind[1]
+		\begin{figure}[htb]\centering
+			\tmpframe{\includegraphics[width=\textwidth]{./img/todo}}	
+			\caption{Prediktivní model clusteringu v Azure.}
+			\label{fig:training_clustering_azure}
+		\end{figure}
+		
+		\subsection{Detekce anomálií v Azure}
+			\todo{Popsat prediktivní experiment}
+			\blind[1]
+		\begin{figure}[htb]\centering
+			\includegraphics[width=\textwidth]{./img/todo}
+			\caption{Prediktivní model v detekci anomálií v Azure.}
+			\label{fig:training_clustering_azure}
+		\end{figure}
+	
+	\section{MongoDB}
+		Pro potřeby aplikace je nutné v co nejrychlejším možném čase ukládat jednotlivé requesty. Při ohromném provoze, který se na integrační platformě vyskytuje to je nutná podmínka pro to, aby bylo možné v reálném čase jednotlivé požadavky zpracovávat.
+		
+		\begin{figure}[htb]\centering
+			\tmpframe{\includegraphics[width=0.2\linewidth]{./img/todoSmall}}	
+			\caption{Logo MongoDB. \cite{MongoDB}}
+			\label{fig:hld_architecture}
+		\end{figure}
+		
+		Rozhodl jsem se za tímto účelem využít MongoDB \cite{MongoDB}, protože se očekává, že bude třeba ukládat 30 záznamů za sekundu, zpravidla bude docházet k více zapisům než čtením. 
+		
+	\section{Čtení dat z logů}
+		\todo{Popis}				
+		Při návrhu zisku jednotlivých požadavků z integrační platformy jsem vycházel z toho, že nový aplikace musí minimálně, či spíše vůbec nezatěžovat Unify \cite{unify}. Vzhledem k tomu, že přes integraci proudí veškerý provoz, je sama o sobě dosti vytížená a v případě, že by touto aplikací byl způsoben výpadek došlo by k silnému ztížení veškerých bussiness procesů, což si nelze dovolit.
+		
+		Unify veškeré požadavky ukládá do logovacích souborů. Některé, převážně rizikové, služby se zároveň ukládají Oracle databáze. Ale vzhledem k tomu, že nejde o všechny dostupné služby rozhodl jsem se toho nevyužít.
+		
+		Princip získání dat proudicích přes integrační platformu je založen na čtení jednotlivých logovacích souborů. Jako vhodný nástroj jsem vybral Java třídu Tailer z dostupné knihovny org.apache.commons.io \cite{tailerClass}.
+		
+		Třída Tailer, po implementaci listeneru, se chová stejně jako linuxový příkaz tail \cite{tailLinux}. Průběžně kontroluje čtený soubor a každou nově zapsanou řádku zpracovává.
+		
+		Tímto řešením získáváme data z integrační platformy, aniž bychom jí zatěžovali. 
+	\section{Předzpracování a odeslení do Azure}
+		Protože jsou data odesílána do cloudu, předzpracováváme je lokálně a přímo do Microsfot Azure odesíláme už jen identifikátor zprávy a vypočtený vektor.
+		
+		Po přečtení zprávy z auditového logu Unify je zpráva předzpracována (\ref{sec:preprocessing}) a následně je z ní vytvořen vektor (\ref{sec:construct_vector}).
+		
+		\todo{Popsat jak získám data}
+		\blind[1]
+		\todo{Popsat jak data předzpracuji}
+		\blind[1]
+		\todo{Popsat jak z dat udělám vektor}
+		\blind[1]
+		\todo{Popsat jak data odešlu}
+		\blind[1]
+		\todo{Popsat jak data přijmu}
+		\blind[1]			
+		
+	\section{Uložení dat}
+		\todo{Popsat v jakém stavu jsou data před ukládáním}
+		\todo{Popsat jak se data ukládají}					
+		\blind[2]
+		
+	\section{Napojení na google charts}
+		\todo{Popsat jak vypadá javascript}
+		\blind[1]
+		\todo{Popsat obecné api, které google charts čeká}
+		\blind[1]
+		\todo{Popsat jak je vyřešené rest API}				
+		\blind[1]
+
+\chapter{Analýza a vyhodnocení dat}
+	\todo{Sem vepsat nějaký úvod k této kapitole}
+	\blind[1]
+	\todo{Popsat systém, na který to bylo nasazené}
+	\blind[1]
+	\section{Analýza K-Means}
+		\todo{Popsat vstupní parametry}
+		\todo{Ukázat výsledky na Prod logu}	
+		\todo{Dojít k závěru}						
+		\blind[2]
+	\section{Analýza Outliner}
+		\todo{Popsat vstupní parametry}
+		\todo{Ukázat výsledky na Prod logu}	
+		\todo{Dojít k závěru}						
+		\blind[2]
+
+\chapter{Závěr}
+
+\setsecnumdepth{part}
+\chapter{Conclusion}
+
+
+\bibliographystyle{iso690}
+\bibliography{bibDb}
+
+\setsecnumdepth{all}
+\appendix
+
+\chapter{Acronyms}
+% \printglossaries
+\begin{description}
+	\item[GUI] Graphical user interface
+	\item[XML] Extensible markup language
+\end{description}
+
+
+\chapter{Contents of enclosed CD}
+
+%change appropriately
+
+\begin{figure}
+	\dirtree{%
+		.1 readme.txt\DTcomment{the file with CD contents description}.
+		.1 exe\DTcomment{the directory with executables}.
+		.1 src\DTcomment{the directory of source codes}.
+		.2 wbdcm\DTcomment{implementation sources}.
+		.2 thesis\DTcomment{the directory of \LaTeX{} source codes of the thesis}.
+		.1 text\DTcomment{the thesis text directory}.
+		.2 thesis.pdf\DTcomment{the thesis text in PDF format}.
+		.2 thesis.ps\DTcomment{the thesis text in PS format}.
+	}
+\end{figure}
+
+\end{document}
