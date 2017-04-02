@@ -102,7 +102,18 @@
 	\todo{Nic moc tento odstavec}
 	V této kapitole se zabývám principy, technologiemi algoritmy, které jsem se rozhodl použít, k tomu abych splnil cíle této práce. Tedy vytvoření aplikace, jenž umožní sledovat bezpečností rizika v reálném čase.
 	
-	\todo{Nejspíše dát architekturu jako první.}
+	\section{Architektura aplikace}
+	\todo{Pozor na duplici s odstavcem v úrovni nad}
+	\todo{Připsat, že to běží nad jboss}
+	Požadavkem na aplikaci je, aby požadavky zpracovávala a predikovala v reálném časem. Proto je princip položen na čtení požadavků proudících přes platformu. Jejich předzpracování a odeslání do cloudového řešení Microsoft Azure (Více v sekci \ref{sec:ms_azure}). Po přijetí odpovědi je výsledek uložen do databáze. Pro vizualizaci dat slouží REST API \cite{rest}, které vypisuje předem definované informace ve formátu pro ideální zobrazení v Google Charts \cite{googleCharts}.
+	
+	Pro snažší představu o architektuře aplikace poslouží obrázek \ref{fig:hld_architecture}, na kterém je vidět High Level Desing \cite{hld_johnson}.
+	
+	\begin{figure}[htb]\centering
+		\tmpframe{\includegraphics[width=\textwidth]{./img/todo}}		
+		\caption{High Level Desing architektura aplikace.}
+		\label{fig:hld_architecture}
+	\end{figure}
 	
 	\section{Microsoft Azure}
 		\label{sec:ms_azure}
@@ -121,43 +132,50 @@
 		
 		\todo{Více rozepsat rozdíl mezi učícím a prediktivním modelem}
 		
-	\section{Jboss-eap}
-		\todo{Popsat co je to jboss}
-		\blind[1]
+	\section{JBoss}
+		Platforma Unify je postavená na aplikačním server JBoss AS 7 \cite{unify}. Z toho důvodu je třeba aby aplikace byla zcela kompatibilní.
+		 
+		 \todo{Nají nějaké zdroje kde je popsáno o co vlastně jde}
+		Jboss AS je aplikační server pro Javu EE\cite{jboss}. 
+			
 		\todo{Popsat proč jboss}
 		\blind[1]	
-
-	\section{Architektura aplikace}
-		\todo{Pozor na duplici s odstavcem v úrovni nad}
-		\todo{Připsat, že to běží nad jboss}
-		Požadavkem na aplikaci je, aby požadavky zpracovávala a predikovala v reálném časem. Proto je princip položen na čtení požadavků proudících přes platformu. Jejich předzpracování a odeslání do cloudového řešení Microsoft Azure (Více v sekci \ref{sec:ms_azure}). Po přijetí odpovědi je výsledek uložen do databáze. Pro vizualizaci dat slouží REST API \cite{rest}, které vypisuje předem definované informace ve formátu pro ideální zobrazení v Google Charts \cite{googleCharts}.
-		
-		Pro snažší představu o architektuře aplikace poslouží obrázek \ref{fig:hld_architecture}, na kterém je vidět High Level Desing \cite{hld_johnson}.
-		
-		\begin{figure}[htb]\centering
-			\tmpframe{\includegraphics[width=\textwidth]{./img/todo}}		
-			\caption{High Level Desing architektura aplikace.}
-			\label{fig:hld_architecture}
-		\end{figure}
 					
 	\section{Logování Unify}
-		\todo{Více zdůraznit co vlastně navruji.}
 		\label{sec:logging_unify}
-		Platforma Unify loguje veškerý průběh do souborových audit logů. Protože celá integrace je založena na Javě, je využít logovací framework Log4j \cite{log4j}. Knihovna Log4j umožňuje nastavit si pattern logování \cite{log4jPatternLayout}. Na Unify je použit pattern \todo{Přidat pattern Log4j}. 
+		Platforma Unify loguje veškerý průběh do souborových audit logů. Protože celá integrace je založena na Javě, je využit logovací framework Log4j \cite{log4j}. Knihovna Log4j umožňuje nastavit si pattern logování \cite{log4jPatternLayout}. Na Unify je použit pattern \todo{Přidat pattern Log4j}. 
 		
 		Každý požadavek, který na platformu příde je zalogován do audit.logu. Zpráva je vždy na jedné řádce a zároveň na jedné řádce je povolena pouze jedna.
+		
 		
 		\todo{Ukázka logu}
 		
 		\todo{Popsat ukázku logu}
 		
+		Vzhledem k tomuto principu jsem se rozhodl přistoupit k tomu, že se vybrané logovací soubory budou kontinuálně číst, kde se bude ke každému řádku přistupovat jako k samostatné zprávě, která bude následně zpracována dál.
+		
+		Díky této volbě nebude nutné nijak zasahovat do integrační platformy Unify a minimalizuje se tím riziko, jakéhokoliv nebezpečí ze strany mojí aplikace.
+		
+		Unify využívá pro některé služby logování do Oracle databáze. Ale vzhledem k tomu, že jde pouze o několik málo určených služeb, připojení na databázy by tak kromě případných komplikací ani nepřineslo žádaný účinek.
+		
 		
 	\section{Ukládání dat}
+		\label{sec:data_storing}
 		\todo{Porovnání SQL/NoSQL}
 		Rozhodl jsem se pro ukládání dat využít NoSQL databázi. Protože aplikace Unify momentálně ukládá veškerý svůj provoz do souborů (vyjímečně jsou některé konkrétní služby journalovány do DB), bude databáze využita i pro ukládání veškeré komunikace. To zpřístupní do budoucna snažší operování s jednotlivými zprávami. Popřípadě snažší zpětnou analýzu.
 		\todo{Schéma DB}
 		
-		\todo{Do databáze jsem se rozhodl ukládat tohle protože}
+		Protože se bude ukládat veškerá komunikace, rozhodl jsem se v databázi mít uvedené následující informace:
+		
+		\todo{Byt je to na pohled jasne, tak popsat co ktery param. je}
+		\begin{itemize} 
+			\item ObjectId - automaticky generováno z MongoDB
+			\item timestamp
+			\item original-message
+			\item normalized-message
+			\item platformId
+			\item assignment		
+		\end{itemize}
 					
 	\section{Předzpracování dat}
 		\label{sec:preprocessing}
@@ -195,12 +213,28 @@
 		\blind[1]
 		
 	\section{Prezentace dat}
-		\todo{Zde budu psát o tom proč Google charts a co to je Google charts.}
-		\blind[1]
+		\label{sec:data_prezentation}
+		Vzhledem k tomu, že by aplikace měla být schopna určovat bezpečnostní rizika, je třeba nějakým způsobem prezentovat její výstupy. Moninitoring na aplikaci Unify je momentálně postaven na tom, že konkrétní lidé hlídají logy a v případě vyskytu chyb, varování nebo jiné netypické události zjišťují co bylo příčinou.
+		
+		Rozhodl jsem se tedy, že nejlepší bude grafické znázornění. Kromě údajů o tom, že byl zaznamenán požadavek, který je podezřelý budu grafy využívat i k prezentaci základního monitoringu. 
+		
+		Vzhledem k tomu, že se bude veškerá komunikace ukladát bude vhodné prezentovat například i kolik požadavků na jednotlivé komponentě proběhlo za poslední hodinu a podobně.
+		
+		Společnost Cetin a.s. \cite{cetin} ve které bude aplikace testována a jenž je uživatelem integrační platformy používá pro různá grafická znázornění grafy od Google Charts\cite{googleCharts}. 
+		
+		Tyto grafy jsou napsané v jazyce Javascript. Je tedy možné jejich umístění například na intranetové stránky, kde se vysoce postavení lidé společnosti vyznají lépe než v jednotlivých monitorovacích aplikacích.
+		
+		Na tomto základě jsem se rozhodl vytvořit REST API \cite{rest}, jenž budou Google Charts schopny snadno konzumovat a v případné jiné aplikace, které by stály o podobná data budou schopny se jim přizpůsobit.
 		
 	\section{Využití dát systémy 3. stran}
-		\todo{Zde popíši, jak je zaručeno, že data budou moct využívat systémy 3. stran}
-		\blind[1]
+		Do budoucna je potřeba počítat s rozšířením monitoringu a je proto vhodné aplikaci připravit tak, aby její výsledky mohly být využity v aplikacích 3. stran.
+		
+		Lze předpokládat, že k monirování bezpečnosti provozu budou použity systémy SIEM (Security Information and Event Management) \cite{siem}.
+		SIEM funguje na principu, kdy zpracovává co nejvíce údajú, na jejichž základě pak rozeznává neočekávané situace a rizika \cite{howDesSiemWork}.
+		
+		Tím, že jsem se rozhodl data ukládat tak, jak uvádím v kapitole \ref{sec:data_storing} bude libovolný SIEM po připojení do DB schopen získat jak originální zprávu, tak její normalizovanou verzi popřípadě i výsledek vyhodnocení mé aplikace.
+		
+		Dále je možnost napojit SIEM i na REST API obdobně jako Google Charts v kapitole \ref{sec:data_prezentation}.
 		
 \chapter{Realizace}
 	\todo{Sem vepsat nějaký úvod k této kapitole}
