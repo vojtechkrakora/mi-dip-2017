@@ -240,10 +240,25 @@
 	\todo{Sem vepsat nějaký úvod k této kapitole}
 	
 	\section{Nutné přípravy pro jboss}
-		\todo{Popsat jaké moduly}
-		\blind[1]
-		\todo{Popsat jak jak rozchodit správnou REST response}
-		\blind[1]
+		\subsection{Připravení modulů}
+		V aplikaci využívám různé java knihovny, abych k nim měl přístup i v aplikačním serveru, je nutné do něj přidat speciální modul.
+		
+		Jboss umožňuje snadné přidání modulů. Veškeré moduly jsou umístěny v \textit{wildfly/jboss-eap-7.0/modules/system/layers}. Zde jsem vytvořil svůj modul s konkrétními java knihovnami:
+		\begin{itemize} 
+			\item commons-codec-1.10.jar
+			\item json-simple-1.1.1.jar
+			\item mongo-java-driver-3.4.2.jar		
+		\end{itemize}
+		
+		\subsection{Port offset}
+		\todo{Je možné, že offset ve finále ještě změním.}
+		Dále bylo nutné pro jboss nastavit portový offset. Protože na serveru není jedinou aplikací, je běžný problém v kolizi portů. Z tohoto důvodu jsem zvolil offset 10000. Webové služby tedy místo portu 8080 běží na portu 18080.
+		
+		\subsection{Zapnutí CORS}
+		CORS (Cross-origin resource sharing) neboli \textit{sdílené zdroje odjinud} umožňuje odesílání odpovědí na požadavky z jiné domény \cite{CORS}. V aplikaci je to potřebné pro rest api, kterého se následně dotazuje Google charts.
+		
+		Corse se v Jboss povoluje v konfiguračním souboru pro standalone aplikaci \textit{standalone.xml} pro doménovou \textit{domain.xml}.
+		
 	
 	\section{Vytvoření modelu na Azure}
 		\todo{Ukázka URL}
@@ -276,7 +291,12 @@
 			\label{fig:hld_architecture}
 		\end{figure}
 		
-		Rozhodl jsem se za tímto účelem využít MongoDB \cite{MongoDB}, protože se očekává, že bude třeba ukládat 30 záznamů za sekundu, zpravidla bude docházet k více zapisům než čtením. 
+		Rozhodl jsem se za tímto účelem využít MongoDB \cite{MongoDB}, protože se očekává, že bude třeba ukládat 30 záznamů za sekundu, zpravidla bude docházet k více zapisům než čtením.
+		
+		\todo{Je to NoSQL}
+		\todo{Kolekce}
+		\todo{Dokumenty}
+		\today{Ovladacu je dost} 
 		
 	\section{Čtení dat z logů}
 		\todo{Popis}				
@@ -289,7 +309,7 @@
 		Třída Tailer, po implementaci listeneru, se chová stejně jako linuxový příkaz tail \cite{tailLinux}. Průběžně kontroluje čtený soubor a každou nově zapsanou řádku zpracovává.
 		
 		Tímto řešením získáváme data z integrační platformy, aniž bychom jí zatěžovali. 
-	\section{Předzpracování a odeslení do Azure}
+	\section{Předzpracování a odeslání do Azure}
 		Protože jsou data odesílána do cloudu, předzpracováváme je lokálně a přímo do Microsfot Azure odesíláme už jen identifikátor zprávy a vypočtený vektor.
 		
 		Po přečtení zprávy z auditového logu Unify je zpráva předzpracována (\ref{sec:preprocessing}) a následně je z ní vytvořen vektor (\ref{sec:construct_vector}).
