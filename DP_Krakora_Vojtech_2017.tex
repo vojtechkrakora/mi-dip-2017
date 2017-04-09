@@ -104,7 +104,7 @@
 	
 	\section{Architektura aplikace}
 	\todo{Pozor na duplici s odstavcem v úrovni nad}
-	\todo{Připsat, že to běží nad jboss}
+	\todo{Lze rozdělit na podsekce}
 	Požadavkem na aplikaci je, aby požadavky zpracovávala a predikovala v reálném časem. Proto je princip položen na čtení požadavků proudících přes platformu. Jejich předzpracování a odeslání do cloudového řešení Microsoft Azure (Více v sekci \ref{sec:ms_azure}). Po přijetí odpovědi je výsledek uložen do databáze. Pro vizualizaci dat slouží REST API \cite{rest}, které vypisuje předem definované informace ve formátu pro ideální zobrazení v Google Charts \cite{googleCharts}.
 	
 	Pro snažší představu o architektuře aplikace poslouží obrázek \ref{fig:hld_architecture}, na kterém je vidět High Level Desing \cite{hld_johnson}.
@@ -114,6 +114,17 @@
 		\caption{High Level Desing architektura aplikace.}
 		\label{fig:hld_architecture}
 	\end{figure}
+
+	Základem celé aplikace je neohrozit stávající integrační platformu. Na základě toho jsem se rozhodl, že informace o proběhlé komunikaci získám pomocí čtení logovacích souborů.
+	Pomocí čtení přírůstků k jednotlivým auditovým logům získám jednotlivé požadavky a pro Unify to nepředstavuje žádnou zátěž.
+	
+	Dalším stavebním kamenem je použitý aplikační server Jboss ( více v kapitole \ref{sec:jboss}). Na serveru je celá aplikace. Dochází zde k předzpracování zpráv, jejich odslání do Microsoft Azure (\ref{sec:ms_azure}) a také k ukládání do DB.
+	
+	Jak jsem již zmiňoval provoz z platformy je po zpracování odesílán do MS Azure, zde jsou definovány jednotlivé algoritmy, jejichž výsledky jsou vracený zpět do aplikačního serveru. Azure jsem se rozhodl používát, protože umožňuje rozložení výkonu na server Microsoftu a protože využití služeb v cloudu se stává stále oblíbenějším. Díky spolupráci s Microsoftem je možné i získat, popřípadě zakoupit, instanci Azure do vlastní sítě.
+	
+	Získané výsledky jsou zpracovány a uloženy do NoSQL databáze MongoDB (více v kapitole \ref{sec:data_storing}).
+	
+	Aby výsledky nebyly jen hodnoty uložené v databází, je použité REST API, přes které lze výsledky sdílet. API je navržené tak, aby v případě použití Google Charts nevznikly žádné potíže. Google Charts se u cílového zákazníka pužívají již nyní například na zobrazení stavu objednávek. Proto jejich se jejich použití jeví jako další logický krok. Nicméně, není problém stejné api použít pro svoji libovolnou aplikaci, která hodnoty použije buď pro zobrazování přehledů, nebo jako jeden z dalších vstupů například do různých systémů SIEM.
 	
 	\section{Microsoft Azure}
 		\label{sec:ms_azure}
@@ -128,11 +139,12 @@
 		Aby měl prediktivní model smysl, je třeba mu poskytovat nějaká data, u kterých je predikce využita. K tomu se využívají webové služby.
 		Prediktivní model se vystaví na specifické URL adrese. Zde je pak očekáván na vstupu konkrétní formát JSONu a služba vrací předem definovanou odpoveď se správnými parametry.
 		
-		Výhodou využití cloudu je přenesení výpočetní zatěže mimo společnost. Naopak rizikem je problém s konektivitou, který může vytvořit výpadek služby a nebude tedy možné po tuto dobu predikovat rizika.
+		Výhodou využití cloudu je přenesení výpočetní zatěže mimo společnost. Naopak rizikem je problém s konektivitou, který může vytvořit výpadek služby a nebude tedy možné po tuto dobu predikovat rizika. Jednou z možností, jak řešit takové riziko je nechat přenést instanci MS Azure do své sítě.
 		
 		\todo{Více rozepsat rozdíl mezi učícím a prediktivním modelem}
 		
 	\section{JBoss}
+		\label{sec:jboss}
 		Platforma Unify je postavená na aplikačním server JBoss AS 7 \cite{unify}. Z toho důvodu je třeba aby aplikace byla zcela kompatibilní.
 		 
 		 \todo{Nají nějaké zdroje kde je popsáno o co vlastně jde}
@@ -170,47 +182,134 @@
 		\todo{Byt je to na pohled jasne, tak popsat co ktery param. je}
 		\begin{itemize} 
 			\item ObjectId - automaticky generováno z MongoDB
-			\item timestamp
-			\item original-message
-			\item normalized-message
-			\item platformId
-			\item assignment		
+			\item timestamp- časové razítko uložení záznamu do DB
+			\item original-message - nezměněná zpráva
+			\item normalized-message - zpráva po normalizaci
+			\item platformId - jedinečný identifikátor platformy
+			\item assignment - skupina, kterou azure vyhodnotil pro zprávu jako správnou 		
 		\end{itemize}
 					
 	\section{Předzpracování dat}
 		\label{sec:preprocessing}
+		
+		\todo{Dopsat čištění dat}
+		
 		Pro snažší prácí s informacemi z logů jsem se rozhodl pro normalizaci jednotlivých požadavků. Normalizace je jeden z požadavků při zpracovávání textu \cite{txtNrmlztn}.
 		
-		V kapitole \ref{sec:logging_unify} jsou vidět informace, které se kromě samotné zprávy logují. V každé zprávě se objevuje takzvaná integrační hlavička. V té jsou základní údaje jako čas odeslání, jednoznačné identifikátory, zdrojové a cilové systémy. Položka jako je timestamp bude zpravidla pro každý požadavek jiná, stejně na tom logicku budou jednoznačné identifikátory. Z tohoto důvodu jsem se rozhodl zvolit jejich nahrazení.
+		V kapitole \ref{sec:logging_unify} jsou vidět informace, které se kromě samotné zprávy logují. V každé zprávě se objevuje takzvaná integrační hlavička. V té jsou základní údaje, jako čas odeslání, jednoznačné identifikátory, zdrojové a cilové systémy. Položka jako je timestamp bude zpravidla pro každý požadavek jiná, stejně na tom budou jednoznačné identifikátory. Z tohoto důvodu jsem se rozhodl zvolit jejich nahrazení.
 		
-		\todo{Přidat list toho jak nahrazuji čísla apod.}
-		\todo{Přidat ukázku}
-		\todo{Popsat celý proces, lowecase a podobně}
+		Při normalizaci dat jsem se podobně jako ve zdroji \cite{Li_2013} rozhodl použít následovně:
+		
+		\begin{itemize} 
+			\item Nahrazení všech čísel - Pomocí speciálního symbolu nahradím všechny výskyty čísel.
+			\item Velikost písmem - Všechna písmena jsou z velkých znaků převedena na znaky malé.
+			\item Odstranění speciálních znaků - Veškeré znaky jako jsou čárka, tečka \ldots jsou odstraněny
+			\item Odstranění xml tagů - Rozhodl jsem pro zpracovávat jen obsah zpráv bez xml tagů.	
+		\end{itemize}
+	
+		Nahrazení čísel se mi jeví jako logický krok. V jednotlivejch požadavcích jsou čísla například výsledky různých měření na sítí nebo právě čas v časovém razítku. Pro další využití považuji za podstatné vědět, že se v daném místě vystkytovalo číslo, než že to bylo nějaké konkrétní číslo.
+		
+		Převod písmen na malá zajistí, aby slova, lišící se právě jen ve velikosti nějakých písmen byla vyhodnocena jako stejná.
+		
+		Všechna komunikace na platformě je převedena do xml (není-li již od počátku vedena v xml). Protože téměř u všech zpráv stejného druhu se používají ty samé xml tagy, nebudou pro další zpracování podstatné a budou zcela odstraněny. Algoritmus bude dále pracovat jen s reálným obsahem zprávy. 
+		
+		Na obrázku \ref{fig:normalized_message} je ukázka originálu zprávy a její normalizované alternativy.
+		
+		\begin{figure}[htb]\centering
+			\tmpframe{\includegraphics[width=\textwidth]{./img/todo}}		
+			\caption{Original and normalized message}
+			\label{fig:normalized_message}
+		\end{figure}
 			
 	\section{Vytvoření vektoru}
 		\label{sec:construct_vector}
-		\todo{Zde budu psát o tom, jak zprávu zpracouji pomocí algoritmu a převedu ji na číselný vektor}
-		\blind[2]
+		V okamžik, kdy máme předzpracovaná, znormalizovaná textová data je nutné najít vhodný způsob pro jejich převod do numerické podoby. To umožní snažší zpracování jak v případě clusteringu, tak i v případě detekce outlinerů.
 		
+		Cílem tedy je vytvořit vekotr, který bude dostatečně jednotlivé zprávy reprezentovat.
+		
+		\subsection{TF-IDF algoritmus}
+		\label{subsec:tf-idf}
+		Při clusteringu dokumentů lze využívat algoritmus TF-IDF (term frequency - inverse document frequency) \cite{Neto_0}. 
+		
+		\todo{Trošku lépe pořešit}
+		\subsubsection{Frekvence slova}
+		Ten funguje na principu, že se spočíta frekvence daného slova \textit{w} v dokumentu \textit{d}, označujeme $TF(w,d)$. Vypočteme se tak, že se spočítá suma výskytů slova \textit{w} v dokumentu \textit{d}. Výšší číslo znamená častější výskyt a tedy o to více \textit{w} charakterizuje \textit{d}.
+		
+		\subsubsection{Frekvence dokumentu}
+		Frekvence dokumentu pro slovo \textit{w} DF(w) je počet dokumentů, ve kterých se slovo \textit{w} nachází.
+		
+		\subsubsection{Inverzní frekvence dokumentu}
+		IDF neboli inverzní frekvence dokumentu je daná následující formulí \cite{Ramos_0}:
+		
+		$$ IDF(w) = \log{\frac{|D|}{DF(w)}}$$  
+		
+		Kde $|D|$ je počet souborů.
+		
+		\subsubsection{TF-IDF}
+		Samotný vzorec na výpočet TF-IDF je \cite{Neto_0}: 
+		
+		$$TFIDF(w,d) = TF(w,d) * IDF(w) $$
+		
+		\subsubsection{Použití}
+		Pro své účeli budu předpokládat, že jednotlivé zprávy jsou soubory a slova budou mezerou oddělený obsah zprávy. 
+		
+		Protože slov může být velké množství, rozhodl jsem se najít nějakou hranici, například takovou, že do výsledného vektoru zanesu TF-IDF pro taková slova, která se vyskytují nejvíce v 95\% zpráv, ale minimálně v 10\%.
+		
+		\subsection{Forma vektoru}
+		V sekci \ref{subsec:tf-idf} jsem navrhl, jak textová data převést do vektoru. Tím je zaručené, že bodou-li se data přenášet přes internet do Microsoft Azure, budou anonymizována. Z vektoru nedokážeme zpětně zprávu vyčíst.
+		
+		I když z Azure dostáváme synchronně odpověď zpět, a je tedy jasné, ke které zpráve dostávám výsledek, rozhodl jsem se odesílat i jednoznačný identifikátor platformy. To vede k tomu, že pro znalého člověka lze jednotlivé požadavky sledovat i uvnitř MS Azure. Identifikátor sám o sobě vypovídající hodnotu žádnou nemá, ale máme-li k dispozici původní zprávu, jsem ji schopni dohledat.
+		
+		\todo{Ukázka vektoru}
 		
 	\section{Konstrukce clusteringu}
-		\todo{V této části bude trénovací algoritmus}		
-		\blind[1]
+		\label{sec:construc_clustering}
+		Microsoft Azure nabízí k přípravě experimentů svoje studio dostupné na adrese \url{https://studio.azureml.net}.
+		
+		Ve studiu Azureml je možné vytvářet své projekty, do projektů umístit své experimenty a ty následně vystavit jako webovou službu.
+		
+		Základem úspěšného experimentu je vytvořit učící model. To je takový model, pro který máme zvolený cílový algoritmus a na předpřipravených datech ho naučíme aby dokázal v našem případě co nejlépe rozdělovat zprávy do clusterů.
+		
+		\subsubsection{Předzpracování}
+		Veškeré předzpracování a čištění dat probíhá v mojí aplikaci i přesto jsem základní předzpracování zvolil i do experimentu samotného.
+		
+		Po načtení vstupních dat dochází odstranění duplicitních řádků. Jako další metoda je využití modulu, který smaže řádky, jimž chybí nějaká data.
+		
+		\todo{Mohl bych použít zároven s klasifikacnim modelem, ale nevim.}
+		\subsubsection{Zpracování}
+		Pro zpracování jsem zvolil K-Means modul, který je připojený na modul pro trénování clusterovacích modulů.
+		
+		Po natrénování přiřadíme zbytku testovacích dat clustery a může zhlédnout výsledek.
+		
+		Na obrázku \ref{fig:k-means_azure} je vidět celý vytvořený trénovací experiment.
+		
+		
 		\begin{figure}[htb]\centering
 			\tmpframe{\includegraphics[width=\textwidth]{./img/todo}}	
 			\caption{Clustering k-means v prostředí MS AZURE ML Studio.}
 			\label{fig:k-means_azure}
 		\end{figure}
-		\blind[1]
-	\section{Konstrukce outliner}
-		\todo{Popsat}				
-		\blind[1]
+		
+		\todo{Doplnit sem ukázku přiřazení dat a grafy z azure}
+		\todo {jak jsem zjistil nejlepší vhodné nastavení}
+		
+	\section{Konstrukce detekce anomálie}
+		\label{sec:construc_anomaly}
+		Druhou možností, kterou bych rád vyzkoušel je detekce anomálie.
+		To, že chybné požadavky nebo bezpečnostní požadavky se budou výrazněji lišit od běžných zpráv se dá předpokládat.
+		
+		Princip předzpracování dat v Azureml studiu je stejný jako v při konstrukci modelu pro clustering. Řádky s chybějícími hodnotami a duplikované pro trénování nebudeme používat.
+		
+		Kromě výše uvedené předzpracující části i zde je část učící a část vyhodnovací.
+		
+		Trénovací model je vidět na obrázku \ref{fig:anomaly_detection_azure}.
+		
 		\begin{figure}[htb]\centering
 			\tmpframe{\includegraphics[width=\textwidth]{./img/todo}}	
 			\caption{Detekce anomálií v prostředí MS AZURE ML Studio.}
 			\label{fig:anomaly_detection_azure}
 		\end{figure}
-		\blind[1]
+		\todo {jak jsem zjistil nejlepší vhodné nastavení}
 		
 	\section{Prezentace dat}
 		\label{sec:data_prezentation}
@@ -282,7 +381,29 @@
 			\label{fig:training_clustering_azure}
 		\end{figure}
 	
+		\subsection{Webová služba}
+			Po dokončení prediktivního modelu je třeba experiment vystavit tak, abychom ho mohli používat z vlastní sítě.
+			
+			Azure umožňuje takový model spustit jako webovou službu.
+			
+			  \begin{figure}[htb]\centering
+			  	\includegraphics[width=\textwidth]{./img/todo}
+			  	\caption{Vytvoření webové služby pomocí stisku tlačítka.}
+			  	\label{fig:azure_create_web_servise}
+			  \end{figure}
+		  
+		  Po vytvoření webové služby získáme takzvaný \uv{API key}. Tento řetězec bude sloužit pro přihlášení se do Azure, při dotazování se na konkrétní službu.
+		  
+		  Také je možné službu otestovat. Otevře se nám okno s očekávanýma políčkama (obr. \ref{fig:azure_test_web_service}). Po vyplnění políček se zobrazí odpověď z prediktivního modelu. Tímto způsobem můžeme otestovat funkčnost nebo pár vzorků. Jiná použití by byla velmi časově a zdrojově nevýhodná.
+		  
+		  \begin{figure}[htb]\centering
+		  	\includegraphics[width=\textwidth]{./img/todo}
+		  	\caption{Zobrazené okno pro otestování prediktivního modelu jako webové služby}
+		  	\label{fig:azure_test_web_service}
+		  \end{figure}
+	
 	\section{MongoDB}
+	\todo{Celkově z této sekce jsem rozpačitý}
 		Pro potřeby aplikace je nutné v co nejrychlejším možném čase ukládat jednotlivé requesty. Při ohromném provoze, který se na integrační platformě vyskytuje to je nutná podmínka pro to, aby bylo možné v reálném čase jednotlivé požadavky zpracovávat.
 		
 		\begin{figure}[htb]\centering
@@ -291,12 +412,48 @@
 			\label{fig:hld_architecture}
 		\end{figure}
 		
-		Rozhodl jsem se za tímto účelem využít MongoDB \cite{MongoDB}, protože se očekává, že bude třeba ukládat 30 záznamů za sekundu, zpravidla bude docházet k více zapisům než čtením.
+		Rozhodl jsem se za tímto účelem využít MongoDB \cite{MongoDB}, protože se očekává, že bude třeba ukládat v mimořádném případě až 30 záznamů za sekundu, zpravidla bude docházet k více zapisům než čtením.
 		
-		\todo{Je to NoSQL}
-		\todo{Kolekce}
-		\todo{Dokumenty}
-		\today{Ovladacu je dost} 
+		\subsection{NoSQL}
+			MongoDB patří do takzvaných NoSQL databází \cite{mongoDB}. NoSQL v angličtině znamená \uv{Not Only SQL} \cite{Moniruzzaman_2013}, v překladu \uv{Nikoliv pouze SQL}. Jde o skupinu nerelačních databází. Takové databáze nejsou primárně postavené na principu tabulek a zpravidla nepoužívají SQL pro práci s daty \cite{Moniruzzaman_2013}.
+			
+		\subsection{O MongoDB}
+			MongoDB je licencovaná pod  GNU AGPL v3.0 \cite{mongo_gnu} licencí. Data jsou ukládána ve formátu BSON. BSON je binárně zakódovaná JSON \cite{bsonspec.org}.
+			
+			V MongoDB se vytvářejí kolekce, každá kolekce obsahuje soubory. Soubory mají parametry \cite{mongoDB}. Soubory a jejich parametry lze v čase libovlně měnit nebo přidávat. Což je výhoda, pokud zjistíme, že aktuální návrh není finální, vyhneme se problémům s migrací do nového schématu.
+			
+			V rámci souboru je možné definovat čítač, který se využije k tomu, aby automaticky generoval jednoznačný identifikátor k souborům nebo lze využít parametr souboru \textbf{\_id}. Ten vygeneruje jednoznačnou identifikaci, ze které jsme schopni například získat i čas vložení dokumentu do kolekce. 
+			
+		\subsection{Využití v práci}
+			\subsubsection{Kolekce terms}
+			V práci využívám databázi k ukládání všech slov, ze kterých se tvoří vektor, jenž reprezentuje konkrétní požadavek ( více v kapitole \ref{sec:construct_vector}). Tím není potřeba je mít v paměti a při připadném výpadku je znova vypočítávat.
+			
+			 V kolekci \textit{terms} ukládám soubory jejichž struktura je automatický identifikátor, slovo pro konstrukci vekotru a timestamp přidání dokumentu do kolekce.
+			
+			\subsubsection{Kolekce messages}
+			Další kolekcí je kolekce \textit{messages}. V té jsou uložené veškeré požadavky, které byly přečteny z logů integrační platformy. Protože ještě před uložením do kolekce dochází v Azure k vyhodnocení, je zpráva uložené i s informací, která určuje zdali je požadavek vyhodnocen jako bezpečností riziko nebo není. 
+			
+			Struktura každého souboru je: 
+			
+			\begin{itemize} 
+				\item \textbf{\_id} - automaticky generovaný identifikátor
+				\item \textbf{timestamp} - čas uložení souboru
+				\item \textbf{original-message} - původní požadavek, tak jak byl převzat z logu integrační platformy
+				\item \textbf{normalized-message} - požadavek ve znormalizované podobě
+				\item \textbf{platform-id} - jednoznačný identifikátor v rámci integrační platformy
+				\item \textbf{assignment} - informace od Azure s výsledkem přiřazení katogire 	
+			\end{itemize}
+		
+		\todo{Lépe vysvětlit assignment}
+		\todo{Konfigurační kolekce}
+		
+		\subsection{Práce s MongoDB v Javě}
+		V implementaci jsem vytvořil třídu \textit{MongoClientService} (aby bylo možné třídy využívat i v jiných modulech, musí se taková třída skládat z interfacu a jeho implementace, v textu se budu bavit o celku implementace a interfacu dohromady například jako o třídě MongoClientService). Tato třída umožňuje distribuci konkrétní databáZe napříč celou aplikací. 
+		
+		V jednotlivých modulech si vyvoláme instanci konkrétní databáze a nad tou jsme schopni pracovat. Ovladače pro MongoDB nám umožňují jak data v kládat, tak je číst.
+		
+		
+		
 		
 	\section{Čtení dat z logů}
 		\todo{Popis}				
@@ -306,10 +463,14 @@
 		
 		Princip získání dat proudicích přes integrační platformu je založen na čtení jednotlivých logovacích souborů. Jako vhodný nástroj jsem vybral Java třídu Tailer z dostupné knihovny org.apache.commons.io \cite{tailerClass}.
 		
-		Třída Tailer, po implementaci listeneru, se chová stejně jako linuxový příkaz tail \cite{tailLinux}. Průběžně kontroluje čtený soubor a každou nově zapsanou řádku zpracovává.
+		Třída \textit{Tailer}, po implementaci listeneru, se chová stejně jako linuxový příkaz tail \cite{tailLinux}. Průběžně kontroluje čtený soubor a každou nově zapsanou řádku zpracovává.
 		
 		Tímto řešením získáváme data z integrační platformy, aniž bychom jí zatěžovali. 
+		
 	\section{Předzpracování a odeslání do Azure}
+		\label{sec:send_to_azure}
+		\todo{Možná rozdělit na dvě sekce}
+		
 		Protože jsou data odesílána do cloudu, předzpracováváme je lokálně a přímo do Microsfot Azure odesíláme už jen identifikátor zprávy a vypočtený vektor.
 		
 		Po přečtení zprávy z auditového logu Unify je zpráva předzpracována (\ref{sec:preprocessing}) a následně je z ní vytvořen vektor (\ref{sec:construct_vector}).
