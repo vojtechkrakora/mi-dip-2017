@@ -77,13 +77,35 @@
 		\todo{Jak se zjišťují}
 		\blind[2]
 	\section{Platforma Unify}
-		\todo{Představení Unify}
-		\blind[1]
+		Cílem práce je prověřit jeji funkčnost na platformě Unify \cite{unify}. 
+		
+		\subsection{Integrační platforma}
+			Unify je produkt, který slouží jako integrační platforma. Integrace slouží k propojení různorodých systémů a služeb. 
+			
+			Integrace se zpravidla zkládají ze sběrnice \cite{mulesoft}. Sběrnice, která propojuje konzumující aplikaci a poskytující aplikace se nazývá \textit{ESB} (enterprise service bus). ESB je stavěno na architektuře orientované na služby \cite{oracleEsb}.
+			
+			\begin{figure}[htb]\centering
+				\tmpframe{\includegraphics[width=\textwidth]{./img/todo}}		
+				\caption{Enterprise Service Bus.}
+				\label{fig:esb}
+			\end{figure}
+			
+			Konzumující aplikací rozumíme takovou aplikaci, která posílá dotaz na konkrétní službu. Poskytující aplikace je taková aplikace, která poskytuje rozhraní, jehož výstupem jsou data pro různé konzumující aplikace. V reálné aplikaci je možné poskytovat interface, který například spustí nějaký proces.
+			
+			ESB je využíváno interně v rámci jedné firmy nebo logické struktury. Pokud je žádané, aby některé služby byly konzumovány aplikací takzvaně odjinud používá se sběrnice B2B (business to business) \cite{liaisonB2B}.
+			
+			B2B poskytuje rozhraní a zpravidla následně samo je konzumentem ESB.
+		
+		\subsection{O Unify}
+		Unify je integrační platforma, která je orientovaná na služby \cite{Unify}.
+		
 		\begin{figure}[htb]\centering
 			\tmpframe{\includegraphics[width=\textwidth]{./img/todo}}		
 			\caption{High Level Desing architektura Unify.}
 			\label{fig:hld_architecture_unify}
 		\end{figure}
+	
+	
 		\blind[1]
 	\section{Clustering}
 		\todo{Proč použít clustering}
@@ -475,16 +497,32 @@
 		
 		Po přečtení zprávy z auditového logu Unify je zpráva předzpracována (\ref{sec:preprocessing}) a následně je z ní vytvořen vektor (\ref{sec:construct_vector}).
 		
-		\todo{Popsat jak získám data}
-		\blind[1]
-		\todo{Popsat jak data předzpracuji}
-		\blind[1]
-		\todo{Popsat jak z dat udělám vektor}
-		\blind[1]
-		\todo{Popsat jak data odešlu}
-		\blind[1]
-		\todo{Popsat jak data přijmu}
-		\blind[1]			
+		\subsection{Start aplikace}
+			První start aplikace je komplikovanější v tom, že pro výpočet finálního vektoru ještě nemáme známá vhodná slova, pro která se budou TF a IDF vypočítávat.
+			
+			Pro případ, kdy je databáze zcela prázdná jsou nejdříve načteny nějaké zprávy (dle konfigurace), z těch jsou vypočetent vhodné termy.
+			V případě, že databáze nějaké zprávy již obsahuje je možné využít je. Nedoporučovaný způsob je vložení slov přímo do databáze. Tato metoda může být vhodná v případě, že například chceme databázi migrovat a nechceme se zdržovat znovu výpočtem.
+		
+		\subsection{Získání dat z logu}
+		 Samotný zisk dat z logu je řešen pomocí Java knihovny Tailer \cite{javaTailer}. Jednou z věcí, které bylo potřeba vyřešit byla situace, kdy třída Tailer během čekání na nový přírustek logovacího souboru zcela zablokovala program. Situaci jsem vyřešil tím, že procesu, který čte z logu integrační platformy jsem pomocí \textit{ExecutorService} \cite{javaExecutorService} umožnil běžet na pozadí aplikace. Tím jsem neblokoval řízení programu.
+		 
+		\subsection{Předzpracování dat}
+		Celý proces předzpracování zpráv probíhá v implementované třídě \textit{LogListener}. Po získání dat, jako textového řetězce, jsou uložena do struktury třídy \textit{AuditLogMessage} (obr \ref{fig:auditLogMessage}). 
+		
+		Následuje proces vytvoření vektoru, který je odesílán do MS Azure. Vektor se vytváří dle pravidel uvedených v sekci \ref{sec:construct_vector} včetně všech procesů předzpracování . Metody pro výpočet TF a IDF jsou implementované ve třídě \textit{WeightsCounterService}.  
+		
+		Vektor samotný je reprezentován jako seznam \textit{Double} čísel.
+		
+		\begin{figure}[htb]\centering
+			\tmpframe{\includegraphics[width=0.2\linewidth]{./img/todoSmall}}	
+			\caption{Struktura třídy AuditLogMessage.}
+			\label{fig:auditLogMessage}
+		\end{figure}
+		
+		Pro odeslání dat bylo třeba vytvořit třídu \textit{AzureWebService}. Vytvoření vhodného požadavku na Azure je podmíněno přihlášením se do služby. Proto do hlavičky je přidána \textit{Basic Access authentication} (jednoduché ověření přístup).
+		
+		Na požadavek ihned dostaneme synchroní odpověď s výsledkem. Výsledek je zpracován a přiložen k datům načteným z logu.
+					
 		
 	\section{Uložení dat}
 		\todo{Popsat v jakém stavu jsou data před ukládáním}
