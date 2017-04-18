@@ -67,16 +67,95 @@
 \setsecnumdepth{part}
 \chapter{Introduction}
 \todo{Napsat max jednu stranku}
+S roustoucím významem informačních systémů a informací jenž jsou zpracovány počítaočovými systémy je kladen důraz na zabezpečení informací. Bezpečnost informačních systémů je zajišťována zákonem o kybernetické bezpečnosti 181/2014 Sb \cite{zakon181-2014}. Mnoho systémů vyžaduje i vyšší zabezpečení například pomocí ISO normy 27001 \cite{iso27001}.
+
 \blind[2]
 
 
 \setsecnumdepth{all}
 \chapter{Úvod do problematiky}
-	\section{Zjišťování bezpečnostních rizik}
-		\todo{Co to jsou bezp rizika}
-		\todo{Jak se zjišťují}
-		\blind[2]
+	
+	
+	\section{Kybernetická bezpečnost}
+		Pro dnešní dobu je běžné využívání informačních technologíích prakticky kdekoliv. Jde o stavební kámen mnoha podniků. Informačním systémem rozumíme kombinaci softwaru, hardwaru, infrastruktury a trénovaného personálu\cite{businessdictionary}.  Tam, kde  se informační systémy vyskytují pomáhájí práci zjednodušovat, tvořit či se jinak podílet. Systémy je třeba udržovat v provozu a co nejvíce se vyhnout všem možným rizikům, které mohou businessový proces narušit.
+		
+		Obecně lze na zabezpečení informačního systému nahlížet z mnoha různých úhlů. Zabezpečit lze síť pomocí certifikovaného přístupu, správně zabezpečené bezdrátové sítě a podobně. Do operačních systémů se nainstalují antivirové programy. Samotná zařízení se fyzicky uzamknou a znemožní se přístup nepovolaným osobám.
+		
+		Povinnost zabezpečovat informační systémy přikládá zákon o kybernetické bezpečnosti 181/2014 Sb. Tento zákon stanovuje povinnosti a práva orgánů veřejné moci v oblasti kybernetické bezpečnosti \cite{zakon181-2014}. Tento zákon mimo jiné nařizuje orgánům veřejné moci \todo{Definovat orgán veřejné moci} povinnost zajišťovat kybernetickou bezpečnost.
+		
+		Kromě zákonu jsou k dispozici normy. Jednou z takových norem je norma ISO 27001. Tato norma stanovuje požadavky, které je nutné dodržovat pro kybernetickou bezpečnost. Tyto požadavky jsou stanoveny jak na samotné informační systémy, tak i na zaměstnance, informační procesy, či strategie firmy. \cite{iso27001}.
+		
+		Lze říci, že zajištění kybernetické bezpečnosti a následné detekci jednotlivých bezpečnostních rizik je velmi specifické. Každá danná doména má své rizika a jiné druhy způsobů jejich detekce. 
+		
+		V práci řeším kybernetickou bezpečnost pro konkrétní část informačního systémy. Podstatná tedy jsou bezpečností rizika na integrační platformě Unify. Definice integrační platformy a její popis je v sekci \ref{sec:unify}.
+		
+		\subsection{Bezpečnostní rizika}
+		\todo{Nadefinovat bezpečnostní rizika}
+			Jak již bylo uvedeno pro tuto práci jsou podstatná bezpečností rizika na konkrétní integrační platformě. Cílem je hledat pouze ta, která vznikají na straně programu. Zabezpečení přístupů fyzicky k serverům Unify a podobně nebudou probírána.
+			
+			\subsubsection{Zero day útoky}
+				Zero day útoky lze volně přeložit jako útoky nultého dne.
+				Jde o taková bezpečnostní rizika, která využívají zranitelností nějakého systému, nebo jeho části, která nebyla zveřejněna \cite{investigationZ0}.
+				
+				Integrační platforma je složena z mnoha modulů, který tvoří její celek. S rostoucím množstvím softwaru a použitých knihoven jsou šance na skrytou chybu velmi vysoké. 
+			
+			\subsubsection{Odepření služby}
+				Útoky, jejichž cílem je znepřístupnit konkretní jednu či sadu služeb rozhodně patří mezi narušení kybernetické bezpečnosti. Útok spadající do kategorie Dos \todo{Definovat Dos} je DDos, jde o útok, kde hromadně více zařízení zahltí požadavky konkrétní služby a vyřadí je tím z provozu \cite{dosAndDdos}.
+				
+				\begin{figure}[htb]\centering
+					\tmpframe{\includegraphics[width=\textwidth]{./img/todo}}		
+					\caption{Grafické znázornění DDos útoku.}
+					\label{fig:ddos}
+				\end{figure}
+				
+				Problémem nemusí být když se takové riziko projevuje přímo. Pokud například důležitý partner je pod takovým útokem, ohrožuje to business procesy i na naší straně. Je třeba zavčas podobný incident detekovat a na základě dalších informací se rozhodnout jak vzniklou situaci řešit.
+				
+				\todo{Chtěl bych zde konkrétně popsat DDos na O2 z lonskeho roku}
+			
+			\subsubsection{Nevalidní dotazy}
+				Riziko, které je třeba hlídat, ale nutně způsobené za účelem poškodit někoho nebo něco. Integrační platforma musí zpracovávat různé požadavky od konzumentů a ty zpravidla přeposílat poskytovatelům služeb. Mohou nastat situace, kdy konzument posílá nevalidní požadavek.
+			
+				V případě, že požadavky jsou v xml formě, lze definovat přesné znění zprávy. V případě, že je její validita narušena dochází k nekompatibilnímu dotazu na stranu poskytovatele. To může vyústit v nevyřízené a odmítnuté požadavky. Z této situace můhou vzniknout nechtěné útoky \textit{odepření služeb}. V případě, že požadavek nebude zamítnut, možným důsledkem může být zisk nevalidních dat nebo dokonce i dat, která se ke konzumentovi neměla dostat.
+			
+				Tyto popřípadě i jiné neočekávané situace je třeba včas odhalit a řešit.
+				
+			\subsection{Ostatní}
+				Mnoho bezpečnostních rizik může být neznámých. Nelze vše zaškatulkovat do obecných kategorií. Rizikem mohou být i služby, které po autorizaci nabízí různé možnosti získání dat, například pomocí selectů z databáze.   	
+			
+		\subsection{Zjišťování bezpečnostních rizik}
+			Rozpoznávat bezpečnostní rizika a je při jejich různorodosti složitý úkol. 
+			
+			\subsubsection{Posouzení kódu}
+				Posouzení kódu ( anglicky code review) je metoda kontroly kvality kódu. Programátor, který napsal nějaká kus komponenty dá svou část programu na kontrolu druhé osobě. Není přímo nutné, aby kontrolující osoba byla nadřízený. Kontrolující programátor hlídá kvalitu kódu a zároveň prověřuje jeho funkčnost. Tato metoda vede ke zkvalitnění dodávaného softwaru, ale je finančně i časově náročná. \todo{cite}
+			
+			Zvýšením kontroly se i zvyšuje šance na detekci bezpečnostního rizika. Jako velmi efektivní metodu ji uvádí zdroj \cite{pethukovKozlovVulnerabilities}.
+			
+			\subsubsection{Analýza z pohledu uživatele}
+				Ve snaze celý proces detekce bezpečnostních rizik zautomatizovat se používá i metoda založená na pohledu uživatele aplikace \cite{pethukovKozlovVulnerabilities}. Aplikace má své uživatele, proto je možné vytvářet scénáře, kdy se uživatel pokouší najít v aplikaci nějaký nedostatek. Takový nedostatek může následně produkovat bezpečnostní riziko. Automatizace těchto scénářů je zpravidla snadno proveditelná a často patří do klasických testovacích scénářů.
+				
+				Testují se například SQL injection, přístup do neopravněných míst a další.
+				
+			\subsection{Analýza na straně serveru}
+				Předchozí způsoby se snažili zabránit výskytu rizik. Pro zachování kybernetické bezpečnosti je vhodné sledovat i aktuální situaci v aplikaci. Vzhledem k rozshahu moderních aplikací je takřka vyloučené, že bychom dokázali rizikům předejít. Sledování aktuálního stavu a provozu můžeme být schopni detekovat podezřelé činnosti. Na základě toho pak dokážeme zjistit bezpečnostní riziko.
+				
+				I zde lze využit automatizaci. Například ve zdroji \cite{CoronaGiacintoDetWebAtt} je uveden systém na rozpoznání vzorů zpráv. Koncept založený na znalostním inženýrství může pomoci detekovat i využití zranitelnosti Zero-day\todo{Odkaz na kapitolu} \cite{AhnKimChungBigDataAnal}.
+				
+				Podobný princip využívají i systémy SIEM (security information and event management). SIEM se zabývá bezpečnostním management. Jeho myšlenka je taková, že  
+				rozsáhlé aplikace mají své zdroje informací (logy) na různých místem, ale je zapotřebí k nim přistupovat z jednoho místa. Z tohoto místa se provádí následná analýza kompletně všech zdrojů a vyhodnocují se bezpečnostní rizika \cite{SIEMDef}. Pomocí tohoto vyhodnocení pak může specialozvaný personál reagovat na vzniklou situaci.
+				
+				\begin{figure}[htb]\centering
+					\tmpframe{\includegraphics[width=\textwidth]{./img/todo}}		
+					\caption{Grafické znázornění SIEM.}
+					\label{fig:siem}
+				\end{figure}
+			
+		\subsection{Zkušenosti z Unify}
+			\todo{Popsat jaké zkušenosti mám z unify}
+			\todo{Chyba může být nevalidní request, Snaha o umělý request ...}
+			
 	\section{Platforma Unify}
+		\label{sec:unify}
+		\todo{Celá tato kapitola se mi nepovedla, je to spíše náčrt.}
 		Cílem práce je prověřit jeji funkčnost na platformě Unify \cite{unify}. 
 		
 		\subsection{Integrační platforma}
@@ -97,28 +176,226 @@
 			B2B poskytuje rozhraní a zpravidla následně samo je konzumentem ESB.
 		
 		\subsection{O Unify}
-		Unify je integrační platforma, která je orientovaná na služby \cite{Unify}.
+		Unify je integrační platforma, která je orientovaná na služby \cite{unify}.
+		\todo{Sklada se z B2B, ESB, ETL, SFE + jednoduché popisy}
 		
+		Unify je postavena na open source technologiích \cite{unify}. Základním stavebním kamenem je ESB, které umožňuje propojit různorodé systémy, služby.
+		
+		Pro pro připojení externích služeb a aplikací využívá B2B. Technologicky je B2B velmi podobné ESB, ale zpravidla je vhodné ho více zabezpečit, nebo používat validace na požadavky a vyhnout se tím takovým zprávám, jenž neodpovídají ani předem danému předpisu.
+		
+		Další z mnoha komponent jsou ETL (extract transform load), pomocí kterého dochází k zisku nějakých dat jejich transformaci a nahraní na jíné místo. Nebo SFE (secure file exchange) jehož význam je přenos souborů, hlavně mezi zónami Z2 a Z4. \todo{nemohu si ted vybavit jak se odborně nazývají}.
+		   
+		Stavební kámen integrační platformy Unify je Jboss AS 7, který zcela podporuje standard Javy EE 6 \cite{oracleJavaEE6}.
+		
+		
+		\todo{Používá se hlavně Java}
+		\todo{Podporuje SOAP, REST, HTTP, DB procedury}
+		\todo{Rychlé popsání logování}
+		\todo{Stávající řešení ochrany - info v GUI, journaling, logy a SL2}
+				
 		\begin{figure}[htb]\centering
 			\tmpframe{\includegraphics[width=\textwidth]{./img/todo}}		
 			\caption{High Level Desing architektura Unify.}
 			\label{fig:hld_architecture_unify}
 		\end{figure}
 	
-	
 		\blind[1]
-	\section{Clustering}
+		\todo{Zkratky B2B,ESB}
+		
+	\section{Text mining}
+		V logách integrační platformy je veškerá komunikace v textovém formátu. Kromě zpráv ve formátu xml jsou zde i zprávy ve formátu json, popřípadě výpis chyby, pokud nějaká nastala. Protože v prací řeším analýzu takových logů, tak následující kapitola přiblíží těžení znalostí z textu. 
+		
+		Text mining má velký význam, neboť 80\% informací uložených v počítačích jsou textové formy \cite{IRWebTechniques}.
+		
+		Text mining je metoda, která těží informace z textu \cite{WittenTextMining}. Přesto, že text mining spadá do kategorie data miningových metod, rozdíl je v tom, že nepracuje s číselnými a většinou ani nominálními hodnotami. Datamining dokáže detekovat skryté informace ze vstupních dat. Text mining informace nemá většinou ve svých datech nijak skryté. Při zpracování textu jde o automatizaci procesu, tak jak by ho zvládl člověk, počítačem. \cite{WittenTextMining}.
+		
+		Dle zdroje \cite{textAlg} lze probletiku text miningu rozdělit následovně:
+		
+		\subsection{Získání informací}
+			Systémy získání informací identifikují v kolekci souborů takové, jaké jsou vhodné pro vstupní požadavek. Je například o problematiku vyhledávácích nástrojů. Princip je takový, že hledáme-li konkrétní dotaz, jsou vybrány z kolekce všech souborů jen ty, která se dotazu týkají. To se rozhoduje například slovy použitými v dotazu a jejich synonimy.
+		
+		\subsection{Zpracování přirozeného jazyka}
+			Zpracování přirozeného jazyka je jeden z nejtěžších problémů text miningu. V této disciplíně se řeší převod textu do mluveného slova, rozpoznání řeči a podoně. Princip je naučit stroje rozumět přirozenému jazyku. To pomahá například při anotaci souborů.
+			
+		\subsection{Data mining}
+			Data mining je proces, který hledá skryté vzory v datech. V použití s text miningem je využití pro prezentaci různých výsledků koncovému uživateli.
+			
+		\subsection{Extrakce informací}
+			Extrakce informací je proces, kde jsou vytažena data ze vstupu a vložena do logických struktur. \todo{víCe}\cite{SankarSureshTextMining}
+		
+		\todo{Možná to nad bude lepší v odrážkách než podkapitolách.}
+		
+		\subsection{Transformace textových dokumentů}
+		 Aby bylo možné jednotlivé textové dokumenty klasifikovat nebo shlukovat je třeba je převést na číslný vektor. V této části kapitoly se budu zabývat možnostmi takového převodu.
+	
+		\subsubsection{TF-IDF}
+			\label{subsub:tf-idf}
+			TF-IDF je zkratka aglického názvu \textit{Term Frequency Inverse Document Frequency}. Snažší překlad bude, pokud název rozdělíme na Term Frequency, což je v překladu četnost slova a Inverse document frequency, jenž znamená převrácena četnost dokumentu \cite{RamosTF-IDF}.
+			
+			Četnost slova vyjadříme následovně: máme slovo $w$ a množinu dokumentů $D$, skládající se z dokumentů $d_1, d_2 \ldots d_3 \in D$. Potom četnost slova $TF(w, d_x)$ vyjadřuje kolikrát se slovo $w$ vyskytlo v dokumentu $d_x$.
+			
+			Převrácená četnost dokumentu vystihuje jak podstatné slovo $w$ je. Značíme ji jako $$IDF(w,D) = \log{\frac{|D|}{|D_w \subseteq D|}}$$ kde $|D|$ vyjadřuje velikost množiny všech dokumentů a $D_w$ množina všech dokumentů, ve kterých se slovo $w$. $|D_w|$ pak značí velikost takové množiny \cite{RamosTF-IDF}.
+			
+			Pro slovo $w$ v dokumentu $d$ vypočteme TF-IDF následovně:
+			$$TF-IDF(w,d,D) = TF(w,d) * IDF(w,D)$$
+			
+			Na základě uvedeného vzorce jsme schopni reprezentovat textový dokument pomocí vektoru. Vektor takové dokumentu bude vždy nezáporný a bez úprav bude mít tolik dimenzí, kolik má jednoznačných slov v sobě.
+			
+		\subsubsection{Snížení dimenzionality}
+			Při práci s textovými dokumenty je třeba snížit jejich dimenzionalitu. Jak je uvedeno v sekci \ref{subsub:tf-idf} bez úprav dimenzioality TF-IDF pomůže vytvořit vektor o velikosti rovné počtu unikátních slov. Do takové seznamu slov by ovšem v ten moment mohly zapadat slova stejného významu, jen například jinak skloňována. Dalé bude-li pro jednotlivá slova v dokumentu oddělovač mezera, mohou vzniknout jako dvě unikátní slova například \uv{slovo} a \uv{slovo,}.
+			
+			Před snížením dimenzionality je vhodné zbavit se veškeré interpunkce. Kromě interpunkce je vhodné i text převést kompletně na velká nebo malá písmena.
+						
+			Pro snížení dimenzionality se používá odstranění takzvaných stop-slov. Jde o slova taková, která nemají velký význam. Přiklad pro to mohou být předložky a spojky. Pro mnoho jazyků jsou k dispozici slovníky s takovými slovy. Dle konkrétní charakteristiky textového dokumentu může být vhodné nadefinovat si svá stop-slova.
+			
+			Dalším nástrojem pro redukci počtu dimenzí je stemitizace. Cílem stemitizace je redukce slov tím, že jsou převedena na kořen slova \cite{textPreprop}. Je třeba si uvědomit, že tímto krokem je možné ztratit původní význam slova a je tedy třeba promyslet,  jestli na konkrétních datech stemitizaci využít.
+		
+		
+		
+		
+	\section{Těžení Asociačních pravidel}
+		Jednou z prvních myšlenek jak dosáhnout cíle bylo využití metody těžení asociačních pravidel. 
+		
+		\subsection{Definice}
+		Cílem těžení asociačních pravidel je najít zajímavé korelace či časté vzorce v množině dat uložených v relační databázi nebo jiných uložiští \cite{assoc1}. Jako ukázka praktického využití lze představit využití v obchodních řetězcích. Obsah nákupu, který si zákazník zakoupil, je uložen v rámci jedné transakce. Algoritmus vyhledá zajímavé vzorce a pravidla mezi položkami v transakcích. Výsledkem je možnost predikovat co si zákazník zakoupí. Jako příklad uvedeme zákazníka, který si koupil housku a salát. Jako predikce další položky lze očekávat hamburgerové maso. Tato znalost pak lze využít k lepšímu přemístění zboží v regálech či k osobnějším nabídkám zboží v reklamních tiskovinách.
+		
+		Těžení asociačních pravidel lze dle zdroje \cite{AsocAgrawal1} popsat následovně. Nechť $I = I_1, I_2,\ldots,I_m$ je množina binárníh atributů, kterou budeme nazývat položka. Nechť $T$ je databáze transakcí. Každá transakce $t$ je reprezentována binárním vektorem, kde platí, že $t[k] = 1$ pokud $t$ zakoupila položku $I_k$. V opačném případě $t[k] = 0$. Nechť $X$  je množina některých položek z $I$. Řikáme, že transakce $t$ splňuje $X$ pokud platí pro všechny položky $I_k$ v $X$ pravidlo $t[k] = 1$.	
+			
+		Asociačním pravidlem rozumíme implikaci $X \implies I_j$, kde $X$ je množina některých položek v množině $I$ a $I_j \in I$ ale zároveň $I_j \notin X$.
+		
+		Pravidlo $A \implies B$ platí s podporou $S$ v transakci $T$, kde $S(A \implies B) = P(A \cup B)$. Pravidlo $A \implies B$ má v transakci $T$ spolehlivost $C$, kde $C(A \implies B) = P(B|A)$.
+		
+		Cílem těžení je zjistit vztah mezi různými položkami tak, že přítomnost některých položek v transakci implikuje přítomnost jiné položky.
+		
+		\subsection{Myšlenka pro využití}
+		Myšlenka využití při analýze logu spočívala v tom, že by každá jednotlivá zpráva byla počítána jako transakce. Jednotlivá slova (po předzpracování) by tvořila položky. Pak by bylo možné predikovat, že výskyt některých termů bude znamenat například to, že dojde k odmítnutí nevalidního požadavku. Tyto získané informace by ale neměli nikterak velkou hodnotu. O odmítnutí požadavku se v platformě dozvíme zpravidla v rámci milisekund v synchronní odpovědi.
+		
+		Velmi pravděpodobně bezpečnostní rizika budou přibývat. Tato možnost by šla využít pro již existující nebo alespoň několikrát se vyskytující případy.
+		
+		Z těchto důvodů jsem tuto myšlenky zavrhl, stím, že bude lepší vyzkoušet takové metody, které budou mít šanci rozpoznat špatný požadavek, i když ho uvidí poprvé. Tyto metody jsou rozepsány v následujících sekcích. 		
+	
+	\section{Shluková analýza}
+		Jako jednu z možností vyřešení detekce bezpečnostních rizik na základě dat z logů jsem si vybral shlukovou analýzu (dle anglického názvu také nazýván clustering). Clustering využívá znalosti ze vstupních dat k tomu, aby dokázal vstupní požadavky rozdělit do shluků. Všechny informace jsou do těchto shluků přiřazovány na základě podobnosti. Podobnost lze definovat podle charakteristiky dat a požadovém účelu shlukování. Jednotlivé shluky pak tvoří užitečné a logické skupinky .
+		
+		Všechny objekty ve shluku si jsou navzájem podobné a zároveň se nepodobají objektům v jiném shluku \cite{IntroductionToDataMining}. Na obrázku \ref{fig:clustering} je ukázka několika příkladů, kdy je na stejná data použita shluková analýza s jiným počtem shluků.
+		
+		\begin{figure}[htb]\centering
+			\tmpframe{\includegraphics[width=\textwidth]{./img/todo}}		
+			\caption{Ukázka shlukové analýzy s různym počtem shluků.}
+			\label{fig:clustering}
+		\end{figure}
+		
+		\todo{Napsat nějaký rozcestník o tom, že dále uvedu tu a tu metodu clusteringu}
+		
+		\subsection{K-means}
+			K-means a K-medoids jsou metody shlukové analýzy. Tyto metody jsou založené na principu centroidů. Centroidem je vyjádřen pomyslný střed každého shluku. V případě K-means jde o střed shluku nezávisle na tom, je-li tento bod i objektem vstupních dat, nebo ne. K-medoids jako střed shluku určí vždy nejvhodnějšího zástupce ze vstupních dat. Graficky je tento rozdíl zobrazen na obrázku. Z obrázku vyplýv, že shluk v K-means může mít střed mimo data, kdežto K-medoids má možnost středem shluku určit pouze nejvhodnější objekt ze vstupních dat \ref{fig:kMeansVSkMedoids}.
+			
+			\begin{figure}[htb]\centering
+				\tmpframe{\includegraphics[width=\textwidth]{./img/todo}}		
+				\caption{Ukázka shluku a jeho centroidu pomocí metody K-means a K-medoids.}
+				\label{fig:kMeansVSkMedoids}
+			\end{figure}
+		
+			Postup algoritmu pro K-means je nejdříve vybrat $K$ bodů jako centroidy. Tyto centroidy lze vybrat například náhodně, nebo prvních $N$. Volbou prvních centroidů se například zabývá zdroj \cite{kMeansInit}. Po vybrání středů se všechny data přiřadí k nejvhodnějšímu shluku. Výběr takové shluku často ovlivňuje například vzdálenost bodu k centroidu. Následuje přepočet nových středů. Přiřazení do shluků a výpočet nových centroidů se opakuje, dokud shluky mění. Po té považujeme algoritmus za hotový a data rozdělená do skupin.
+			
+			\todo{Přidat algoritmus.}
+			
+			Jedním z kroků algoritmu je přiřadit vstupním objektům správný shluk. K tomuto důvodu je nutné definovat funkci pro měření vzdáleností mezi jednotlivými objekty \cite{IntroductionToDataMining}. Požadavky na takovou funkcni jsou, aby byla jednoduchá, protože je velmi často volaná. Pokud data jsou v eukleidovském prostoru používají se například následující funkce na měření vzdálenosti:
+			
+				\subsubsection{Eukleidova vzdálenost}
+				Eukleidova vzdálenost určuje vzdálenost mezi dvěma body v eukleidově prostoru. Výpočet euiklediovy vzdálenosti mezi body $p = (p_1, p_2, \ldots, p_n)$ a $q = (q_1, q_2, \ldots, q_n)$ je
+				$$d_e(p,q) = \sqrt{\sum_{i = 1}^{n}(q_i - p_i)^2}$$
+				
+				\subsubsection{Manhattanská vzdálenost}
+				Dalším příkladem měření vzdáleností bodů $p = (p_1, p_2, \ldots, p_n)$ a $q = (q_1, q_2, \ldots, q_n)$ v eukleidově prostoru je manhattanská vzdálenost. Její výpočet je dle vzorce:
+				$$d_m(p,q) = \sum_{i = 1}^{n} |p_i - q_i| $$
+				
+			\todo{Ostatní vzdálenosti}
+			\todo{Zmínit, že to je bez učení}
+			\todo{Závislé na trénovacích datech}
+			
+		\subsection{Důvod využití}
+			Informace, které integrační platformou prochází jsou velmi různorodé. Požadavky je možné rozdělovat do různých skupin jako například:
+			
+			\begin{itemize} 
+				\item skupiny dle druhu služby (SOAP, REST, databázová \ldots)
+				\item skupiny dle služeb 
+				\item skupiny dle toho, zdali je zpráva požadavek nebo odpověď		
+			\end{itemize}
+		
+			Jako jedno z možných rozdělení je možné na požadavky v pořádku, podezřelé požadavky a chybné požadavky. Cílem je najít takovou konfiguraci, která by podobné rozdělení dokázala najít. Tedy rozeznat požadavky, které jsou v pořádku (běžná komunikace na integrační platformě.) od těch, jenž jsou podezřelé (ne příliš častý vzor požadavku, \ldots), či zaručeně chybné (chyba protokolu, validace, \ldots). 
+		
+		\todo{Vysvětlit někde princip komunikace request -> response, popřípadě asynchronní, jms atd.}
+			
+		
+		
 		\todo{Proč použít clustering}
 		\todo{Druhy clusteringu}
-		\todo{Výpočet vzdáleností}
-		\blind[2]
-	\section{Outliner}
-		\todo{Proč použít Outliner}
-		\blind[2]
-	\section{Text mining}
-		\todo{Proč text mining}
-		\todo{Princip text miningu}
-		\blind[2]
+	
+	\section{Detekce anomálie}
+		Většina požadavků, která projde skrz integrační platformu jsou v pořádku. Chyba či podezřelá zpráva se vyskytují zpravidla minimálně. Proto jsem jako další metodu zvolil detekci anomálie. Detekce anomálie je proces, při kterém se vyhledávají taková data, která se od ostatních výrazněji liší. Detekování odlišností se hojně využívá právě zajišťování bezpečnosti \cite{AnomDetectPCA}. Příklad anomálie je na obrázku \ref{fig:anomalyInData}.
+		
+		\begin{figure}[htb]\centering
+			\tmpframe{\includegraphics[width=\textwidth]{./img/todo}}		
+			\caption{Ukázka anomálie v datech.}
+			\label{fig:anomalyInData}
+		\end{figure}
+	
+		Princip detekce anomálií je definovat běžná data / chování. Následně veškerá data / chování, která těmto požadavků neodpovídají označit za anomálie \ref{fig:anomalyInData}. 
+		
+		\subsection{Metody detekce anomálie}
+			Detekce anomálií lze rozdělit na tři základní druhy \cite{KumarPCAANom}: 
+			\begin{itemize} 
+				\item statistické rozdělení
+				\item metody založené na vzdálenosti 
+				\item metody založené na hustotě		
+			\end{itemize}
+		
+			Statitistické metody očekávají, že data mají průběh nějakého rozdělení. Tomu ja následně přizpůsoben přístup zjišťování anomálií. Zpravidla proto tyto metody nejsou v praxi využívané \cite{KumarPCAANom}.
+			
+			U metod založených na vzdálenosti se výpočíta vzdálenost konkrétního data a jeho sousedů. Je-li nalezena vzdálenost větší než předem daný práh, je cílový prvek chápán jako anomálie.
+			
+			Metody založené na hustotě vypočítávají takzvaný LOF (Local Outlier Factor). LOF je hodnota, která u každého prvku určuje míru, jako moc je anomálií \cite{LOF}.
+			
+			Základ výpočtu LOF je, výpočet vzdálenosti ke $k$ nejbližším sousedům. Tato vzdálenost je použita pro odhad hustoty. Následné porovnání hustoty elementu s hustotami svých $k$ sousedů rozhoduje o tom, bude-li označen za anomálii.
+			
+			Definice LOF dle \cite{LOF} je popsána pomocí několika dílčích definicích: 
+			
+			\subsubsection{K-vzdálenost}
+				Nechť pro libovolné celé číslo $k$, kde $k > 0$ je určena \textit{k-vzdálenost} objektu $p$ ( $k-dist(p)$ ) jako vzdálenost $d(p, o)$, mezi objektem $p$ a objektem $o \in D$, kde platí:
+			
+				\begin{itemize} 
+					\item pro nejméně $k$ objektů $o' \in D \backslash {p}$	platí, že $d(p, o') \leq d(p, o)$ a zároveň
+					\item pro alespoň $k-1$ objektů $o' \in D \backslash {p}$ platí, že $d(p, o') < d(p, o)$
+				\end{itemize}
+				Množinu $k$ nejbližších sousedů definujeme jako $N_k(p)$
+		
+			\subsubsection{Dosažitelná vzdálenost}
+				Nechť $k$ je přirozené číslo. Dosažitelná vzdálenost objektu $p$ s ohledem na objekt $o$ je definována následovně: 
+				$$ reach-dist_k(p, o) = max (k-distance(o), d(p, o)) $$
+				
+			\subsubsection{Hustota dosažitelnosti}
+				Hustota dosažitelnosti objektu $p$ je definována jako
+				$$ lrd_{N_k}(p) = \frac{1}{ \frac{\sum_{o \in N_k(p)} reach-dist_k(p,o}{|N_k(p)|}} $$
+				
+				Hustota dosažitelnosti lze popsat jako inverze průměru dosažitelné vzdálenosti $k$ nejbližších sousedů $p$.
+				
+			\subsubsection{Činitel anomálie objektu p (LOF}
+				LOF objektu $p$ je definován jako 
+				
+				$$LOF_{N_k}(p) = \frac{\sum_{o \in N_k(p)} \frac{lrd_{N_k}(o)}{lrd_{N_k}(p)}}{|N_k(p)|} $$
+			
+			
+		
+		
+		\subsection{Analýza hlavních komponent}
+		Analýza hlavních komponent, častěji označována jako PCA z anglického překladu \textit{Principal Component Analysis}. \todo{Zkratka PCA} PCA provede analýzu vstupních dat. Tyto data se skládají z mnoha proměnných, které na sobě mohou být závislé. Účelem je vybrat z těchto proměnných důležitou informaci tu reprezentovat jako nové proměnné zvané hlavní komponenty \cite{PCA_book}. Tyto hlavní komponenty jsou lineární kombinací originálních hodnot.
+		
+		
+		
+			
+	\todo{Být alespoň na straně 20}
+	
 
 \chapter{Návrh řešení}
 	\todo{Nic moc tento odstavec}
