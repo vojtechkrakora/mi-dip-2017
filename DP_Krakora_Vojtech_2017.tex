@@ -19,6 +19,7 @@
 \usepackage{dirtree} %directory tree visualisation
 \usepackage{svg}
 \usepackage{amsmath}
+\usepackage{url}
 
 % % list of acronyms
 % \usepackage[acronym,nonumberlist,toc,numberedsection=autolabel]{glossaries}
@@ -77,7 +78,7 @@ S roustoucím významem informačních systémů a informací jenž jsou zpracov
 	
 	
 	\section{Kybernetická bezpečnost}
-		Pro dnešní dobu je běžné využívání informačních technologíích prakticky kdekoliv. Jde o stavební kámen mnoha podniků. Informačním systémem rozumíme kombinaci softwaru, hardwaru, infrastruktury a trénovaného personálu\cite{businessdictionary}.  Tam, kde  se informační systémy vyskytují pomáhájí práci zjednodušovat, tvořit či se jinak podílet. Systémy je třeba udržovat v provozu a co nejvíce se vyhnout všem možným rizikům, které mohou businessový proces narušit.
+		Pro dnešní dobu je běžné využívání informačních technologíích prakticky kdekoliv. Jde o stavební kámen mnoha podniků. Informačním systémem rozumíme kombinaci softwaru, hardwaru, infrastruktury a trénovaného personálu \cite{businessdictionary} .  Tam, kde  se informační systémy vyskytují pomáhájí práci zjednodušovat, tvořit či se jinak podílet. Systémy je třeba udržovat v provozu a co nejvíce se vyhnout všem možným rizikům, které mohou businessový proces narušit.
 		
 		Obecně lze na zabezpečení informačního systému nahlížet z mnoha různých úhlů. Zabezpečit lze síť pomocí certifikovaného přístupu, správně zabezpečené bezdrátové sítě a podobně. Do operačních systémů se nainstalují antivirové programy. Samotná zařízení se fyzicky uzamknou a znemožní se přístup nepovolaným osobám.
 		
@@ -677,7 +678,7 @@ S roustoucím významem informačních systémů a informací jenž jsou zpracov
 		\begin{figure}[htb]\centering
 			\includegraphics[width=\textwidth]{./img/todo}
 			\caption{Prediktivní model v detekci anomálií v Azure.}
-			\label{fig:training_clustering_azure}
+			\label{fig:training_anomaly_azure}
 		\end{figure}
 	
 		\subsection{Webová služba}
@@ -707,11 +708,11 @@ S roustoucím významem informačních systémů a informací jenž jsou zpracov
 		
 		\begin{figure}[htb]\centering
 			\tmpframe{\includegraphics[width=0.2\linewidth]{./img/todoSmall}}	
-			\caption{Logo MongoDB. \cite{MongoDB}}
-			\label{fig:hld_architecture}
+			\caption{Logo MongoDB. \cite{mongoDB}}
+			\label{fig:mongodb_logo}
 		\end{figure}
 		
-		Rozhodl jsem se za tímto účelem využít MongoDB \cite{MongoDB}, protože se očekává, že bude třeba ukládat v mimořádném případě až 30 záznamů za sekundu, zpravidla bude docházet k více zapisům než čtením.
+		Rozhodl jsem se za tímto účelem využít MongoDB \cite{mongoDB}, protože se očekává, že bude třeba ukládat v mimořádném případě až 30 záznamů za sekundu, zpravidla bude docházet k více zapisům než čtením.
 		
 		\subsection{NoSQL}
 			MongoDB patří do takzvaných NoSQL databází \cite{mongoDB}. NoSQL v angličtině znamená \uv{Not Only SQL} \cite{Moniruzzaman_2013}, v překladu \uv{Nikoliv pouze SQL}. Jde o skupinu nerelačních databází. Takové databáze nejsou primárně postavené na principu tabulek a zpravidla nepoužívají SQL pro práci s daty \cite{Moniruzzaman_2013}.
@@ -802,17 +803,65 @@ S roustoucím významem informačních systémů a informací jenž jsou zpracov
 					
 		
 	\section{Uložení dat}
-		\todo{Popsat v jakém stavu jsou data před ukládáním}
-		\todo{Popsat jak se data ukládají}					
-		\blind[2]
+	
+		\subsection{Kolekce}
+		Do databáze se dvě kolekce:
 		
-	\section{Napojení na google charts}
-		\todo{Popsat jak vypadá javascript}
-		\blind[1]
-		\todo{Popsat obecné api, které google charts čeká}
-		\blind[1]
-		\todo{Popsat jak je vyřešené rest API}				
-		\blind[1]
+		\begin{itemize} 
+			\item terms	
+			\item messages			
+		\end{itemize}
+	
+		Tyto kolekce (znázornění také na obrázku \ref{fig:colections}) jsou využívány při běhu programu. 
+		
+		Kolekce \textit{terms} slouží k uchování výrazů, které se používají pro výpočet TF-IDF (kapitola \ref{sec:construct_vector}). \todo{Popsat strukturu kolekce}
+		
+		Kolekce \textit{messages} uchovává veškeré požadavky a to jak v jejich originální podobě (parametr original-message), tak její normalizovanou metodu (normalized-message). Podstatným identifikátorem každého požadavku je jeho unikátní ID v rámci platformy Unify. Pro tento účel je použit parametr platformId. Posledním parametrem této kolekce je assignment. Tento parametr uchovává informaci o tom, do jaké (rizikové) kategorie byl dle algoritmu běžícím v MS Azure zařazen.
+				 
+		
+		\begin{figure}[htb]\centering
+			\tmpframe{\includegraphics[width=\textwidth]{./img/todo}}	
+			\caption{Kolekce v MongoDB využité pro běh programu.}
+			\label{fig:colections}
+		\end{figure}
+	
+		\subsection{Proces ukládání dat}
+			Do kolekce terms jsou výrazy ukládán ihned po tom, co je určeno, že jsou správným termem. \todo{Lépe popsat dle kodu}
+			
+			Kolekce messages je plněna teprve po té, co se vrátí odpověď z MS Azure. Celá zpráva je ve třídě \textit{LogListener} ukládána do formátu \textit{AuditLogMessage}. Ta kopíruje svým obsahem právě kolekci messages. \textit{AuditLogMessage} je vlastníkem metody \textit{toDBObject}, která obsah třídy vráti ve vhodném formátu pro uložení do MongoDB.
+			
+			\begin{figure}[htb]\centering
+				\tmpframe{\includegraphics[width=\textwidth]{./img/todo}}	
+				\caption{Sekvenční diagramy ukazující proces uložení dat do kolekcí terms a messages.}
+				\label{fig:dataStoring-seq}
+			\end{figure}
+		
+	\section{Napojení na Google Charts}
+		Google vystavuje dokumentaci k produktu Google Charts na adrese \todo{Dodat adresu}. Samotné grafy jsou generovány pomoc javascriptu. Z knihovny grafů lze vybrat nepřeberné množství různorodých grafů. 
+		
+		\subsection{Rest API}
+		Aby grafy byly generovány s daty z databáze bylo vytvořeno REST api. Toto api je postavené na míru Google Charts. Ovšem zpravidla není problém postavit další aplikaci tak, aby dokázala přijímat data z REST stejně popřípadě se je dokázala samostatně transformovat.
+		
+		Za tímto účelem vznikl kompletně celý modul aplikace. Tento modul má dovětek \textit{web-services}. Je složen ze dvou tříd:
+		
+		\begin{itemize} 
+			\item DataProviderService
+			\item ChartsProviderService			
+		\end{itemize}
+	
+		Každá třída je chápana jako samostatná služba. 
+		
+		DataProviderService vystavuje webové služby na konkrétních URL adresách. Tím také poskytuje na jednotlivé GET \todo{Definovat zkratku GET} požadavky na zmíněné URL \todo{Definovat zkratku URL} odpovědi s daty z databáze. 
+		
+		Data z databáze ve správné struktuře vybíra služba promítnutá ve třídě ChartsProvderService.
+		
+		Jak bylo zmíněno, grafy z Google Charts očekávají konkrétní odpověď v předem určeném formátu JSON \todo{definovat JSON}. Ukázka projekce dat ve formátu JSON pro použití v grafu druhu Gauge \todo{Bud vlozit zdroj nebo url} je na obrázku \ref{fig:googleCharts-json}.
+		
+		\begin{figure}[htb]\centering
+			\tmpframe{\includegraphics[width=\textwidth]{./img/todo}}	
+			\caption{Data ve formátu json pro použití v Google Charts.}
+			\label{fig:googleCharts-json}
+		\end{figure}
 
 \chapter{Analýza a vyhodnocení dat}
 	\todo{Sem vepsat nějaký úvod k této kapitole}
@@ -820,6 +869,24 @@ S roustoucím významem informačních systémů a informací jenž jsou zpracov
 	\todo{Popsat systém, na který to bylo nasazené}
 	\blind[1]
 	\section{Analýza K-Means}
+		\todo{zjistit jak vypadá nejlepší trénovací množina}
+		\todo{Připravit ideální testovací množinu}
+		\todo{Připravit realnou testovací množinu}
+		\subsection{Počet clusterů}
+			\todo{Vyzkoušet 2,3,4,10,20 clusterů}
+			\todo{Stáhnout jako csv a podívat se výsledky}
+			\todo{Připravit si učící a testovací množinu}
+		
+		\subsection{Metrika}
+			\todo{Eucleidian}
+			\todo{Cosinova}
+			
+		\subsection{Iterace}
+			\todo{Připravit pokus na 100,200,300,1000 iterací}
+			
+		\subsection{Inicializace}
+			\todo{Prozkoumat vliv inicializace}
+	
 		\todo{Popsat vstupní parametry}
 		\todo{Ukázat výsledky na Prod logu}	
 		\todo{Dojít k závěru}						
@@ -837,7 +904,7 @@ S roustoucím významem informačních systémů a informací jenž jsou zpracov
 
 
 \bibliographystyle{iso690}
-\bibliography{bibDb}
+\bibliography{bibliography}
 
 \setsecnumdepth{all}
 \appendix
