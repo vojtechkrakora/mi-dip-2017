@@ -869,10 +869,53 @@ S roustoucím významem informačních systémů a informací jenž jsou zpracov
 	\todo{Popsat systém, na který to bylo nasazené}
 	\blind[1]
 	\section{Analýza K-Means}
-		\todo{zjistit jak vypadá nejlepší trénovací množina}
-		\todo{Připravit ideální testovací množinu}
-		\todo{Připravit realnou testovací množinu}
-		\subsection{Počet clusterů}
+		V této části je popsán celkový proces vytváření nejlepšího možného nastavení pro clusterovací k-means algoritmus. Jako základ jsem vybral trénovací data. U těchto dat jsem se rozhodl určit 1000 trénovacích vzorků. Protože cílem je detekovat bezpečnostní rizika a to jak ve formě špatných requestů tak i například podvržených zpráv, vybral z testovacích dat 500 vzorků, které dopadli chybou a 500 vzorků, které proběhli v pořádku. První množina slouží jako reprezentanti skupiny zpráv, které chceme rozpoznávat. Druhá množina 500 prvků je reprezentantem klasických zpráv, které by měli přes integrační platformu proudit.
+		
+		Pro poměr 50:50 jsem se rozhodl, aby byla dostatečně velká pravděpodobnost, že shluky v k-means najdou správná místa. Pokud bych zvolil poměr ve kterém by se podezřelé zprávy vyskytovali v malém množství nebo dokonce vůbec, algoritmus k-means by mohl pomocí shluků například rozpoznávat jednotlivé služby nebo najít zcela jiné vzory v datech. Takové vzory by se nemuseli hodit pro analýzu bezpečnostních rizik.
+		
+		Trénovací data jsem rozdělil náhodně poměrem 80:20 na trénovací a testovací. Testovací budou použita k odhadu správnosti shlukování. Vzhledem k tomu, že jsem jednoznačný identifikátor podezřelých zpráv označil, je možné na první pohled dokázat odlišit takovou zprávu od zprávy korektní.
+		
+		Následující sekce se zabívají jednotlivýma možnostma, jak ovlivnit běh algoritmu k-means. Pro všechny sekce byla použita stejná vstupní data.
+		
+		\todo{Když vznikne prosto, mohl by se vyzkoušet nějaký reálnější poměr.}
+
+		\subsection{Počet shluků}
+			K-means shlukuje data do $k$ shluků vhledem k podobnosti jednotlivých dat. V experimentu bezpečnostních rizik lze očekávat, že by rozdělení mohlo být na dvě skupiny:
+			
+			\begin{itemize} 
+				\item data v pořádku
+				\item podezřelá data		
+			\end{itemize}
+		
+			I přes tuto myšlenku byl proveden experiment na různá množství shluků. Konkrétně na 2, 3, 4, 10 a 20. Všechny experimenty byly spuštěny současně na totožných vstupních datech. Hodnoty ostatních konfiguračních parametrů (samozřejmě mimo počtu shluků) byly zvoleny následující:
+			
+			\begin{itemize} 
+				\item \textbf{výběr prvotních středových bodů: } náhodný
+				\item \textbf{metrika: } eukleidova vzdálenost
+				\item \textbf{počet běhů: } 100		
+			\end{itemize}
+		
+			\subsubsection{Výsledky trénovací množiny}
+				Výsledky jsou hromadně ilustrovány na obrázku \ref{fig:k-means-training}. Na ose x vždy pozorujeme shluky označené přirozeným číslem. Osa y zaznamená počet zpráv ve shluku.
+				
+				Pro volby dvou shluků vznikly dva na počet zpráv téměr shodné shluky. Protože poměr vstupních dat 50:50 jde očekávaný výsledek \todo{očekávaný?}. Při kontrole konečných přiřazení shluků jsem narazil na zprávu, která by měla být označená jako podezřelá, ale bylo vyhodnocena jako zpráva korektní. V celé množině šlo o jedinou zprávu. Tato zpráva oznamovala, že došlo ke špatnému zadání hesla k jedné ze služeb. Jiná chyba nebyla nalezena \todo{asi ne uplne nazyvat chybou}. Lze tedy říci, že dochází k rozdělení na podezřelé zprávy a zprávy korektní. \todo{zkusit shrnout proč vznikla chyba}
+				
+				Vizualizace výsledků přiřazení clusterů pro $k = 3$ nám ukazuje, že tři vzniklé shluky jsou o velikostech 35, 409 a 355 vzorků. Zde je rozdělení shluků takové, že jeden obsahuje pouze zprávy podezřelé. Další shluk obsahuje pouze zprávy v pořádku a stejně jako v případě dvou shluků podezřelou zprávu o špatném zadání hesla. Poslední, nejmenší shluk je kombinací. Po detailnějším rozboru vyplynulo, že zprávy v tomto shluku jsou oproti ostatním zprávám kratší. Normalizovaná zpráva se skláda zpravidla z několika slov. Výsledkem rozdělení trénovací množiny byly shluky podezřelých zpráv, korektních zpráv a velmi krátkých zpráv.
+				
+				Čtyči shluky ukázaly pro jejich velikost podobný výsledek jako když $k = 3$. Největší cluster obsahuje zprávy většinu korektních zpráv a již zmiňované krátké chybové zprávy. Druhý shluk obsahuje pouze chyby. Charakteristikou jde spíše o kratší zprávy převážně způsobené komponentou notifikačního enginu. Dále je přítomen shluk, jehož obsahem jsou jen zprávy chybové. Převážně jde o zprávy, které jsou delší a nesou například informaci o tom proč chyba nastala, nikoli pouze upozornění, že nastala. Poslední, obsahově nejmenší, shluk obsahuje pouze několik málo korektních požadavků. 
+				
+				Experiment s deseti shluky ukazuje na trend, kdy se k-means přizpůsobuje jednotlivým službám. U dvou shluků došlo ke kolizi korektních a podezřelých požadavků. Oba tyto clustery shlukovali převážně kratší zprávy. U těch je větší pravděpodobnost, že jejich vektor bude převážně nulový. Ostatní shluky obsahují buď chyby nebo správné požadavky, jen se přizpůsobují ke konkrétním službám. Je zde možné například rozpoznávat shluk, který obsahuje chyby hlásící špatný KMS \todo{zkratka KMS} překlad a stejně tak shluk s chybami špatného přihlášení.
+				
+				K-means s $k = 20$ potvrzuje vývoj, který se udál již při $k = 10$. Pouze jeden shluk je ze smíšených korektních zpráv a z podezřelých. Ten obsahuje pouze jeden záznam z podezřelých. Jednotlivé clustery více rozpoznávají jednotlivé služby a chyby. U chyb, jejichž druhů je ve vstupních dat méně než služeb se to projevuje více.
+				
+				Z celého vývoje dat, která byla použita na testování, plyne, že nejlepším je nechat dva shluky. Tím dokážeme rozlišit podezřelé zprávy od korektních. To zcela naplňuje požadavky detekce bezpečnostních rizik. Další možností je vytvořit shluků více a pokusit se i detekovat různé druhy chyb. Při této volbě bude vyžadováno více starostí organizováním, které clustery patří do jaké skupiny. Při velkém počtu shluků by mohlo docházet k přeučení, kdy by sice byly rozpoznávany konkrétní chyby konkrétní služby, ovšem s dalším nasazením nové služby by byly potíže.
+						
+				\begin{figure}[htb]\centering
+					\tmpframe{\includegraphics[width=\textwidth]{./img/todo}}	
+					\caption{Zobrazené grafy s počtem zpráv v jednotlivých shlucích.}
+					\label{fig:k-means-training}
+				\end{figure}
+		
 			\todo{Vyzkoušet 2,3,4,10,20 clusterů}
 			\todo{Stáhnout jako csv a podívat se výsledky}
 			\todo{Připravit si učící a testovací množinu}
