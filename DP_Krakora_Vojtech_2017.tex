@@ -20,6 +20,8 @@
 \usepackage{svg}
 \usepackage{amsmath}
 \usepackage{url}
+\usepackage{amsfonts}
+\usepackage{multirow}
 
 % % list of acronyms
 % \usepackage[acronym,nonumberlist,toc,numberedsection=autolabel]{glossaries}
@@ -304,8 +306,13 @@ S roustoucím významem informačních systémů a informací jenž jsou zpracov
 			Jedním z kroků algoritmu je přiřadit vstupním objektům správný shluk. K tomuto důvodu je nutné definovat funkci pro měření vzdáleností mezi jednotlivými objekty \cite{IntroductionToDataMining}. Požadavky na takovou funkcni jsou, aby byla jednoduchá, protože je velmi často volaná. Pokud data jsou v eukleidovském prostoru používají se například následující funkce na měření vzdálenosti:
 			
 				\subsubsection{Eukleidova vzdálenost}
+				\label{sec:eukleid_distance}
 				Eukleidova vzdálenost určuje vzdálenost mezi dvěma body v eukleidově prostoru. Výpočet euiklediovy vzdálenosti mezi body $p = (p_1, p_2, \ldots, p_n)$ a $q = (q_1, q_2, \ldots, q_n)$ je
 				$$d_e(p,q) = \sqrt{\sum_{i = 1}^{n}(q_i - p_i)^2}$$
+				
+				\subsection{Cosinova vzdálenost}
+				\label{sec:cosine_distance}
+				\todo{Dodělat, je dobrá na různě dlouhé vektory, prostě jen vypočte úhel}
 				
 				\subsubsection{Manhattanská vzdálenost}
 				Dalším příkladem měření vzdáleností bodů $p = (p_1, p_2, \ldots, p_n)$ a $q = (q_1, q_2, \ldots, q_n)$ v eukleidově prostoru je manhattanská vzdálenost. Její výpočet je dle vzorce:
@@ -895,45 +902,101 @@ S roustoucím významem informačních systémů a informací jenž jsou zpracov
 				\item \textbf{počet běhů: } 100		
 			\end{itemize}
 		
-			\subsubsection{Výsledky trénovací množiny}
 				Výsledky jsou hromadně ilustrovány na obrázku \ref{fig:k-means-training}. Na ose x vždy pozorujeme shluky označené přirozeným číslem. Osa y zaznamená počet zpráv ve shluku.
+				
+				\subsubsection{2 shluky}
 				
 				Pro volby dvou shluků vznikly dva na počet zpráv téměr shodné shluky. Protože poměr vstupních dat 50:50 jde očekávaný výsledek \todo{očekávaný?}. Při kontrole konečných přiřazení shluků jsem narazil na zprávu, která by měla být označená jako podezřelá, ale bylo vyhodnocena jako zpráva korektní. V celé množině šlo o jedinou zprávu. Tato zpráva oznamovala, že došlo ke špatnému zadání hesla k jedné ze služeb. Jiná chyba nebyla nalezena \todo{asi ne uplne nazyvat chybou}. Lze tedy říci, že dochází k rozdělení na podezřelé zprávy a zprávy korektní. \todo{zkusit shrnout proč vznikla chyba}
 				
+				\subsubsection{3 shluky}
 				Vizualizace výsledků přiřazení clusterů pro $k = 3$ nám ukazuje, že tři vzniklé shluky jsou o velikostech 35, 409 a 355 vzorků. Zde je rozdělení shluků takové, že jeden obsahuje pouze zprávy podezřelé. Další shluk obsahuje pouze zprávy v pořádku a stejně jako v případě dvou shluků podezřelou zprávu o špatném zadání hesla. Poslední, nejmenší shluk je kombinací. Po detailnějším rozboru vyplynulo, že zprávy v tomto shluku jsou oproti ostatním zprávám kratší. Normalizovaná zpráva se skláda zpravidla z několika slov. Výsledkem rozdělení trénovací množiny byly shluky podezřelých zpráv, korektních zpráv a velmi krátkých zpráv.
 				
-				Čtyči shluky ukázaly pro jejich velikost podobný výsledek jako když $k = 3$. Největší cluster obsahuje zprávy většinu korektních zpráv a již zmiňované krátké chybové zprávy. Druhý shluk obsahuje pouze chyby. Charakteristikou jde spíše o kratší zprávy převážně způsobené komponentou notifikačního enginu. Dále je přítomen shluk, jehož obsahem jsou jen zprávy chybové. Převážně jde o zprávy, které jsou delší a nesou například informaci o tom proč chyba nastala, nikoli pouze upozornění, že nastala. Poslední, obsahově nejmenší, shluk obsahuje pouze několik málo korektních požadavků. 
-				
-				Experiment s deseti shluky ukazuje na trend, kdy se k-means přizpůsobuje jednotlivým službám. U dvou shluků došlo ke kolizi korektních a podezřelých požadavků. Oba tyto clustery shlukovali převážně kratší zprávy. U těch je větší pravděpodobnost, že jejich vektor bude převážně nulový. Ostatní shluky obsahují buď chyby nebo správné požadavky, jen se přizpůsobují ke konkrétním službám. Je zde možné například rozpoznávat shluk, který obsahuje chyby hlásící špatný KMS \todo{zkratka KMS} překlad a stejně tak shluk s chybami špatného přihlášení.
-				
-				K-means s $k = 20$ potvrzuje vývoj, který se udál již při $k = 10$. Pouze jeden shluk je ze smíšených korektních zpráv a z podezřelých. Ten obsahuje pouze jeden záznam z podezřelých. Jednotlivé clustery více rozpoznávají jednotlivé služby a chyby. U chyb, jejichž druhů je ve vstupních dat méně než služeb se to projevuje více.
-				
-				Z celého vývoje dat, která byla použita na testování, plyne, že nejlepším je nechat dva shluky. Tím dokážeme rozlišit podezřelé zprávy od korektních. To zcela naplňuje požadavky detekce bezpečnostních rizik. Další možností je vytvořit shluků více a pokusit se i detekovat různé druhy chyb. Při této volbě bude vyžadováno více starostí organizováním, které clustery patří do jaké skupiny. Při velkém počtu shluků by mohlo docházet k přeučení, kdy by sice byly rozpoznávany konkrétní chyby konkrétní služby, ovšem s dalším nasazením nové služby by byly potíže.
-						
 				\begin{figure}[htb]\centering
 					\tmpframe{\includegraphics[width=\textwidth]{./img/todo}}	
 					\caption{Zobrazené grafy s počtem zpráv v jednotlivých shlucích.}
 					\label{fig:k-means-training}
 				\end{figure}
-		
-			\todo{Vyzkoušet 2,3,4,10,20 clusterů}
-			\todo{Stáhnout jako csv a podívat se výsledky}
-			\todo{Připravit si učící a testovací množinu}
+				
+				\subsubsection{4 shluky}
+				Čtyči shluky ukázaly pro jejich velikost podobný výsledek jako když $k = 3$. Největší cluster obsahuje zprávy většinu korektních zpráv a již zmiňované krátké chybové zprávy. Druhý shluk obsahuje pouze chyby. Charakteristikou jde spíše o kratší zprávy převážně způsobené komponentou notifikačního enginu. Dále je přítomen shluk, jehož obsahem jsou jen zprávy chybové. Převážně jde o zprávy, které jsou delší a nesou například informaci o tom proč chyba nastala, nikoli pouze upozornění, že nastala. Poslední, obsahově nejmenší, shluk obsahuje pouze několik málo korektních požadavků. 
+				
+				\subsubsection{10 shluků}
+				Experiment s deseti shluky ukazuje na trend, kdy se k-means přizpůsobuje jednotlivým službám. U dvou shluků došlo ke kolizi korektních a podezřelých požadavků. Oba tyto clustery shlukovali převážně kratší zprávy. U těch je větší pravděpodobnost, že jejich vektor bude převážně nulový. Ostatní shluky obsahují buď chyby nebo správné požadavky, jen se přizpůsobují ke konkrétním službám. Je zde možné například rozpoznávat shluk, který obsahuje chyby hlásící špatný KMS \todo{zkratka KMS} překlad a stejně tak shluk s chybami špatného přihlášení.
+				
+				\subsubsection{20 shluků}
+				K-means s $k = 20$ potvrzuje vývoj, který se udál již při $k = 10$. Pouze jeden shluk je ze smíšených korektních zpráv a z podezřelých. Ten obsahuje pouze jeden záznam z podezřelých. Jednotlivé clustery více rozpoznávají jednotlivé služby a chyby. U chyb, jejichž druhů je ve vstupních dat méně než služeb se to projevuje více.
+				
+				\subsubsection{Shrnutí}
+				Z celého vývoje dat, která byla použita na testování, plyne, že nejlepším je nechat dva shluky. Tím dokážeme rozlišit podezřelé zprávy od korektních. To zcela naplňuje požadavky detekce bezpečnostních rizik. Další možností je vytvořit shluků více a pokusit se i detekovat různé druhy chyb. Při této volbě bude vyžadováno více starostí organizováním, které clustery patří do jaké skupiny. Při velkém počtu shluků by mohlo docházet k přeučení, kdy by sice byly rozpoznávany konkrétní chyby konkrétní služby, ovšem s dalším nasazením nové služby by byly potíže.
 		
 		\subsection{Metrika}
-			\todo{Eucleidian}
-			\todo{Cosinova}
+			Pro porovnání různých způsobů měření vzdálenosti jsem zvolil na MS Azure dostnou eucleidovu vzdálenost (\ref{sec:eukleid_distance}) a cosinovu vzdálenost (\ref{sec:cosine_distance}). Protože celá analýza ideálního počtu shluků byla založena na eucleidově vzdálenosti, další měření stačí provést už pouze na cosinově vzdálenosti.
 			
-		\subsection{Iterace}
-			\todo{Připravit pokus na 100,200,300,1000 iterací}
+			Pro následující výsledky platí, že velikosti shluků jsou průměrovány z 10 spuštení programu. Nastavení k-means je následovné:
+			\begin{itemize} 
+				\item \textbf{výběr prvotních středových bodů: } náhodný
+				\item \textbf{metrika: } cosinova vzdálenost
+				\item \textbf{počet běhů: } 100		
+			\end{itemize}
+		
+			Při zkoumání výsledků se objevil jev, kdy některé zprávy nebyly přiřazený do žádného clusteru. Po hlubší analýze jsem zjistil, že jde o zprávy, které pochází z B2B brány. Tyto požadavky po normalizaci mají velikost nula. To vede k tomu, že jejich vektor je nulový. S takovým vektorem má cosinova vzdálenost problém. Nelze jej vypočítat, tak zpráva není označena žádným shlukem.
+			
+			Kromě těchto nulových dat dochází k falešně pozitivnímu označení některých výrazně menších zpráv jako bezpečnostní rizika. Konkrétně pro případ, kde $k = 3$ došlo rozdělení dat žádného shluku (prázndé zprávy), podezřelé zprávy, korektní a další skupinu korektních. V této skupině dominovali zprávy z REST rozhraních. Ty se od ostatních požadavků liší, že nejsou v XML zápisu ale v JSON.
+			
+			Při náhledu, jak byly zprávy rozděleny do clusterů, při 4 shlucích lze opět pozorovat, že podezřelé zprávy jsou všechny z testovacích dat zahrnuty v jednom shluku. Ostatní shluky jsou složeny už pouze ze zpráv z běžné komunikace. Jejich rozdělení je pak závislé na charakteru zprávy.
+			
+			Deset shluků také vykazuje dokonalé rozdělení testovacích na rizika a ostatní zprávy. Obě skupiny jsou rozloženy do stejného počtu shluků.
+			
+			V případě $ k = 20$ jsou data opět rozdělena. Ovšem narozdíl od testovaných $k < 20$ se zde objevují clustery, které obsahují například jen jednu zprávu. 
+			
+			Z výsledků analýzy, kdy porovnáváme metriku euikleidovu a cosinovu je pozorovatelná lepší přesnost u cosinovy délky. Problém zde nastává se zprávy, které mají nulový vektor. Tyto zprávy je třeba ošetřit nebo nahradit normalizační funkci tak, aby nulový vektor negenerovala. 			
 			
 		\subsection{Inicializace}
-			\todo{Prozkoumat vliv inicializace}
+			Vliv na běh algoritmu má i počáteční nastavení středů jednotlivých shluků. MS Azure ve svém modulu pro k-means nabízí možnosti \cite{MSAzure-kmeans}:
+			
+			\begin{itemize} 
+				\item \textbf{Prvních N}. $N \in \mathbb{N} $ prvních vzorků z dat je určeno jako střed shluku. 
+				\item \textbf{Náhodné}. Jsou vybrány náhodné body ze vstupních vzorků jako středy.
+				\item \textbf{K-Means++}. Algoritmus definovaná Davidem Arthurem a Sergeiem Vassilvitskii \cite{kmeans++}
+				\item \textbf{K-Means++Fast}. Optimalizovaná verze K-Means++.	
+				\item \textbf{Rovnoměrně}. Středy jsou rozmístěné ve stejné vzdálenosti v prostoru.		
+				\item \textbf{Dle popisku sloupce}. Algoritmus, který na základě popisu sloupe dat rozhoduje o tom, jak budou středy umístěny.			
+			\end{itemize}
+		
+		Z experimentu jsem se rozhodl vyřadit K-Means++Fast, jenž je optimalizovanou verzí K-Means++ a inicializaci dle popisku sloupce, neboť jsem nedohledal oficiální dokumentaci k metodě, jak funguje.
+		
+		Pro experiment jsem zvolil následující nastavení:
+		\begin{itemize} 
+			\item \textbf{výběr prvotních středových bodů: } výběr pomocí komponenty Sweep K-means \todo{Přidat sweep k-means do volby počtu shluků.}
+			\item \textbf{výběr prvotních středových bodů: } předmětem experimentu
+			\item \textbf{metrika: } eukleidova i cosinova vzdálenost
+			\item \textbf{počet běhů: } 100		
+		\end{itemize}
 	
-		\todo{Popsat vstupní parametry}
-		\todo{Ukázat výsledky na Prod logu}	
-		\todo{Dojít k závěru}						
-		\blind[2]
+		\todo{kmeans++ U kosinu 1 FP, ale ve skutecnosti slo o chybu, ze dms nenasla soubor!}
+		\todo{PrvníchN eukl - 30 shluku}
+		\todo{PrvníchN cosi - 30 shluku}
+		\todo{Náhod. e - 11}
+		\todo{Náhod. c - 12}
+		\todo{even. e - 11}
+		\todo{even. c - 22}
+		
+		\begin{table}[htb]\centering
+			\centering
+			\caption{Zobrazení chyb při shlukování 800 vzorků, při rovnoměrném rozdělení korektních a podezřelých zpráv.}
+			\label{tab:clustering_errors}
+			\begin{tabular}{|l|llllllll}
+				\hline
+				\multirow{2}{*}{}  & \multicolumn{2}{l|}{Prvních N}                    & \multicolumn{2}{l|}{Náhodné}                      & \multicolumn{2}{l|}{K-Means++}                    & \multicolumn{2}{l|}{Rovnoměrně}                   \\
+				& \multicolumn{1}{l|}{FP} & \multicolumn{1}{l|}{FN} & \multicolumn{1}{l|}{FP} & \multicolumn{1}{l|}{FN} & \multicolumn{1}{l|}{FP} & \multicolumn{1}{l|}{FN} & \multicolumn{1}{l|}{FP} & \multicolumn{1}{l|}{FN} \\ \hline
+				Eukleidova metrika & 0                       & 0                       & 0                       & 1                       & 0                       & 1                       & 0                       & 1                       \\ 
+				Cosinova metrika   & 0                       & 0                       & 0                       & 0                       & 1                       & 0                       & 0                       & 0                       \\ 
+			\end{tabular}
+		\end{table}
+	
+		
+	
+		
 	\section{Analýza Outliner}
 		\todo{Popsat vstupní parametry}
 		\todo{Ukázat výsledky na Prod logu}	
