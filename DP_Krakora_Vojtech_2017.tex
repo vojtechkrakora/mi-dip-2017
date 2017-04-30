@@ -397,6 +397,7 @@ S roustoucím významem informačních systémů a informací jenž jsou zpracov
 		
 		
 		\subsection{Analýza hlavních komponent}
+		\label{sec:pca}
 		Analýza hlavních komponent, častěji označována jako PCA z anglického překladu \textit{Principal Component Analysis}. \todo{Zkratka PCA} PCA provede analýzu vstupních dat. Tyto data se skládají z mnoha proměnných, které na sobě mohou být závislé. Účelem je vybrat z těchto proměnných důležitou informaci tu reprezentovat jako nové proměnné zvané hlavní komponenty \cite{PCA_book}. Tyto hlavní komponenty jsou lineární kombinací originálních hodnot.
 		
 		
@@ -918,7 +919,7 @@ S roustoucím významem informačních systémů a informací jenž jsou zpracov
 				\end{figure}
 				
 				\subsubsection{4 shluky}
-				Čtyči shluky ukázaly pro jejich velikost podobný výsledek jako když $k = 3$. Největší cluster obsahuje zprávy většinu korektních zpráv a již zmiňované krátké chybové zprávy. Druhý shluk obsahuje pouze chyby. Charakteristikou jde spíše o kratší zprávy převážně způsobené komponentou notifikačního enginu. Dále je přítomen shluk, jehož obsahem jsou jen zprávy chybové. Převážně jde o zprávy, které jsou delší a nesou například informaci o tom proč chyba nastala, nikoli pouze upozornění, že nastala. Poslední, obsahově nejmenší, shluk obsahuje pouze několik málo korektních požadavků. 
+				Čtyři shluky ukázaly pro jejich velikost podobný výsledek jako když $k = 3$. Největší cluster obsahuje zprávy většinu korektních zpráv a již zmiňované krátké chybové zprávy. Druhý shluk obsahuje pouze chyby. Charakteristikou jde spíše o kratší zprávy převážně způsobené komponentou notifikačního enginu. Dále je přítomen shluk, jehož obsahem jsou jen zprávy chybové. Převážně jde o zprávy, které jsou delší a nesou například informaci o tom proč chyba nastala, nikoli pouze upozornění, že nastala. Poslední, obsahově nejmenší, shluk obsahuje pouze několik málo korektních požadavků. 
 				
 				\subsubsection{10 shluků}
 				Experiment s deseti shluky ukazuje na trend, kdy se k-means přizpůsobuje jednotlivým službám. U dvou shluků došlo ke kolizi korektních a podezřelých požadavků. Oba tyto clustery shlukovali převážně kratší zprávy. U těch je větší pravděpodobnost, že jejich vektor bude převážně nulový. Ostatní shluky obsahují buď chyby nebo správné požadavky, jen se přizpůsobují ke konkrétním službám. Je zde možné například rozpoznávat shluk, který obsahuje chyby hlásící špatný KMS \todo{zkratka KMS} překlad a stejně tak shluk s chybami špatného přihlášení.
@@ -981,6 +982,14 @@ S roustoucím významem informačních systémů a informací jenž jsou zpracov
 		\todo{even. e - 11}
 		\todo{even. c - 22}
 		
+		Výsledky experimentu ukazuje tabulka \ref{tab:clustering_errors}. V tabulce se vyskytují počty zpráv, které byly v jednotlivých metodách označeny falešně pozitivní (dobrá zpráva označená jako podezřelá) a falešně negativní (podezřelá zpráva označená jako korektní). U všech běhů pro cosinovu metriku bylo 20 vždy 20 zpráv neoznačeno žádným číslem shluku. Jde o nulové vektory, které cosinova vzdálenost nedokáže vypočítat.
+		
+		Z tabulky (\ref{tab:clustering_errors}) se jeví nejlepší metoda prvních N. Porovnáme-li výsledky této tabulky s obrázkem \ref{fig:k-means-num-clusters}, který ukazuje graf závislosti počtu shluků na konkrétní metodě inicializace (výpočítané pomocí metody sweep clustering) je vidět, že metoda prvních vytváří velký počet shluků. Maximální počet byl stanoven na 30. Až na této hranici se prvních N zastavila. Vzniklo tím mnoho méně obsazených shluků. Jednotlivé zprávy byly rozděleny korektně na podezřelé a nepodezřelé. Velká počet shluků pak vedl i k většímu počtu rozeznaných chyb. Problém by mohl nastat s novou, v trénovacích datech neexistující, chybou. Proto i přes skvělý výsledek neshledávám tuto metodu ideální.
+		
+		Ve všech ostatních metodách inicializace se při měření eukleidovou metrikou objevila jedna stejná podezřelá zpráva, která byla označena jako nepodezřelá. Jde o chybu, která se svého druhu v trénovacích datech objevuje jediná. Celkově to ukazuje na slabost při zjišťování nových chyb.
+		
+		Cosinova metrika si vedla značně lépe, než eukleidova. Ve vstupních datech měla jen jeden případ špatného určení. Šlo o případ, kdy korektní zpráva byla označená za chybnou. Při bližším zkoumání jsem zjistil, že jde zprávu, která hlásí nenalezení dokumentu v uložišti. Ve skutečnosti algoritmus našel a označil jako chybu zprávu, která nesla informaci o chybě. Z pohledu administrátora platformu může jít o zajímavou informaci, neboť dotazuje-li se někdo na neexistující soubor jde také o bezpečnostní riziko.
+		
 		\begin{table}[htb]\centering
 			\centering
 			\caption{Zobrazení chyb při shlukování 800 vzorků, při rovnoměrném rozdělení korektních a podezřelých zpráv.}
@@ -994,15 +1003,100 @@ S roustoucím významem informačních systémů a informací jenž jsou zpracov
 			\end{tabular}
 		\end{table}
 	
-		
+		\begin{figure}[htb]\centering
+			\tmpframe{\includegraphics[width=\textwidth]{./img/todo}}	
+			\caption{Počty clusterů, které jako ideální vyhodnotila metoda sweep k-means.}
+			\label{fig:k-means-num-clusters}
+		\end{figure}
 	
 		
-	\section{Analýza Outliner}
+	\section{Analýza detekce anomálie}
+		\todo{Link do 2. kapitoly}
+		Při detekci anomálie jsem kromě experimentů s ideálním nastavením vytvořil i experiment mezi dvěma metodami. Jedna je detekce anomálie založená na principu PCA, jejíž princip je přiblížen v kapitole \ref{sec:pca}. Druhou metodou je One-Class Support Vector Machine \todo{Udělat kapitolku.}, dále bude označována zkratkou SVM.
+	
+		\subsection{Popis vstupních dat}
+		Rozdíl v přístupu mezi shlukováním a detekce anomálie je v trénovacích datech. Při detekování anomálií byla jako testovací data použita pouze data, která byla manuálně určena jako nezávadná. Dále byla připravena i množina dat testovacích. Testovací data obsahují v poměru 87:13 korektní zprávy a podezřelé.
+		
+		Velikost obou množin je 1000 požadavků. Vstupy byly vybrány náhodným výběrem z téměř 50000 požadavků velké množiny na ESB. Zprávy, které integrační platformou v pořádku prošli byly hodnoceny jako korektní. Zprávy, které vyvolávali chyby byly označené jako podezřelé. Nevýhodou tohoto přístupu může být přehlédnutí rizikové zprávy, která běžným pohledem se může jevit v pořádku.
+		
+		\subsection{Ohodnocení klasifikace}
+			Pro dosažení nejlepšího možného výsledku používám MS Azure komponentu nazvanou \uv{Tune Model Hyperparameters.} Jde o komponentu, která se snaží optimalizovat parametry modelu, tak aby našla ideální nastavení \cite{msAzure}. Na základě toho je nutné být schopen rozeznat, jestli předchozí ohodnocení parametrů je horší než stávající. K tomu poslouží tyto možnosti nastavení \cite{powers-precision}:
+			
+			\begin{itemize} 
+				\item \textbf{Přesnost: }  lze vyjádřit vzorcem $\frac{tp+tn}{tp+tn+fp+fn}$
+				\item \textbf{Správnost: } lze vyjádřit vzorcem $\frac{tp}{tp+fp}$
+				\item \textbf{Podíl: } lze vyjádřit vzorcem $\frac{tp}{tp+fn}$
+				\item \textbf{F-score: } \todo{todo powers-precision}				
+			\end{itemize}
+		
+			Experiment s ohodnocením klasifikace na základě přesnosti je zobrazen v tabulce \ref{table:anomaly_accuracy}. Lze pozorovat, že ani při jedné z použitých metod nedošlo k označení podezřelé zprávy ve zprávu korektní. Z hlediska bezpečnosti je lepší prověřovat správné zprávy, než ignorovat podezřelé. Jediný rozdíl je v tom, že SVM hodnotí méně korektních zpráv jako podezřelé. Při bližším pohledu na takové zprávy jde převážně o kratší požadavky.
+			
+			\begin{table}[htb]\centering
+				\centering
+				\caption{My caption}
+				\label{table:anomaly_accuracy}
+				\begin{tabular}{|l|l|l|l|l|}
+					\hline
+					\multirow{2}{*}{} & \multicolumn{2}{l|}{PCA}                 & \multicolumn{2}{l|}{SVM}                 \\ 
+					& P-M: korektní & P-M: podezřelé & P-M: korektní & P-M: podezřelé \\ \hline
+					Korektní          & 525                & 165                 & 656                & 34                  \\ \hline
+					Podezřelé         & 0                  & 102                 & 0                  & 102                 \\ \hline
+				\end{tabular}
+			\end{table}
+		
+			Po změně hodnotícího vzorce na Správnost se výsledná data příliš nezměnila. V tabulce \ref{table:anomaly_precision} je vidět, že hodnoty pro SVM zůstali totožné, jako v případě použití Přesnosti. U PCA došlo k lehkému zhoršení. Toto zhoršení je rovno 14 korektním zprávám, které byly označené jako podezřelé.
+		
+			\begin{table}[htb]\centering
+				\centering
+				\caption{My caption}
+				\label{table:anomaly_precision}
+				\begin{tabular}{|l|l|l|l|l|}
+					\hline
+					\multirow{2}{*}{} & \multicolumn{2}{l|}{PCA}                 & \multicolumn{2}{l|}{SVM}                 \\ 
+					& P-M: korektní & P-M: podezřelé & P-M: korektní & P-M: podezřelé \\ \hline
+					Korektní          & 511                & 179                 & 656                & 34                  \\ \hline
+					Podezřelé         & 0                  & 102                 & 0                  & 102                 \\ \hline
+				\end{tabular}
+			\end{table}
+		
+			Změna hodnocení na Podíl pro výsledek příliš změnu neznamenal (hlavně v porovnání s hodnocením Správnost). Tabulka \ref{table:anomaly_recall} ukazuje, že jediná změna oproti hodnocení Správnost je o jednu zprávu víc, která byla chybně označena jako podezřelá v případě použití PCA. SVM si stejně jako v předchozích dvou experimentech drží stejné hodnoty.
+			
+			\begin{table}[htb]\centering
+				\centering
+				\caption{My caption}
+				\label{table:anomaly_recall}
+				\begin{tabular}{|l|l|l|l|l|}
+					\hline
+					\multirow{2}{*}{} & \multicolumn{2}{l|}{PCA}                 & \multicolumn{2}{l|}{SVM}                 \\ 
+					& P-M: korektní & P-M: podezřelé & P-M: korektní & P-M: podezřelé \\ \hline
+					Korektní          & 510                & 180                 & 656                & 34                  \\ \hline
+					Podezřelé         & 0                  & 102                 & 0                  & 102                 \\ \hline
+				\end{tabular}
+			\end{table}
+		
+			Použití F-Score vedlo k totožným výsledkům jako experiment s Přesností. Více ji znázorněno v tabulce \ref{table:anomaly_f-score}
+		
+			\begin{table}[htb]\centering
+				\centering
+				\caption{My caption}
+				\label{table:anomaly_f-score}
+				\begin{tabular}{|l|l|l|l|l|}
+					\hline
+					\multirow{2}{*}{} & \multicolumn{2}{l|}{PCA}                 & \multicolumn{2}{l|}{SVM}                 \\ 
+					& P-M: korektní & P-M: podezřelé & P-M: korektní & P-M: podezřelé \\ \hline
+					Korektní          & 525                & 165                 & 656                & 34                  \\ \hline
+					Podezřelé         & 0                  & 102                 & 0                  & 102                 \\ \hline
+				\end{tabular}
+			\end{table}
+		
+			Při porovnání výsledků klasifikace F-Score a Přesnosti došlo ke zcela totožným výsledkům. Obě tyto metody byly z výše uvedených i nejvýše úspěšné z pohledu PCA. SVM nezaznamenalo žádnou změnu na hodnocení klasifikace.
+		
+			
+	
 		\todo{Popsat vstupní parametry}
 		\todo{Ukázat výsledky na Prod logu}	
 		\todo{Dojít k závěru}						
-		\blind[2]
-
+	
 \chapter{Závěr}
 
 \setsecnumdepth{part}
