@@ -80,17 +80,17 @@ S roustoucím významem informačních systémů a informací jenž jsou zpracov
 	
 	
 	\section{Kybernetická bezpečnost}
-		Pro dnešní dobu je běžné využívání informačních technologíích prakticky kdekoliv. Jde o stavební kámen mnoha podniků. Informačním systémem rozumíme kombinaci softwaru, hardwaru, infrastruktury a trénovaného personálu \cite{businessdictionary} .  Tam, kde  se informační systémy vyskytují pomáhájí práci zjednodušovat, tvořit či se jinak podílet. Systémy je třeba udržovat v provozu a co nejvíce se vyhnout všem možným rizikům, které mohou businessový proces narušit.
+		Pro dnešní dobu je běžné využívání informačních technologií prakticky kdekoliv. Jde o stavební kámen mnoha podniků. Informačním systémem rozumíme kombinaci softwaru, hardwaru, infrastruktury a trénovaného personálu \cite{businessdictionary} .  Tam, kde  se informační systémy vyskytují pomáhají práci zjednodušovat, tvořit, či se jinak podílet. Systémy je třeba udržovat v provozu a co nejvíce se vyhnout všem možným rizikům, které mohou narušit obchodní proces.
 		
-		Obecně lze na zabezpečení informačního systému nahlížet z mnoha různých úhlů. Zabezpečit lze síť pomocí certifikovaného přístupu, správně zabezpečené bezdrátové sítě a podobně. Do operačních systémů se nainstalují antivirové programy. Samotná zařízení se fyzicky uzamknou a znemožní se přístup nepovolaným osobám.
+		Obecně lze na zabezpečení informačního systému nahlížet z mnoha různých úhlů. Zabezpečit lze síť pomocí certifikovaného přístupu, správně zabezpečené bezdrátové sítě. Do operačních systémů se nainstalují antivirové programy. Samotná zařízení se fyzicky uzamknou a znemožní se přístup nepovolaným osobám  a podobně.
 		
-		Povinnost zabezpečovat informační systémy přikládá zákon o kybernetické bezpečnosti 181/2014 Sb. Tento zákon stanovuje povinnosti a práva orgánů veřejné moci v oblasti kybernetické bezpečnosti \cite{zakon181-2014}. Tento zákon mimo jiné nařizuje orgánům veřejné moci \todo{Definovat orgán veřejné moci} povinnost zajišťovat kybernetickou bezpečnost.
+		Povinnost zabezpečovat informační systémy přikládá zákon o kybernetické bezpečnosti 181/2014 Sb. Tento zákon stanovuje povinnosti a práva orgánů veřejné moci v oblasti kybernetické bezpečnosti \cite{zakon181-2014}. Tento zákon mimo jiné nařizuje orgánům veřejné moci povinnost zajišťovat kybernetickou bezpečnost.
 		
 		Kromě zákonu jsou k dispozici normy. Jednou z takových norem je norma ISO 27001. Tato norma stanovuje požadavky, které je nutné dodržovat pro kybernetickou bezpečnost. Tyto požadavky jsou stanoveny jak na samotné informační systémy, tak i na zaměstnance, informační procesy, či strategie firmy. \cite{iso27001}.
 		
-		Lze říci, že zajištění kybernetické bezpečnosti a následné detekci jednotlivých bezpečnostních rizik je velmi specifické. Každá danná doména má své rizika a jiné druhy způsobů jejich detekce. 
+		Lze říci, že zajištění kybernetické bezpečnosti a následné detekci jednotlivých bezpečnostních rizik je velmi specifické. Každá určitá doména má svá rizika a jiné druhy způsobů jejich detekce. 
 		
-		V práci řeším kybernetickou bezpečnost pro konkrétní část informačního systémy. Podstatná tedy jsou bezpečností rizika na integrační platformě Unify. Definice integrační platformy a její popis je v sekci \ref{sec:unify}.
+		V práci řeším kybernetickou bezpečnost pro konkrétní část informačního systému. Podstatná tedy jsou bezpečností rizika na integrační platformě Unify. Definice integrační platformy a její popis je v sekci \ref{sec:unify}.
 		
 		\subsection{Bezpečnostní rizika}
 		\todo{Nadefinovat bezpečnostní rizika}
@@ -103,17 +103,20 @@ S roustoucím významem informačních systémů a informací jenž jsou zpracov
 				Integrační platforma je složena z mnoha modulů, který tvoří její celek. S rostoucím množstvím softwaru a použitých knihoven jsou šance na skrytou chybu velmi vysoké. 
 			
 			\subsubsection{Odepření služby}
-				Útoky, jejichž cílem je znepřístupnit konkretní jednu či sadu služeb rozhodně patří mezi narušení kybernetické bezpečnosti. Útok spadající do kategorie Dos \todo{Definovat Dos} je DDos, jde o útok, kde hromadně více zařízení zahltí požadavky konkrétní služby a vyřadí je tím z provozu \cite{dosAndDdos}.
+				Útoky, jenž se snaží o znemožnění užívání nějaké služby jejími uživateli označujeme jako DoS. Zkratka DoS \todo{Zkratka DoS} pochází z anglického názvu \textit{Denial of service}, přeloženo jako odepření služby. Poddruhem DoS útoku je DDoS (z anglického \textit{distributed denial of service}). Při DDoS je použito velké množství různých zařízení, které požadovanou službu zahltí požadavky. Cílem je, aby služba nedokázala požadavky odbavovat a došlo tím k tomu, aby nové požadavky odmítala \cite{dosAndDdos}.
+				
+				Ukázka rozdílu mezi DoS a DDoS je na obrázku \ref{fig:ddos}. V části s DoS je znázorněn útočník, který se snaží znepřístupnit službu. U DDoS útočník využije nakažené PC \todo{zkratka PC} ( obecně to mohou být i mobilní telefony, tablety, či jiná zařízení s přístupem do sítě) a následně jejich pomocí zahlcuje cílovou službu.	
 				
 				\begin{figure}[htb]\centering
-					\tmpframe{\includegraphics[width=\textwidth]{./img/todo}}		
-					\caption{Grafické znázornění DDos útoku.}
+					\tmpframe{\includegraphics[width=\textwidth]{./img/ddos}}		
+					\caption{Grafické porovnání DoS a DDoS útoku.}
 					\label{fig:ddos}
 				\end{figure}
 				
-				Problémem nemusí být když se takové riziko projevuje přímo. Pokud například důležitý partner je pod takovým útokem, ohrožuje to business procesy i na naší straně. Je třeba zavčas podobný incident detekovat a na základě dalších informací se rozhodnout jak vzniklou situaci řešit.
+				Důsledky útoku se následně dotýkají mnoha uživatelů nedostupně služby. Proto je nutné nejen detekovat velké množství požadavků na vlastní služby, ale také například nedostupnost partnera, na jehož službu jsem připojen. Při včasné detekci je možné zjistit, že je partner pod DDoS útokem dříve, než to zjistí on. 
 				
-				\todo{Chtěl bych zde konkrétně popsat DDos na O2 z lonskeho roku}
+			    Jeden DDoS útok se odehrál na služby O2 v roce 2016. Jeho důsledky následně omezil i provoz integrační platformy, pro kterou je tato práce tvořena. 
+			    \todo{DDOS na O2}
 			
 			\subsubsection{Nevalidní dotazy}
 				Riziko, které je třeba hlídat, ale nutně způsobené za účelem poškodit někoho nebo něco. Integrační platforma musí zpracovávat různé požadavky od konzumentů a ty zpravidla přeposílat poskytovatelům služeb. Mohou nastat situace, kdy konzument posílá nevalidní požadavek.
@@ -359,7 +362,7 @@ S roustoucím významem informačních systémů a informací jenž jsou zpracov
 				\item metody založené na hustotě		
 			\end{itemize}
 		
-			Statitistické metody očekávají, že data mají průběh nějakého rozdělení. Tomu ja následně přizpůsoben přístup zjišťování anomálií. Zpravidla proto tyto metody nejsou v praxi využívané \cite{KumarPCAANom}.
+			Statistické metody očekávají, že data mají průběh nějakého rozdělení. Tomu ja následně přizpůsoben přístup zjišťování anomálií. Zpravidla proto tyto metody nejsou v praxi využívané \cite{KumarPCAANom}.
 			
 			U metod založených na vzdálenosti se výpočíta vzdálenost konkrétního data a jeho sousedů. Je-li nalezena vzdálenost větší než předem daný práh, je cílový prvek chápán jako anomálie.
 			
@@ -426,19 +429,19 @@ S roustoucím významem informačních systémů a informací jenž jsou zpracov
 	Základem celé aplikace je neohrozit stávající integrační platformu. Na základě toho jsem se rozhodl, že informace o proběhlé komunikaci získám pomocí čtení logovacích souborů.
 	Pomocí čtení přírůstků k jednotlivým auditovým logům získám jednotlivé požadavky a pro Unify to nepředstavuje žádnou zátěž.
 	
-	Dalším stavebním kamenem je použitý aplikační server Jboss ( více v kapitole \ref{sec:jboss}). Na serveru je celá aplikace. Dochází zde k předzpracování zpráv, jejich odslání do Microsoft Azure (\ref{sec:ms_azure}) a také k ukládání do DB.
+	Dalším stavebním kamenem je použitý aplikační server Jboss ( více v kapitole \ref{sec:jboss}). Na serveru je celá aplikace. Dochází zde k předzpracování zpráv, jejich odeslání do Microsoft Azure (\ref{sec:ms_azure}) a také k ukládání do DB.
 	
-	Jak jsem již zmiňoval provoz z platformy je po zpracování odesílán do MS Azure, zde jsou definovány jednotlivé algoritmy, jejichž výsledky jsou vracený zpět do aplikačního serveru. Azure jsem se rozhodl používát, protože umožňuje rozložení výkonu na server Microsoftu a protože využití služeb v cloudu se stává stále oblíbenějším. Díky spolupráci s Microsoftem je možné i získat, popřípadě zakoupit, instanci Azure do vlastní sítě.
+	Jak jsem již zmiňoval provoz z platformy je po zpracování odesílán do MS Azure, zde jsou definovány jednotlivé algoritmy, jejichž výsledky jsou vracený zpět do aplikačního serveru. Azure jsem se rozhodl používat, protože umožňuje rozložení výkonu na server Microsoftu a protože využití služeb v cloudu se stává stále oblíbenějším. Díky spolupráci s Microsoftem je možné i získat, popřípadě zakoupit, instanci Azure do vlastní sítě.
 	
 	Získané výsledky jsou zpracovány a uloženy do NoSQL databáze MongoDB (více v kapitole \ref{sec:data_storing}).
 	
-	Aby výsledky nebyly jen hodnoty uložené v databází, je použité REST API, přes které lze výsledky sdílet. API je navržené tak, aby v případě použití Google Charts nevznikly žádné potíže. Google Charts se u cílového zákazníka pužívají již nyní například na zobrazení stavu objednávek. Proto jejich se jejich použití jeví jako další logický krok. Nicméně, není problém stejné api použít pro svoji libovolnou aplikaci, která hodnoty použije buď pro zobrazování přehledů, nebo jako jeden z dalších vstupů například do různých systémů SIEM.
+	Aby výsledky nebyly jen hodnoty uložené v databází, je použité REST API, přes které lze výsledky sdílet. API je navržené tak, aby v případě použití Google Charts nevznikly žádné potíže. Google Charts se u cílového zákazníka používají již nyní například na zobrazení stavu objednávek. Proto jejich se jejich použití jeví jako další logický krok. Nicméně, není problém stejné api použít pro svoji libovolnou aplikaci, která hodnoty použije buď pro zobrazování přehledů, nebo jako jeden z dalších vstupů například do různých systémů SIEM.
 	
 	\section{Microsoft Azure}
 		\label{sec:ms_azure}
-		Na integrační platformě Unify \cite{unify} je předpokládaný provoz 20 požadavků za vteřinu. Vzhledem k takto silnému provozu bude potřeba i přiměřeně velký výpočetní výkon. 
+		Na integrační platformě Unify \cite{unify} je předpokládaný maximální provoz 20 požadavků za vteřinu. Vzhledem k takto silnému provozu bude potřeba i přiměřeně velký výpočetní výkon. 
 			
-		Spolupráce se společností Miscrosof \cite{microsoft} mi umožnola jako řešení vyzkoušet její cloudové služby Microsfot Azure \cite{msAzure}.
+		Spolupráce se společností Miscrosof \cite{microsoft} mi umožnila jako řešení vyzkoušet její cloudové služby Microsfot Azure \cite{msAzure}.
 			
 		Microsoft Azure je sada integrovaných cloudových služeb. Azure nabízí cloudová řešení pro mnoho činností. Motivací k použití této služby k detekci bezpečnostích rizik je nástroj Microsoft Azure Machine Learning Studio \cite{msAzureStudio}.
 			
@@ -1019,7 +1022,11 @@ S roustoucím významem informačních systémů a informací jenž jsou zpracov
 		
 		Velikost obou množin je 1000 požadavků. Vstupy byly vybrány náhodným výběrem z téměř 50000 požadavků velké množiny na ESB. Zprávy, které integrační platformou v pořádku prošli byly hodnoceny jako korektní. Zprávy, které vyvolávali chyby byly označené jako podezřelé. Nevýhodou tohoto přístupu může být přehlédnutí rizikové zprávy, která běžným pohledem se může jevit v pořádku.
 		
+		\subsection{Velikost vstupního vektoru}
+			Při detekci anomálií jsem se jako jedním z konfiguračních parametrů zabýval s velikostí vstupního vektoru. Vliv, který má velikost vektoru byl zkoumán vždy pro ohodnocení klasifikace metodou \textit{Přesnost} (více v kapitole \ref{subsec:classification_performance}). Zkoumány byly metody detekce anomálie s využitím PCA a metoda s využitím SVM.
+		
 		\subsection{Ohodnocení klasifikace}
+			\label{subsec:classification_performance}
 			Pro dosažení nejlepšího možného výsledku používám MS Azure komponentu nazvanou \uv{Tune Model Hyperparameters.} Jde o komponentu, která se snaží optimalizovat parametry modelu, tak aby našla ideální nastavení \cite{msAzure}. Na základě toho je nutné být schopen rozeznat, jestli předchozí ohodnocení parametrů je horší než stávající. K tomu poslouží tyto možnosti nastavení \cite{powers-precision}:
 			
 			\begin{itemize} 
