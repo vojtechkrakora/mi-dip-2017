@@ -22,6 +22,7 @@
 \usepackage{url}
 \usepackage{amsfonts}
 \usepackage{multirow}
+\usepackage{listings}
 
 % % list of acronyms
 % \usepackage[acronym,nonumberlist,toc,numberedsection=autolabel]{glossaries}
@@ -32,6 +33,10 @@
 \setlength{\fboxsep}{0.005pt}
 \newcommand{\tmpframe}[1]{\fbox{#1}}
 %\renewcommand{\tmpframe}[1]{#1}
+
+% setting out our listings to be nice
+\lstset{basicstyle=\footnotesize\ttfamily,breaklines=true,showstringspaces=false,captionpos=b}
+\renewcommand{\lstlistingname}{Kód}
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
 % EDIT THIS
@@ -97,6 +102,7 @@ S roustoucím významem informačních systémů a informací jenž jsou zpracov
 			Jak již bylo uvedeno pro tuto práci jsou podstatná bezpečností rizika na konkrétní integrační platformě. Cílem je hledat pouze ta, která vznikají na straně programu. Zabezpečení přístupů fyzicky k serverům Unify a podobně nebudou probírána.
 			
 			\subsubsection{Zero day útoky}
+				\label{sec:zero-day}
 				Zero day útoky lze volně přeložit jako útoky nultého dne.
 				Jde o taková bezpečnostní rizika, která využívají zranitelností nějakého systému, nebo jeho části, která nebyla zveřejněna \cite{investigationZ0}.
 				
@@ -119,126 +125,149 @@ S roustoucím významem informačních systémů a informací jenž jsou zpracov
 			    \todo{DDOS na O2}
 			
 			\subsubsection{Nevalidní dotazy}
-				Riziko, které je třeba hlídat, ale nutně způsobené za účelem poškodit někoho nebo něco. Integrační platforma musí zpracovávat různé požadavky od konzumentů a ty zpravidla přeposílat poskytovatelům služeb. Mohou nastat situace, kdy konzument posílá nevalidní požadavek.
+				Riziko, které je třeba hlídat, ale není nutně vytvořené za účelem poškodit někoho nebo něco. Integrační platforma musí zpracovávat různé požadavky od konzumentů a ty zpravidla přeposílat poskytovatelům služeb. Mohou nastat situace, kdy konzument posílá nevalidní požadavek.
 			
-				V případě, že požadavky jsou v xml formě, lze definovat přesné znění zprávy. V případě, že je její validita narušena dochází k nekompatibilnímu dotazu na stranu poskytovatele. To může vyústit v nevyřízené a odmítnuté požadavky. Z této situace můhou vzniknout nechtěné útoky \textit{odepření služeb}. V případě, že požadavek nebude zamítnut, možným důsledkem může být zisk nevalidních dat nebo dokonce i dat, která se ke konzumentovi neměla dostat.
+				V případě, že požadavky jsou v xml formě, lze definovat přesné znění zprávy. V případě, že je její validita narušena dochází k nekompatibilnímu dotazu na rozhraní poskytovatele. To může vyústit v nevyřízené a odmítnuté požadavky. Z této situace mohou vzniknout nechtěné útoky odepření služeb. V případě, že požadavek nebude zamítnut, možným důsledkem může být zisk nevalidních dat nebo dokonce i dat, která se ke konzumentovi neměla dostat.
 			
 				Tyto popřípadě i jiné neočekávané situace je třeba včas odhalit a řešit.
 				
-			\subsection{Ostatní}
-				Mnoho bezpečnostních rizik může být neznámých. Nelze vše zaškatulkovat do obecných kategorií. Rizikem mohou být i služby, které po autorizaci nabízí různé možnosti získání dat, například pomocí selectů z databáze.   	
+			\subsubsection{Ostatní}
+				Mnoho bezpečnostních rizik může být neznámých. Nelze vše zaškatulkovat do obecných kategorií. Rizikem mohou být i služby, které po autorizaci nabízí různé možnosti získání dat, například pomocí výběru z databáze. Z těchto důvodů je vhodné nezaměřovat se na konkrétní kategorie rizik, ale snažit se rozpoznávat rizika jakožto celek.	
 			
 		\subsection{Zjišťování bezpečnostních rizik}
-			Rozpoznávat bezpečnostní rizika a je při jejich různorodosti složitý úkol. 
+			Rozpoznávat bezpečnostní rizika je při jejich různorodosti složitý úkol. Základem je dodržovat bezpečnostní pravidla například při manipulaci s hesly. Na platformě, kde se lze setkat se stovkami služeb se bude vyskytovat velké množství hesel. Správa těchto hesel není snadným úkolem. Přesto by se nemělo stát, že i třeba na testovacím prostředí aplikace se budou hesla zasílat e-mailovou komunikací. Hesla budou totožná jako uživatelská jména nebo dokonce zabezpečení nebude existovat. 
+			
+			V následujících kapitolách jsou popsány různé metody, jak na softwarové úrovni detekovat co nejvíce možných bezpečnostních rizik.
 			
 			\subsubsection{Posouzení kódu}
-				Posouzení kódu ( anglicky code review) je metoda kontroly kvality kódu. Programátor, který napsal nějaká kus komponenty dá svou část programu na kontrolu druhé osobě. Není přímo nutné, aby kontrolující osoba byla nadřízený. Kontrolující programátor hlídá kvalitu kódu a zároveň prověřuje jeho funkčnost. Tato metoda vede ke zkvalitnění dodávaného softwaru, ale je finančně i časově náročná. \todo{cite}
+				Posouzení kódu ( anglicky code review) je metoda kontroly kvality kódu. Programátor, který napsal nějaká kus komponenty dá svou část programu na kontrolu druhé osobě. Není přímo nutné, aby kontrolující osoba byla nadřízený. Kontrolující programátor hlídá kvalitu kódu a zároveň prověřuje jeho funkčnost. Tato metoda vede ke zkvalitnění dodávaného softwaru, ale je finančně i časově náročná \todo{cite}. Lze ovšem říci, že finanční i časová náročnost jsou diskutabilní. Lze se setkat s tím, že kód, který neprošel posouzením druhou osobou nebude fungovat a charakteristika chyby neumožní její snadnou detekci. Pokud by se tato chyba odhalila pomocí posouzení, mohl být čas naopak ušetřen. Další důvod pro ušetření času jsou nutné birokratické procesy, které jsou nutné pro opravení chyby (například vytvoření opravné dávky, manuálu a kontaktování release managementu). To už hodně záleží na procesech, které jsou při vývoji používány. 
 			
 			Zvýšením kontroly se i zvyšuje šance na detekci bezpečnostního rizika. Jako velmi efektivní metodu ji uvádí zdroj \cite{pethukovKozlovVulnerabilities}.
 			
 			\subsubsection{Analýza z pohledu uživatele}
 				Ve snaze celý proces detekce bezpečnostních rizik zautomatizovat se používá i metoda založená na pohledu uživatele aplikace \cite{pethukovKozlovVulnerabilities}. Aplikace má své uživatele, proto je možné vytvářet scénáře, kdy se uživatel pokouší najít v aplikaci nějaký nedostatek. Takový nedostatek může následně produkovat bezpečnostní riziko. Automatizace těchto scénářů je zpravidla snadno proveditelná a často patří do klasických testovacích scénářů.
 				
-				Testují se například SQL injection, přístup do neopravněných míst a další.
+				Testují se například SQL injection, přístup do neoprávněných míst a další.
 				
 			\subsection{Analýza na straně serveru}
-				Předchozí způsoby se snažili zabránit výskytu rizik. Pro zachování kybernetické bezpečnosti je vhodné sledovat i aktuální situaci v aplikaci. Vzhledem k rozshahu moderních aplikací je takřka vyloučené, že bychom dokázali rizikům předejít. Sledování aktuálního stavu a provozu můžeme být schopni detekovat podezřelé činnosti. Na základě toho pak dokážeme zjistit bezpečnostní riziko.
+				Předchozí způsoby se snažili zabránit výskytu rizik. Pro zachování kybernetické bezpečnosti je vhodné sledovat i aktuální situaci v aplikaci. Vzhledem k rozsahu moderních aplikací je takřka vyloučené, že bychom dokázali rizikům předejít. Sledování aktuálního stavu a provozu můžeme být schopni detekovat podezřelé činnosti. Na základě toho pak dokážeme zjistit bezpečnostní riziko.
 				
-				I zde lze využit automatizaci. Například ve zdroji \cite{CoronaGiacintoDetWebAtt} je uveden systém na rozpoznání vzorů zpráv. Koncept založený na znalostním inženýrství může pomoci detekovat i využití zranitelnosti Zero-day\todo{Odkaz na kapitolu} \cite{AhnKimChungBigDataAnal}.
+				I zde lze využit automatizaci. Například ve zdroji \cite{CoronaGiacintoDetWebAtt} je uveden systém na rozpoznání vzorů zpráv. Koncept založený na znalostním inženýrství může pomoci detekovat i využití zranitelnosti nultého dne (\ref{sec:zero-day}) \cite{AhnKimChungBigDataAnal}.
 				
 				Podobný princip využívají i systémy SIEM (security information and event management). SIEM se zabývá bezpečnostním management. Jeho myšlenka je taková, že  
-				rozsáhlé aplikace mají své zdroje informací (logy) na různých místem, ale je zapotřebí k nim přistupovat z jednoho místa. Z tohoto místa se provádí následná analýza kompletně všech zdrojů a vyhodnocují se bezpečnostní rizika \cite{SIEMDef}. Pomocí tohoto vyhodnocení pak může specialozvaný personál reagovat na vzniklou situaci.
+				rozsáhlé aplikace mají své zdroje informací (logy) na různých místem, ale je zapotřebí k nim přistupovat z jednoho místa. Z tohoto místa se provádí následná analýza kompletně všech zdrojů a vyhodnocují se bezpečnostní rizika \cite{SIEMDef}. Pomocí tohoto vyhodnocení pak může specializovaný personál reagovat na vzniklou situaci. Grafické znázornění příkladu SIEM je na obrázku \ref{fig:siem}.
 				
 				\begin{figure}[htb]\centering
-					\tmpframe{\includegraphics[width=\textwidth]{./img/todo}}		
+					\tmpframe{\includegraphics[scale=0.5]{./img/SIEM}}		
 					\caption{Grafické znázornění SIEM.}
 					\label{fig:siem}
 				\end{figure}
 			
-		\subsection{Zkušenosti z Unify}
-			\todo{Popsat jaké zkušenosti mám z unify}
-			\todo{Chyba může být nevalidní request, Snaha o umělý request ...}
-			
-	\section{Platforma Unify}
+	\section{Integrační platforma unify}
 		\label{sec:unify}
-		\todo{Celá tato kapitola se mi nepovedla, je to spíše náčrt.}
-		Cílem práce je prověřit jeji funkčnost na platformě Unify \cite{unify}. 
+		Jedním z cílů práce je detekovat bezpečnostní rizika na integrační platformě Unify \cite{unify}. Integrace je proces, který propojuje nesourodé systémy, tak aby umožnil jejich snadnou komunikaci \cite{integration}. 
 		
-		\subsection{Integrační platforma}
-			Unify je produkt, který slouží jako integrační platforma. Integrace slouží k propojení různorodých systémů a služeb. 
+		\subsection{Význam Unify}
+			\label{sec:meaning-unify}
+			Jak je uvedeno ve zdroji \cite{unify}, Unify pracuje se webovými službami, zprávami, transformací a směrováním dat nebo také přenosem souborů. Její význam koordinace interakcí mezi různými podnikovými systémy.
 			
-			Integrace se zpravidla zkládají ze sběrnice \cite{mulesoft}. Sběrnice, která propojuje konzumující aplikaci a poskytující aplikace se nazývá \textit{ESB} (enterprise service bus). ESB je stavěno na architektuře orientované na služby \cite{oracleEsb}.
+			Rozsáhlé systémy se skládají z odlišných komponent. Komponenty mohou být například databázové, webové nebo souborové. Aby se zajistila komunikace mezi nimi, je vytvářena integrační platforma. Základem Unify je sběrnice ESB (enterprise service bus). Tato sběrnice vystavuje různé interfacy a je schopna volat veškeré nutné komponenty. Jednotlivé komponenty pak nekomunikují mezi sebou napřímo, ale skrz ESB. 
+			
+			Podobný přístup je i pro partnery mimo domovskou organizaci, kde je Unify provozováno. Každý takový partner je připojen na B2B sběrnici (business to business). Ta stejně jako ESB vystavuje interfacy a následně volá rozhraní ESB. Význam B2B je takový, že se zpravidla vyskytuje takzvaně demilitarizované zóně. Z tohoto důvodu je nutné zde dbát na vyšší bezpečnost provozu.
+			
+			Mimo zmíněných sběrnic je Unify složeno i z dalších komponent. Například notifikační engine slouží k rozesílání mailových nebo po připojení na SMS konektor i SMS zpráv \todo{Zkratka SMS}. Komponenta ETL (extract transform load) zpravidla transformuje data z jednoho uložiště do druhého. SFE (secure file exchange) má za úkol přenos souborů. Tento přenos se hlavně využívá mezi demilitarizovanou zónou a vnitřní sítí.
+			
+		\subsection{Technologie}
+			\label{sec:unify-technologi}
+			Unify je postaveno na otevřeném softwaru. Hlavní použité technologie jsou: 
+			
+			\begin{itemize} 
+				\item \textbf{JBoss} - aplikační server s podporou Java EE 6 \cite{oracleJavaEE6}
+				\item \textbf{Switchyard} - vývojářský framework, který pomocí Apache Camel\texttrademark  umožňuje snažší vývoj aplikací postupy architektury orientované na služby 
+				\item \textbf{Apache Camel \texttrademark } - otevřený software jakožto aplikační rámec pro integraci
+				\item \textbf{Databáze} - pro účel přeposílání zpráv a journalování zpráv se využívají databáze
+				\item \textbf{Nginx SW Load balancer} - webový servere, který distribuuje zprávy mezi dva, či více totožných serverů za účelem rozložení zátěže   		
+			\end{itemize}
+			
+			
+		\subsection{Architektura Unify}
+			Architektura již byla z části popsána v sekci \ref{sec:meaning-unify}. Skládá se tedy ze dvou sběrnic, kde jedna slouží pro komunikaci vnitřních systémů a druhá pro komunikaci se systémy partnerů. Dále Unify obsahuje různé komponenty pro prací s daty nebo jejich přenos, popřípadě rozesílání emailů a sms zpráv.
+			Architekturu přibližuje obrázek \ref{fig:esb}. 
 			
 			\begin{figure}[htb]\centering
-				\tmpframe{\includegraphics[width=\textwidth]{./img/todo}}		
+				\tmpframe{\includegraphics[scale=0.5]{./img/Unify-Easy}}		
 				\caption{Enterprise Service Bus.}
 				\label{fig:esb}
 			\end{figure}
+		
+			Mimo sběrnic a komponent Unify obsahuje i uživatelské rozhraní, sloužící pro konfiguraci. 
 			
-			Konzumující aplikací rozumíme takovou aplikaci, která posílá dotaz na konkrétní službu. Poskytující aplikace je taková aplikace, která poskytuje rozhraní, jehož výstupem jsou data pro různé konzumující aplikace. V reálné aplikaci je možné poskytovat interface, který například spustí nějaký proces.
-			
-			ESB je využíváno interně v rámci jedné firmy nebo logické struktury. Pokud je žádané, aby některé služby byly konzumovány aplikací takzvaně odjinud používá se sběrnice B2B (business to business) \cite{liaisonB2B}.
-			
-			B2B poskytuje rozhraní a zpravidla následně samo je konzumentem ESB.
+			Z použitých technologí v kapitole \ref{sec:unify-technologi} plyne, že hlavním stavebním kamenem pro implementaci je Java EE 6.
 		
-		\subsection{O Unify}
-		Unify je integrační platforma, která je orientovaná na služby \cite{unify}.
-		\todo{Sklada se z B2B, ESB, ETL, SFE + jednoduché popisy}
-		
-		Unify je postavena na open source technologiích \cite{unify}. Základním stavebním kamenem je ESB, které umožňuje propojit různorodé systémy, služby.
-		
-		Pro pro připojení externích služeb a aplikací využívá B2B. Technologicky je B2B velmi podobné ESB, ale zpravidla je vhodné ho více zabezpečit, nebo používat validace na požadavky a vyhnout se tím takovým zprávám, jenž neodpovídají ani předem danému předpisu.
-		
-		Další z mnoha komponent jsou ETL (extract transform load), pomocí kterého dochází k zisku nějakých dat jejich transformaci a nahraní na jíné místo. Nebo SFE (secure file exchange) jehož význam je přenos souborů, hlavně mezi zónami Z2 a Z4. \todo{nemohu si ted vybavit jak se odborně nazývají}.
-		   
-		Stavební kámen integrační platformy Unify je Jboss AS 7, který zcela podporuje standard Javy EE 6 \cite{oracleJavaEE6}.
-		
-		
-		\todo{Používá se hlavně Java}
-		\todo{Podporuje SOAP, REST, HTTP, DB procedury}
-		\todo{Rychlé popsání logování}
-		\todo{Stávající řešení ochrany - info v GUI, journaling, logy a SL2}
-				
-		\begin{figure}[htb]\centering
-			\tmpframe{\includegraphics[width=\textwidth]{./img/todo}}		
-			\caption{High Level Desing architektura Unify.}
-			\label{fig:hld_architecture_unify}
-		\end{figure}
-	
-		\blind[1]
 		\todo{Zkratky B2B,ESB}
-		
-	\section{Text mining}
-		V logách integrační platformy je veškerá komunikace v textovém formátu. Kromě zpráv ve formátu xml jsou zde i zprávy ve formátu json, popřípadě výpis chyby, pokud nějaká nastala. Protože v prací řeším analýzu takových logů, tak následující kapitola přiblíží těžení znalostí z textu. 
-		
-		Text mining má velký význam, neboť 80\% informací uložených v počítačích jsou textové formy \cite{IRWebTechniques}.
-		
-		Text mining je metoda, která těží informace z textu \cite{WittenTextMining}. Přesto, že text mining spadá do kategorie data miningových metod, rozdíl je v tom, že nepracuje s číselnými a většinou ani nominálními hodnotami. Datamining dokáže detekovat skryté informace ze vstupních dat. Text mining informace nemá většinou ve svých datech nijak skryté. Při zpracování textu jde o automatizaci procesu, tak jak by ho zvládl člověk, počítačem. \cite{WittenTextMining}.
-		
-		Dle zdroje \cite{textAlg} lze probletiku text miningu rozdělit následovně:
-		
-		\subsection{Získání informací}
-			Systémy získání informací identifikují v kolekci souborů takové, jaké jsou vhodné pro vstupní požadavek. Je například o problematiku vyhledávácích nástrojů. Princip je takový, že hledáme-li konkrétní dotaz, jsou vybrány z kolekce všech souborů jen ty, která se dotazu týkají. To se rozhoduje například slovy použitými v dotazu a jejich synonimy.
-		
-		\subsection{Zpracování přirozeného jazyka}
-			Zpracování přirozeného jazyka je jeden z nejtěžších problémů text miningu. V této disciplíně se řeší převod textu do mluveného slova, rozpoznání řeči a podoně. Princip je naučit stroje rozumět přirozenému jazyku. To pomahá například při anotaci souborů.
-			
-		\subsection{Data mining}
-			Data mining je proces, který hledá skryté vzory v datech. V použití s text miningem je využití pro prezentaci různých výsledků koncovému uživateli.
-			
-		\subsection{Extrakce informací}
-			Extrakce informací je proces, kde jsou vytažena data ze vstupu a vložena do logických struktur. \todo{víCe}\cite{SankarSureshTextMining}
-		
-		\todo{Možná to nad bude lepší v odrážkách než podkapitolách.}
-		
-		\subsection{Transformace textových dokumentů}
-		 Aby bylo možné jednotlivé textové dokumenty klasifikovat nebo shlukovat je třeba je převést na číslný vektor. V této části kapitoly se budu zabývat možnostmi takového převodu.
 	
-		\subsubsection{TF-IDF}
-			\label{subsub:tf-idf}
-			TF-IDF je zkratka aglického názvu \textit{Term Frequency Inverse Document Frequency}. Snažší překlad bude, pokud název rozdělíme na Term Frequency, což je v překladu četnost slova a Inverse document frequency, jenž znamená převrácena četnost dokumentu \cite{RamosTF-IDF}.
+	\section{Strojové učení}
+		Strojové učení patří jako jedna podkapitola do znalostního inženýrství. Jde o algoritmy a metody, které pomáhají stroji, aby se učil. Učením je myšleno, kdy stroj je schopen na základě zkušenosti se rozhodovat. Toto rozhodování dokáže vyvodit automaticky bez pomoci člověka. \cite{what-is-machine-learning}
+		
+		Strojové učení využíváno například ve spamových filtrech, v algoritmech rozpoznávajících obličej nebo jako automatické třídění článků.
+		
+		Základem jsou tři techniky:
+		
+			\begin{itemize} 
+				\item učení s učitelem - algoritmus má na vstupu učící množinu dat a validační množinu
+				\item učení bez učitele - algoritmus získá na vstupu pouze neoznačená vstupní data
+				\item zpětnovazebné učení - algoritmus se učí pomocí zpětné vazby	
+			\end{itemize}
+		
+		Zmíněné techniky se snaží implementovat jeden ze základních úkolů strojového učení:
+			\begin{itemize} 
+				\item klasifikace - rozdělení dat do konkrétních skupin
+				\item regrese - nalezení správných hodnot pro vstupní data
+				\item shlukování - rozdělení dat do skupin vzhledem k jejich vzájemné podobnosti
+			\end{itemize}
+		
+		
+		\todo{Zadnej zazrak} \cite{machine-learning}
+		\todo{Obecny zacatek} \cite{machin-learning-and-opt}
+		
+	\subsection{Těžení textu}
+		V logách integrační platformy je veškerá komunikace v textovém formátu. Kromě zpráv ve formátu XML jsou zde i zprávy ve formátu JSON, popřípadě výpisy chyb, pokud nějaká nastala. Protože v prací řeším analýzu takových logů, tak následující kapitola přiblíží těžení znalostí z textu. 
+		
+		Těžení textu má velký význam, neboť 80\% informací uložených v počítačích jsou textové formy \cite{IRWebTechniques}.
+		
+		Těžení textu je metoda, která těží informace z textu \cite{WittenTextMining}. Přesto, že text mining spadá do kategorie data miningových metod, rozdíl je v tom, že nepracuje s číselnými a většinou ani nominálními hodnotami. Datamining dokáže detekovat skryté informace ze vstupních dat. Text mining informace nemá většinou ve svých datech nijak skryté. Při zpracování textu jde o automatizaci procesu, tak jak by ho zvládl člověk, počítačem. \cite{WittenTextMining}.
+		
+		Dle zdroje \cite{textAlg} lze problematiku těžení textu rozdělit následovně:
+		
+		\begin{itemize} 
+
+		\item \textbf{Získání informací}
+		
+			Systémy získání informací identifikují v kolekci souborů takové, jaké jsou vhodné pro vstupní požadavek. Jde například o problematiku vyhledávacích nástrojů. Princip je takový, že hledáme-li konkrétní dotaz, jsou vybrány z kolekce všech souborů jen ty, která se dotazu týkají. To se rozhoduje například slovy použitými v dotazu a jejich synonymy.
+		
+		\item \textbf{Zpracování přirozeného jazyka}
+		
+			Zpracování přirozeného jazyka je jeden z nejtěžších problémů text miningu. V této disciplíně se řeší převod textu do mluveného slova, rozpoznání řeči a podobně. Princip je naučit stroje rozumět přirozenému jazyku. To pomáhá například při anotaci souborů.
 			
-			Četnost slova vyjadříme následovně: máme slovo $w$ a množinu dokumentů $D$, skládající se z dokumentů $d_1, d_2 \ldots d_3 \in D$. Potom četnost slova $TF(w, d_x)$ vyjadřuje kolikrát se slovo $w$ vyskytlo v dokumentu $d_x$.
+		\item \textbf{Těžení dat}
+		
+			Těžení dat je proces, který hledá skryté vzory v datech. Při použití s text miningem je využité pro prezentaci různých výsledků koncovému uživateli.
+			
+		\item \textbf{Extrakce informací}
+		
+			Extrakce informací je proces, kde jsou vytažena data ze vstupu a vložena do logických struktur.\cite{SankarSureshTextMining}
+		
+		
+		\item \textbf{Transformace textových dokumentů}
+		
+		 Aby bylo možné jednotlivé textové dokumenty klasifikovat nebo shlukovat je třeba je převést na číselný vektor. V této části kapitoly se budu zabývat možnostmi takového převodu.
+	
+		\textbf{TF-IDF}
+			\label{subsub:tf-idf}
+			
+			TF-IDF je zkratka anglického názvu \textit{Term Frequency Inverse Document Frequency}. Snazší překlad bude, pokud název rozdělíme na Term Frequency, což je v překladu četnost slova a Inverse document frequency, jenž znamená: převrácena četnost dokumentu \cite{RamosTF-IDF}.
+			
+			Četnost slova vyjádříme následovně: máme slovo $w$ a množinu dokumentů $D$, skládající se z dokumentů $d_1, d_2 \ldots d_3 \in D$. Potom četnost slova $TF(w, d_x)$ vyjadřuje kolikrát se slovo $w$ vyskytlo v dokumentu $d_x$.
 			
 			Převrácená četnost dokumentu vystihuje jak podstatné slovo $w$ je. Značíme ji jako $$IDF(w,D) = \log{\frac{|D|}{|D_w \subseteq D|}}$$ kde $|D|$ vyjadřuje velikost množiny všech dokumentů a $D_w$ množina všech dokumentů, ve kterých se slovo $w$. $|D_w|$ pak značí velikost takové množiny \cite{RamosTF-IDF}.
 			
@@ -247,25 +276,25 @@ S roustoucím významem informačních systémů a informací jenž jsou zpracov
 			
 			Na základě uvedeného vzorce jsme schopni reprezentovat textový dokument pomocí vektoru. Vektor takové dokumentu bude vždy nezáporný a bez úprav bude mít tolik dimenzí, kolik má jednoznačných slov v sobě.
 			
-		\subsubsection{Snížení dimenzionality}
-			Při práci s textovými dokumenty je třeba snížit jejich dimenzionalitu. Jak je uvedeno v sekci \ref{subsub:tf-idf} bez úprav dimenzioality TF-IDF pomůže vytvořit vektor o velikosti rovné počtu unikátních slov. Do takové seznamu slov by ovšem v ten moment mohly zapadat slova stejného významu, jen například jinak skloňována. Dalé bude-li pro jednotlivá slova v dokumentu oddělovač mezera, mohou vzniknout jako dvě unikátní slova například \uv{slovo} a \uv{slovo,}.
+		\textbf{Snížení dimenzionality}
+		
+			Při práci s textovými dokumenty je třeba snížit jejich dimenzionalitu. Jak je uvedeno v sekci \ref{subsub:tf-idf} bez úprav dimenzionality TF-IDF pomůže vytvořit vektor o velikosti rovné počtu unikátních slov. Do takového seznamu slov by ovšem v ten moment mohly zapadat slova stejného významu, například jinak skloňována. Dále bude-li pro jednotlivá slova v dokumentu oddělovač mezera, mohou vzniknout jako dvě unikátní slova například \uv{slovo} a \uv{slovo,}.
 			
 			Před snížením dimenzionality je vhodné zbavit se veškeré interpunkce. Kromě interpunkce je vhodné i text převést kompletně na velká nebo malá písmena.
 						
-			Pro snížení dimenzionality se používá odstranění takzvaných stop-slov. Jde o slova taková, která nemají velký význam. Přiklad pro to mohou být předložky a spojky. Pro mnoho jazyků jsou k dispozici slovníky s takovými slovy. Dle konkrétní charakteristiky textového dokumentu může být vhodné nadefinovat si svá stop-slova.
+			Pro snížení dimenzionality se používá odstranění takzvaných stop-slov. Jde o slova taková, která nemají velký význam. Příklad pro to mohou být předložky a spojky. Pro mnoho jazyků jsou k dispozici slovníky s takovými slovy. Dle konkrétní charakteristiky textového dokumentu může být vhodné nadefinovat si svá stop-slova.
 			
-			Dalším nástrojem pro redukci počtu dimenzí je stemitizace. Cílem stemitizace je redukce slov tím, že jsou převedena na kořen slova \cite{textPreprop}. Je třeba si uvědomit, že tímto krokem je možné ztratit původní význam slova a je tedy třeba promyslet,  jestli na konkrétních datech stemitizaci využít.
-		
-		
+			Dalším nástrojem pro redukci počtu dimenzí je stemitizace. Cílem stemitizace je redukce slov tím, že jsou převedena na kořen slova \cite{textPreprop}. Je třeba si uvědomit, že tímto krokem je možné ztratit původní význam slova a je tedy třeba promyslet,  jestli na konkrétních datech stemitizaci využít.		
+	\end{itemize}
 		
 		
 	\section{Těžení Asociačních pravidel}
 		Jednou z prvních myšlenek jak dosáhnout cíle bylo využití metody těžení asociačních pravidel. 
 		
 		\subsection{Definice}
-		Cílem těžení asociačních pravidel je najít zajímavé korelace či časté vzorce v množině dat uložených v relační databázi nebo jiných uložiští \cite{assoc1}. Jako ukázka praktického využití lze představit využití v obchodních řetězcích. Obsah nákupu, který si zákazník zakoupil, je uložen v rámci jedné transakce. Algoritmus vyhledá zajímavé vzorce a pravidla mezi položkami v transakcích. Výsledkem je možnost predikovat co si zákazník zakoupí. Jako příklad uvedeme zákazníka, který si koupil housku a salát. Jako predikce další položky lze očekávat hamburgerové maso. Tato znalost pak lze využít k lepšímu přemístění zboží v regálech či k osobnějším nabídkám zboží v reklamních tiskovinách.
+		Cílem těžení asociačních pravidel je najít zajímavé korelace či časté vzorce v množině dat uložených v relační databázi nebo jiných uložištích \cite{assoc1}. Jako ukázka praktického využití si lze představit využití v obchodních řetězcích. Obsah nákupu, který si zákazník zakoupil, je uložen v rámci jedné transakce. Algoritmus vyhledá zajímavé vzorce a pravidla mezi položkami v transakcích. Výsledkem je možnost predikovat co si zákazník zakoupí. Jako příklad uvedeme zákazníka, který si koupil housku a salát. Jako predikce další položky lze očekávat hamburgerové maso. Tato znalost pak lze využít k lepšímu přemístění zboží v regálech či k osobnějším nabídkám zboží v reklamních tiskovinách.
 		
-		Těžení asociačních pravidel lze dle zdroje \cite{AsocAgrawal1} popsat následovně. Nechť $I = I_1, I_2,\ldots,I_m$ je množina binárníh atributů, kterou budeme nazývat položka. Nechť $T$ je databáze transakcí. Každá transakce $t$ je reprezentována binárním vektorem, kde platí, že $t[k] = 1$ pokud $t$ zakoupila položku $I_k$. V opačném případě $t[k] = 0$. Nechť $X$  je množina některých položek z $I$. Řikáme, že transakce $t$ splňuje $X$ pokud platí pro všechny položky $I_k$ v $X$ pravidlo $t[k] = 1$.	
+		Těžení asociačních pravidel lze dle zdroje \cite{AsocAgrawal1} popsat následovně: Nechť $I = I_1, I_2,\ldots,I_m$ je množina binárních atributů, kterou budeme nazývat položka. Nechť $T$ je databáze transakcí. Každá transakce $t$ je reprezentována binárním vektorem, kde platí, že $t[k] = 1$ pokud $t$ zakoupila položku $I_k$. V opačném případě $t[k] = 0$. Nechť $X$  je množina některých položek z $I$. Říkáme, že transakce $t$ splňuje $X$ pokud platí pro všechny položky $I_k$ v $X$ pravidlo $t[k] = 1$.	
 			
 		Asociačním pravidlem rozumíme implikaci $X \implies I_j$, kde $X$ je množina některých položek v množině $I$ a $I_j \in I$ ale zároveň $I_j \notin X$.
 		
@@ -278,33 +307,40 @@ S roustoucím významem informačních systémů a informací jenž jsou zpracov
 		
 		Velmi pravděpodobně bezpečnostní rizika budou přibývat. Tato možnost by šla využít pro již existující nebo alespoň několikrát se vyskytující případy.
 		
-		Z těchto důvodů jsem tuto myšlenky zavrhl, stím, že bude lepší vyzkoušet takové metody, které budou mít šanci rozpoznat špatný požadavek, i když ho uvidí poprvé. Tyto metody jsou rozepsány v následujících sekcích. 		
+		Z těchto důvodů jsem tuto myšlenky zavrhl s tím, že bude lepší vyzkoušet takové metody, které budou mít šanci rozpoznat špatný požadavek, i když ho uvidí poprvé. Tyto metody jsou rozepsány v následujících sekcích. 		
 	
 	\section{Shluková analýza}
-		Jako jednu z možností vyřešení detekce bezpečnostních rizik na základě dat z logů jsem si vybral shlukovou analýzu (dle anglického názvu také nazýván clustering). Clustering využívá znalosti ze vstupních dat k tomu, aby dokázal vstupní požadavky rozdělit do shluků. Všechny informace jsou do těchto shluků přiřazovány na základě podobnosti. Podobnost lze definovat podle charakteristiky dat a požadovém účelu shlukování. Jednotlivé shluky pak tvoří užitečné a logické skupinky .
+		Jako jednu z možností vyřešení detekce bezpečnostních rizik na základě dat z logů jsem si vybral shlukovou analýzu (dle anglického názvu také nazýván clustering). Clustering využívá znalosti ze vstupních dat k tomu, aby dokázal vstupní požadavky rozdělit do shluků. Všechny informace jsou do těchto shluků přiřazovány na základě podobnosti. Podobnost lze definovat podle charakteristiky dat a požadovaném účelu shlukování. Jednotlivé shluky pak tvoří užitečné a logické skupinky .
 		
 		Všechny objekty ve shluku si jsou navzájem podobné a zároveň se nepodobají objektům v jiném shluku \cite{IntroductionToDataMining}. Na obrázku \ref{fig:clustering} je ukázka několika příkladů, kdy je na stejná data použita shluková analýza s jiným počtem shluků.
 		
 		\begin{figure}[htb]\centering
-			\tmpframe{\includegraphics[width=\textwidth]{./img/todo}}		
-			\caption{Ukázka shlukové analýzy s různym počtem shluků.}
+			\tmpframe{\includegraphics[width=\textwidth]{./img/shlukova_anal}}		
+			\caption{Ukázka shlukové analýzy s různým počtem shluků.}
 			\label{fig:clustering}
 		\end{figure}
 		
-		\todo{Napsat nějaký rozcestník o tom, že dále uvedu tu a tu metodu clusteringu}
-		
 		\subsection{K-means}
-			K-means a K-medoids jsou metody shlukové analýzy. Tyto metody jsou založené na principu centroidů. Centroidem je vyjádřen pomyslný střed každého shluku. V případě K-means jde o střed shluku nezávisle na tom, je-li tento bod i objektem vstupních dat, nebo ne. K-medoids jako střed shluku určí vždy nejvhodnějšího zástupce ze vstupních dat. Graficky je tento rozdíl zobrazen na obrázku. Z obrázku vyplýv, že shluk v K-means může mít střed mimo data, kdežto K-medoids má možnost středem shluku určit pouze nejvhodnější objekt ze vstupních dat \ref{fig:kMeansVSkMedoids}.
+			K-means a K-medoids jsou metody shlukové analýzy. Tyto metody jsou založené na principu centroidů. Centroidem je vyjádřen pomyslný střed každého shluku. V případě K-means jde o střed shluku nezávisle na tom, je-li tento bod i objektem vstupních dat, nebo ne. K-medoids jako střed shluku určí vždy nejvhodnějšího zástupce ze vstupních dat. Graficky je tento rozdíl zobrazen na obrázku \ref{fig:kMeansVSkMedoids}. Z obrázku vyplývá, že shluk v K-means může mít střed mimo data, kdežto K-medoids má možnost středem shluku určit pouze nejvhodnější objekt ze vstupních dat.
 			
 			\begin{figure}[htb]\centering
-				\tmpframe{\includegraphics[width=\textwidth]{./img/todo}}		
+				\tmpframe{\includegraphics[width=\textwidth]{./img/kmeansVSkmedoids}}		
 				\caption{Ukázka shluku a jeho centroidu pomocí metody K-means a K-medoids.}
 				\label{fig:kMeansVSkMedoids}
 			\end{figure}
 		
 			Postup algoritmu pro K-means je nejdříve vybrat $K$ bodů jako centroidy. Tyto centroidy lze vybrat například náhodně, nebo prvních $N$. Volbou prvních centroidů se například zabývá zdroj \cite{kMeansInit}. Po vybrání středů se všechny data přiřadí k nejvhodnějšímu shluku. Výběr takové shluku často ovlivňuje například vzdálenost bodu k centroidu. Následuje přepočet nových středů. Přiřazení do shluků a výpočet nových centroidů se opakuje, dokud shluky mění. Po té považujeme algoritmus za hotový a data rozdělená do skupin.
 			
-			\todo{Přidat algoritmus.}
+			\begin{minipage}{\linewidth}
+				\begin{lstlisting}[caption={Algoritmus K-Means}, label={lst:k-means}]
+(1) Nahodn\v{e} vyber k stredu.
+(2) Vypocti vzdalenost kazdeho bodu ke vsem stredum.
+(3) Prirad bod ke shluku, k jehoz stredu ma nejmensi vzdalenost.
+(4) Vypocti nove stredy shluku.
+(5) Vypocti nove vzdalenosti bodu ke vsem stredum.
+(6) Pokud se zadna data nezmenila skonci. Jinak pokracuj bodem 3.
+				\end{lstlisting}
+			\end{minipage}
 			
 			Jedním z kroků algoritmu je přiřadit vstupním objektům správný shluk. K tomuto důvodu je nutné definovat funkci pro měření vzdáleností mezi jednotlivými objekty \cite{IntroductionToDataMining}. Požadavky na takovou funkcni jsou, aby byla jednoduchá, protože je velmi často volaná. Pokud data jsou v eukleidovském prostoru používají se například následující funkce na měření vzdálenosti:
 			
