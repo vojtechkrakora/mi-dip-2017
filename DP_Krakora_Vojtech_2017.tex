@@ -205,6 +205,24 @@ S roustoucím významem informačních systémů a informací jenž jsou zpracov
 			Z použitých technologí v kapitole \ref{sec:unify-technologi} plyne, že hlavním stavebním kamenem pro implementaci je Java EE 6.
 		
 		\todo{Zkratky B2B,ESB}
+		
+		\subsection{Komunikace na Unify}
+			Jak bylo zmíněno, na Unify je komunikace jak pomocí XML zpráv, JSON zpráv, tak například i přenosem souborů. Největší provoz je zpravidla na sběrnici ESB. Požadavky na ESB lze rozdělit na tři druhy:
+			
+			\subsubsection{Synchronní zprávy}
+				Konzument odešle požadavek, na který okamžitě dostane odpověď o tom, zdali se ho podařilo doručit. Doručení nezajišťuje i zpracování požadavku cílovým systémem. Byť u časově nenáročných požadavků je i to možné. Využití je zpravidla na dotazující se služby. Kdy synchronně na zprávu dostaneme odpověď s informací na kterou jsme se tázali. V obrázku \ref{fig:esb_communication} část \uv{A)}.
+			
+			\subsubsection{Asynchronní zprávy}
+				Asynchronní zprávy se na Unify dají rozdělit na dvě synchronní. První je dotaz konzumenta služby, na který obdrží okamžitou odpověď o přijetí požadavku. Jakmile je požadavek cílovým systémem zpracován, je odeslána zpět konzumentovi synchronní zpráva, která informuje i o zpracování požadavku. Běžné využití je pro takové služby, které požadavek zpracovávají delší dobu. V obrázku \ref{fig:esb_communication} část \uv{B)}.
+			
+			\subsubsection{Zprávy s frontou}
+				Je-li nutné mít jistotu odeslání požadavku (zpravidla například nové objednávky) pošle se dotaz na službu s frontou. Služba si požadavek uloží do fronty a odpoví zpět konzumentovi informací o přijetí. Následně požadavek odešle cílovému systému. Jakmile od systémy obdrží kladnou synchronní odpověď o zpracování vyjme požadavek z fronty a více ho nevolá. V opačném případě zkusí požadavek poslat po nějaké době znova. V obrázku \ref{fig:esb_communication} část \uv{C)}.
+				
+				\begin{figure}[htb]\centering
+					\tmpframe{\includegraphics[width=\textwidth]{./img/basic_esb_communication}}		
+					\caption{Běžné druhy komunikace na ESB, Unify - A) Synchronní, B) Asynchronní C) Zprávy s frontou}
+					\label{fig:esb_communication}
+				\end{figure}
 	
 	\section{Strojové učení}
 		Strojové učení patří jako jedna podkapitola do znalostního inženýrství. Jde o algoritmy a metody, které pomáhají stroji, aby se učil. Učením je myšleno, kdy stroj je schopen na základě zkušenosti se rozhodovat. Toto rozhodování dokáže vyvodit automaticky bez pomoci člověka. \cite{what-is-machine-learning}
@@ -235,7 +253,7 @@ S roustoucím významem informačních systémů a informací jenž jsou zpracov
 		
 		Těžení textu má velký význam, neboť 80\% informací uložených v počítačích jsou textové formy \cite{IRWebTechniques}.
 		
-		Těžení textu je metoda, která těží informace z textu \cite{WittenTextMining}. Přesto, že text mining spadá do kategorie data miningových metod, rozdíl je v tom, že nepracuje s číselnými a většinou ani nominálními hodnotami. Datamining dokáže detekovat skryté informace ze vstupních dat. Text mining informace nemá většinou ve svých datech nijak skryté. Při zpracování textu jde o automatizaci procesu, tak jak by ho zvládl člověk, počítačem. \cite{WittenTextMining}.
+		Těžení textu je metoda, která těží informace z textu \cite{WittenTextMining}. Přesto, že text mining spadá do kategorie data miningových metod, rozdíl je v tom, že nepracuje s číselnými a většinou ani nominálními hodnotami. Data mining dokáže detekovat skryté informace ze vstupních dat. Text mining informace nemá většinou ve svých datech nijak skryté. Při zpracování textu jde o automatizaci procesu, tak jak by ho zvládl člověk, počítačem. \cite{WittenTextMining}.
 		
 		Dle zdroje \cite{textAlg} lze problematiku těžení textu rozdělit následovně:
 		
@@ -323,6 +341,8 @@ S roustoucím významem informačních systémů a informací jenž jsou zpracov
 		\subsection{K-means}
 			K-means a K-medoids jsou metody shlukové analýzy. Tyto metody jsou založené na principu centroidů. Centroidem je vyjádřen pomyslný střed každého shluku. V případě K-means jde o střed shluku nezávisle na tom, je-li tento bod i objektem vstupních dat, nebo ne. K-medoids jako střed shluku určí vždy nejvhodnějšího zástupce ze vstupních dat. Graficky je tento rozdíl zobrazen na obrázku \ref{fig:kMeansVSkMedoids}. Z obrázku vyplývá, že shluk v K-means může mít střed mimo data, kdežto K-medoids má možnost středem shluku určit pouze nejvhodnější objekt ze vstupních dat.
 			
+			Tyto algoritmu patří do kategorie bez učitele. Algoritmy mají na vstupu jednu množinu dat. Na této množině se naučí data třídit do jednotlivých shluků dle podobnosti.
+			
 			\begin{figure}[htb]\centering
 				\tmpframe{\includegraphics[width=\textwidth]{./img/kmeansVSkmedoids}}		
 				\caption{Ukázka shluku a jeho centroidu pomocí metody K-means a K-medoids.}
@@ -331,6 +351,7 @@ S roustoucím významem informačních systémů a informací jenž jsou zpracov
 		
 			Postup algoritmu pro K-means je nejdříve vybrat $K$ bodů jako centroidy. Tyto centroidy lze vybrat například náhodně, nebo prvních $N$. Volbou prvních centroidů se například zabývá zdroj \cite{kMeansInit}. Po vybrání středů se všechny data přiřadí k nejvhodnějšímu shluku. Výběr takové shluku často ovlivňuje například vzdálenost bodu k centroidu. Následuje přepočet nových středů. Přiřazení do shluků a výpočet nových centroidů se opakuje, dokud shluky mění. Po té považujeme algoritmus za hotový a data rozdělená do skupin.
 			
+			\todo{čeština}
 			\begin{minipage}{\linewidth}
 				\begin{lstlisting}[caption={Algoritmus K-Means}, label={lst:k-means}]
 (1) Nahodn\v{e} vyber k stredu.
@@ -342,7 +363,7 @@ S roustoucím významem informačních systémů a informací jenž jsou zpracov
 				\end{lstlisting}
 			\end{minipage}
 			
-			Jedním z kroků algoritmu je přiřadit vstupním objektům správný shluk. K tomuto důvodu je nutné definovat funkci pro měření vzdáleností mezi jednotlivými objekty \cite{IntroductionToDataMining}. Požadavky na takovou funkcni jsou, aby byla jednoduchá, protože je velmi často volaná. Pokud data jsou v eukleidovském prostoru používají se například následující funkce na měření vzdálenosti:
+			Jedním z kroků algoritmu je přiřadit vstupním objektům správný shluk. K tomuto důvodu je nutné definovat funkci pro měření vzdáleností mezi jednotlivými objekty \cite{IntroductionToDataMining}. Požadavky na takovou funkci jsou, aby byla jednoduchá, protože je velmi často volaná. Pokud data jsou v eukleidovském prostoru používají se například následující funkce na měření vzdálenosti:
 			
 				\subsubsection{Eukleidova vzdálenost}
 				\label{sec:eukleid_distance}
@@ -351,40 +372,37 @@ S roustoucím významem informačních systémů a informací jenž jsou zpracov
 				
 				\subsection{Cosinova vzdálenost}
 				\label{sec:cosine_distance}
-				\todo{Dodělat, je dobrá na různě dlouhé vektory, prostě jen vypočte úhel}
+				Cosinova vzdálenost se vypočítá následovně \cite{cosine-similarity}: Máme vektor $A = [A_1,A_2,\ldots,A_n]$ a vektor $B = [B_1,B_2,\ldots,B_n]$. Cosinovu vzdálenost vypočteme jako
+				
+				$$cos(A,B) = \frac{A*B}{||A|| * ||B||}$$,
+				
+				kde $||A||$ vyjadřuje velikost vektoru $A$. Stejně tak velikost vektoru $B$ je označena $||B||$.
+				
+		
 				
 				\subsubsection{Manhattanská vzdálenost}
 				Dalším příkladem měření vzdáleností bodů $p = (p_1, p_2, \ldots, p_n)$ a $q = (q_1, q_2, \ldots, q_n)$ v eukleidově prostoru je manhattanská vzdálenost. Její výpočet je dle vzorce:
 				$$d_m(p,q) = \sum_{i = 1}^{n} |p_i - q_i| $$
 				
-			\todo{Ostatní vzdálenosti}
-			\todo{Zmínit, že to je bez učení}
-			\todo{Závislé na trénovacích datech}
-			
 		\subsection{Důvod využití}
 			Informace, které integrační platformou prochází jsou velmi různorodé. Požadavky je možné rozdělovat do různých skupin jako například:
 			
 			\begin{itemize} 
-				\item skupiny dle druhu služby (SOAP, REST, databázová \ldots)
-				\item skupiny dle služeb 
-				\item skupiny dle toho, zdali je zpráva požadavek nebo odpověď		
+				\item skupiny dle druhu služby (SOAP, REST, databázová \ldots),
+				\item skupiny dle služeb (služby na notifikace, na objednávky \ldots),
+				\item skupiny dle toho, zdali je zpráva požadavek nebo odpověď.		
 			\end{itemize}
 		
 			Jako jedno z možných rozdělení je možné na požadavky v pořádku, podezřelé požadavky a chybné požadavky. Cílem je najít takovou konfiguraci, která by podobné rozdělení dokázala najít. Tedy rozeznat požadavky, které jsou v pořádku (běžná komunikace na integrační platformě.) od těch, jenž jsou podezřelé (ne příliš častý vzor požadavku, \ldots), či zaručeně chybné (chyba protokolu, validace, \ldots). 
-		
-		\todo{Vysvětlit někde princip komunikace request -> response, popřípadě asynchronní, jms atd.}
 			
-		
-		
-		\todo{Proč použít clustering}
-		\todo{Druhy clusteringu}
+			Vhodné rozdělení může být i pouze na podezřelé zprávy a zprávy korektní.		
 	
 	\section{Detekce anomálie}
-		Většina požadavků, která projde skrz integrační platformu jsou v pořádku. Chyba či podezřelá zpráva se vyskytují zpravidla minimálně. Proto jsem jako další metodu zvolil detekci anomálie. Detekce anomálie je proces, při kterém se vyhledávají taková data, která se od ostatních výrazněji liší. Detekování odlišností se hojně využívá právě zajišťování bezpečnosti \cite{AnomDetectPCA}. Příklad anomálie je na obrázku \ref{fig:anomalyInData}.
+		Většina požadavků, která projde skrz integrační platformu jsou v pořádku. Chyba či podezřelá zpráva se vyskytují zpravidla minimálně. Proto jsem jako další metodu zvolil detekci anomálie. Detekce anomálie je proces, při kterém se vyhledávají taková data, která se od ostatních výrazněji liší. Detekování odlišností se hojně využívá právě zajišťování bezpečnosti \cite{AnomDetectPCA}. Příklad anomálie je na obrázku \ref{fig:anomalyInData}, kde jsou červeně zvýrazněné anomálie.
 		
 		\begin{figure}[htb]\centering
-			\tmpframe{\includegraphics[width=\textwidth]{./img/todo}}		
-			\caption{Ukázka anomálie v datech.}
+			\tmpframe{\includegraphics[scale=0.8]{./img/outlier}}		
+			\caption{Ukázka anomálií v datech}
 			\label{fig:anomalyInData}
 		\end{figure}
 	
@@ -398,9 +416,9 @@ S roustoucím významem informačních systémů a informací jenž jsou zpracov
 				\item metody založené na hustotě		
 			\end{itemize}
 		
-			Statistické metody očekávají, že data mají průběh nějakého rozdělení. Tomu ja následně přizpůsoben přístup zjišťování anomálií. Zpravidla proto tyto metody nejsou v praxi využívané \cite{KumarPCAANom}.
+			Statistické metody očekávají, že data mají průběh nějakého statistického rozdělení. Tomu ja následně přizpůsoben přístup zjišťování anomálií. Zpravidla proto tyto metody nejsou v praxi využívané \cite{KumarPCAANom}.
 			
-			U metod založených na vzdálenosti se výpočíta vzdálenost konkrétního data a jeho sousedů. Je-li nalezena vzdálenost větší než předem daný práh, je cílový prvek chápán jako anomálie.
+			U metod založených na vzdálenosti se vypočítá vzdálenost konkrétního data a jeho sousedů. Je-li nalezena vzdálenost větší než předem daný práh, je cílový prvek chápán jako anomálie.
 			
 			Metody založené na hustotě vypočítávají takzvaný LOF (Local Outlier Factor). LOF je hodnota, která u každého prvku určuje míru, jako moc je anomálií \cite{LOF}.
 			
@@ -413,7 +431,7 @@ S roustoucím významem informačních systémů a informací jenž jsou zpracov
 			
 				\begin{itemize} 
 					\item pro nejméně $k$ objektů $o' \in D \backslash {p}$	platí, že $d(p, o') \leq d(p, o)$ a zároveň
-					\item pro alespoň $k-1$ objektů $o' \in D \backslash {p}$ platí, že $d(p, o') < d(p, o)$
+					\item pro alespoň $k-1$ objektů $o' \in D \backslash {p}$ platí, že $d(p, o') < d(p, o)$.
 				\end{itemize}
 				Množinu $k$ nejbližších sousedů definujeme jako $N_k(p)$
 		
@@ -427,7 +445,7 @@ S roustoucím významem informačních systémů a informací jenž jsou zpracov
 				
 				Hustota dosažitelnosti lze popsat jako inverze průměru dosažitelné vzdálenosti $k$ nejbližších sousedů $p$.
 				
-			\subsubsection{Činitel anomálie objektu p (LOF}
+			\subsubsection{Činitel anomálie objektu p (LOF)}
 				LOF objektu $p$ je definován jako 
 				
 				$$LOF_{N_k}(p) = \frac{\sum_{o \in N_k(p)} \frac{lrd_{N_k}(o)}{lrd_{N_k}(p)}}{|N_k(p)|} $$
@@ -439,22 +457,18 @@ S roustoucím významem informačních systémů a informací jenž jsou zpracov
 		\label{sec:pca}
 		Analýza hlavních komponent, častěji označována jako PCA z anglického překladu \textit{Principal Component Analysis}. \todo{Zkratka PCA} PCA provede analýzu vstupních dat. Tyto data se skládají z mnoha proměnných, které na sobě mohou být závislé. Účelem je vybrat z těchto proměnných důležitou informaci tu reprezentovat jako nové proměnné zvané hlavní komponenty \cite{PCA_book}. Tyto hlavní komponenty jsou lineární kombinací originálních hodnot.
 		
-		
-		
-			
-	\todo{Být alespoň na straně 20}
 	
 
 \chapter{Návrh řešení}
-	\todo{Nic moc tento odstavec}
-	V této kapitole se zabývám principy, technologiemi algoritmy, které jsem se rozhodl použít, k tomu abych splnil cíle této práce. Tedy vytvoření aplikace, jenž umožní sledovat bezpečností rizika v reálném čase.
+	V této kapitole se zabývám principy, technologiemi a algoritmy, které jsem se rozhodl použít k tomu abych, splnil cíle této práce. Tedy vytvoření aplikace, jenž umožní sledovat bezpečností rizika v reálném čase.
+	
+	Návrh řešení plyne z toho, že hlavním stavebním kamenem je integrační platforma Unify. Tato platforma využívá již některé metody a standarty. 
 	
 	\section{Architektura aplikace}
-	\todo{Pozor na duplici s odstavcem v úrovni nad}
 	\todo{Lze rozdělit na podsekce}
-	Požadavkem na aplikaci je, aby požadavky zpracovávala a predikovala v reálném časem. Proto je princip položen na čtení požadavků proudících přes platformu. Jejich předzpracování a odeslání do cloudového řešení Microsoft Azure (Více v sekci \ref{sec:ms_azure}). Po přijetí odpovědi je výsledek uložen do databáze. Pro vizualizaci dat slouží REST API \cite{rest}, které vypisuje předem definované informace ve formátu pro ideální zobrazení v Google Charts \cite{googleCharts}.
+	Požadavkem na aplikaci je, aby zprávy zpracovávala a predikovala v reálném časem. Proto je princip položen na čtení požadavků proudících přes platformu. Jejich předzpracování a odeslání do cloudového řešení Microsoft Azure (Více v sekci \ref{sec:ms_azure}). Po přijetí odpovědi je výsledek uložen do databáze. Pro vizualizaci dat slouží REST API \cite{rest}, které vypisuje předem definované informace v ideálním formátu pro zobrazení v Google Charts \cite{googleCharts}.
 	
-	Pro snažší představu o architektuře aplikace poslouží obrázek \ref{fig:hld_architecture}, na kterém je vidět High Level Desing \cite{hld_johnson}.
+	Pro snazší představu o architektuře aplikace poslouží obrázek \ref{fig:hld_architecture}, na kterém je vidět High Level Desing \cite{hld_johnson}.
 	
 	\begin{figure}[htb]\centering
 		\tmpframe{\includegraphics[width=\textwidth]{./img/todo}}		
@@ -462,16 +476,18 @@ S roustoucím významem informačních systémů a informací jenž jsou zpracov
 		\label{fig:hld_architecture}
 	\end{figure}
 
-	Základem celé aplikace je neohrozit stávající integrační platformu. Na základě toho jsem se rozhodl, že informace o proběhlé komunikaci získám pomocí čtení logovacích souborů.
-	Pomocí čtení přírůstků k jednotlivým auditovým logům získám jednotlivé požadavky a pro Unify to nepředstavuje žádnou zátěž.
+	Základem celé aplikace je neohrozit stávající integrační platformu. Proto jsem se rozhodl, že informace o proběhlé komunikaci získám pomocí čtení logovacích souborů.
+	Čtením přírůstků k jednotlivým auditovým logům získám chtěné požadavky a pro Unify to nepředstavuje žádnou zátěž.
 	
 	Dalším stavebním kamenem je použitý aplikační server Jboss ( více v kapitole \ref{sec:jboss}). Na serveru je celá aplikace. Dochází zde k předzpracování zpráv, jejich odeslání do Microsoft Azure (\ref{sec:ms_azure}) a také k ukládání do DB.
 	
-	Jak jsem již zmiňoval provoz z platformy je po zpracování odesílán do MS Azure, zde jsou definovány jednotlivé algoritmy, jejichž výsledky jsou vracený zpět do aplikačního serveru. Azure jsem se rozhodl používat, protože umožňuje rozložení výkonu na server Microsoftu a protože využití služeb v cloudu se stává stále oblíbenějším. Díky spolupráci s Microsoftem je možné i získat, popřípadě zakoupit, instanci Azure do vlastní sítě.
+	Jak jsem již zmiňoval provoz z platformy je po zpracování odesílán do MS Azure, zde jsou definovány jednotlivé algoritmy, jejichž výsledky jsou vracený zpět do aplikačního serveru. Azure jsem se rozhodl používat, protože umožňuje rozložení výkonu na server Microsoftu a protože využití služeb v cloudu se stává stále oblíbenějším. Díky spolupráci s Microsoftem je možné i získat, popřípadě zakoupit, instanci Azure do vlastní sítě. Po diskuzi s Yuriy Zaytsev z týmu Microsoftu jsem získal i potvrzení, že podobné řešení postavené na jboss se v MS Azure nevyskytuje.
 	
 	Získané výsledky jsou zpracovány a uloženy do NoSQL databáze MongoDB (více v kapitole \ref{sec:data_storing}).
 	
-	Aby výsledky nebyly jen hodnoty uložené v databází, je použité REST API, přes které lze výsledky sdílet. API je navržené tak, aby v případě použití Google Charts nevznikly žádné potíže. Google Charts se u cílového zákazníka používají již nyní například na zobrazení stavu objednávek. Proto jejich se jejich použití jeví jako další logický krok. Nicméně, není problém stejné api použít pro svoji libovolnou aplikaci, která hodnoty použije buď pro zobrazování přehledů, nebo jako jeden z dalších vstupů například do různých systémů SIEM.
+	Aby výsledky nebyly jen hodnoty uložené v databází, je použité REST API, přes které lze výsledky sdílet. API je navržené tak, aby v případě použití Google Charts nevznikly žádné potíže. 
+	
+	Google Charts se u cílového zákazníka používají již nyní například na zobrazení stavu objednávek. Proto se jejich použití jeví jako další logický krok. Nicméně, není problém stejné API použít pro svoji libovolnou aplikaci, která hodnoty použije buď pro zobrazování přehledů, nebo jako jeden z dalších vstupů například do různých systémů SIEM.
 	
 	\section{Microsoft Azure}
 		\label{sec:ms_azure}
