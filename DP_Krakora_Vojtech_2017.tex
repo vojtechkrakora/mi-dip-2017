@@ -471,8 +471,8 @@ S roustoucím významem informačních systémů a informací jenž jsou zpracov
 	Pro snazší představu o architektuře aplikace poslouží obrázek \ref{fig:hld_architecture}, na kterém je vidět High Level Desing \cite{hld_johnson}.
 	
 	\begin{figure}[htb]\centering
-		\tmpframe{\includegraphics[width=\textwidth]{./img/todo}}		
-		\caption{High Level Desing architektura aplikace.}
+		\tmpframe{\includegraphics[width=\textwidth]{./img/jake_HLD}}		
+		\caption{High Level Desing aplikace s pracovním názvem JakeTheLogger}
 		\label{fig:hld_architecture}
 	\end{figure}
 
@@ -481,21 +481,21 @@ S roustoucím významem informačních systémů a informací jenž jsou zpracov
 	
 	Dalším stavebním kamenem je použitý aplikační server Jboss ( více v kapitole \ref{sec:jboss}). Na serveru je celá aplikace. Dochází zde k předzpracování zpráv, jejich odeslání do Microsoft Azure (\ref{sec:ms_azure}) a také k ukládání do DB.
 	
-	Jak jsem již zmiňoval provoz z platformy je po zpracování odesílán do MS Azure, zde jsou definovány jednotlivé algoritmy, jejichž výsledky jsou vracený zpět do aplikačního serveru. Azure jsem se rozhodl používat, protože umožňuje rozložení výkonu na server Microsoftu a protože využití služeb v cloudu se stává stále oblíbenějším. Díky spolupráci s Microsoftem je možné i získat, popřípadě zakoupit, instanci Azure do vlastní sítě. Po diskuzi s Yuriy Zaytsev z týmu Microsoftu jsem získal i potvrzení, že podobné řešení postavené na jboss se v MS Azure nevyskytuje.
+	Jak jsem již zmiňoval provoz z platformy je po zpracování odesílán do MS Azure, zde jsou definovány jednotlivé algoritmy, jejichž výsledky jsou vracený zpět do aplikačního serveru. Azure jsem se rozhodl používat, protože umožňuje rozložení výkonu na server Microsoftu a protože využití služeb v cloudu se stává stále oblíbenějším. Díky spolupráci s Microsoftem je možné i získat, popřípadě zakoupit, instanci Azure do vlastní sítě. Po diskuzi s Yuriy Zaytsev z týmu Microsoftu jsem získal i potvrzení, že podobné řešení postavené na jboss se v MS Azure nevyskytuje (k březnu 2017).
 	
 	Získané výsledky jsou zpracovány a uloženy do NoSQL databáze MongoDB (více v kapitole \ref{sec:data_storing}).
 	
 	Aby výsledky nebyly jen hodnoty uložené v databází, je použité REST API, přes které lze výsledky sdílet. API je navržené tak, aby v případě použití Google Charts nevznikly žádné potíže. 
 	
 	Google Charts se u cílového zákazníka používají již nyní například na zobrazení stavu objednávek. Proto se jejich použití jeví jako další logický krok. Nicméně, není problém stejné API použít pro svoji libovolnou aplikaci, která hodnoty použije buď pro zobrazování přehledů, nebo jako jeden z dalších vstupů například do různých systémů SIEM.
-	
+
 	\section{Microsoft Azure}
 		\label{sec:ms_azure}
 		Na integrační platformě Unify \cite{unify} je předpokládaný maximální provoz 20 požadavků za vteřinu. Vzhledem k takto silnému provozu bude potřeba i přiměřeně velký výpočetní výkon. 
 			
 		Spolupráce se společností Miscrosof \cite{microsoft} mi umožnila jako řešení vyzkoušet její cloudové služby Microsfot Azure \cite{msAzure}.
 			
-		Microsoft Azure je sada integrovaných cloudových služeb. Azure nabízí cloudová řešení pro mnoho činností. Motivací k použití této služby k detekci bezpečnostích rizik je nástroj Microsoft Azure Machine Learning Studio \cite{msAzureStudio}.
+		Microsoft Azure je sada integrovaných cloudových služeb. Azure nabízí cloudová řešení pro mnoho činností. Motivací k použití této služby k detekci bezpečnostních rizik je nástroj Microsoft Azure Machine Learning Studio \cite{msAzureStudio}.
 			
 		Microsoft Azure Machine Learning Studio je plně cloudová služba, která umožňuje vytváření prediktivních modelů pro strojové učení \cite{msAzureStudio}. Výhodou studia je to, že veškerý výkon je rozprostřen vevnitř cloudu. Díky grafickému rozhraní je snadné vytvořit učící model, který je následně převeden do modelu prediktivního.
 			
@@ -504,119 +504,116 @@ S roustoucím významem informačních systémů a informací jenž jsou zpracov
 		
 		Výhodou využití cloudu je přenesení výpočetní zatěže mimo společnost. Naopak rizikem je problém s konektivitou, který může vytvořit výpadek služby a nebude tedy možné po tuto dobu predikovat rizika. Jednou z možností, jak řešit takové riziko je nechat přenést instanci MS Azure do své sítě.
 		
-		\todo{Více rozepsat rozdíl mezi učícím a prediktivním modelem}
+		\subsection{Prostředí Microsoft Azure Machine Learning Studio}
+			Azure Machine Learning Studio (dále jako Azure nebo MS Azure) usnadňuje vytváření algoritmu pro strojové učení. Úvodní obrazovka grafického rozhraní je zobrazena na obrázku \ref{fig:MSAzureML}.
+			
+			\begin{figure}[htb]\centering
+				\tmpframe{\includegraphics[width=\textwidth]{./img/MSAzureML}}		
+				\caption{Grafické rozhraní Microsoft Azure Machine Learning Studia}
+				\label{fig:MSAzureML}
+			\end{figure}
+			
+			Základem veškerých experimentů jsou vstupní data. Ty lze do Azure uložit jako vlastní dataset. Data mohou být předzpracována, ale není to podmínkou. Azure poskytuje řadu nástrojů pro přípravu dat a stejně tak i možnost vytvoření vlastních komponent napsaných v jazyce R nebo Python.
+			
+			Samotný experiment se skládá z jednotlivých komponent. Ty jsou tedy buď již definované nebo vlastní. Experimenty jsou děleny na trénovací experimenty a na prediktivní. Trénovací experiment je takový, který naučí celý experiment predikovat data. Nachází se v něm zpravidla trénovací množina (může být rozdělena dále i na validační část), vybrané komponenty představující algoritmy strojového učení a prvky zobrazující výsledky. Mezi těmito hlavními částmi se mohou vyskytovat další komponenty například pro předzpracování dat, rozdělení dat, validaci, stažení a podobně. Pokud jsme s výsledky trénovacího experimentu spokojení může být automaticky vygenerován experiment prediktivní. Ten je připraven na vstup získat data a vrátit výsledky z naučeného algoritmu. Takový experiment je možné vystavit jako webovou službu.
+			
+			Další záložky obsahují poznámky nebo například vystavené webové služby.
+			
+			
 		
 	\section{JBoss}
 		\label{sec:jboss}
-		Platforma Unify je postavená na aplikačním server JBoss AS 7 \cite{unify}. Z toho důvodu je třeba aby aplikace byla zcela kompatibilní.
-		 
-		 \todo{Nají nějaké zdroje kde je popsáno o co vlastně jde}
-		Jboss AS je aplikační server pro Javu EE\cite{jboss}. 
-			
-		\todo{Popsat proč jboss}
-		\blind[1]	
+		Základem integrační platformy Unify je aplikační server JBoss AS 7 \cite{unify}. Je potřeba, aby cílový aplikace byla kompatibilní, proto se i její vývoj bude soustředit na nasazení na JBoss.
+		
+		Jboss AS je aplikační server pro Javu EE\cite{jboss}.
+
 					
 	\section{Logování Unify}
 		\label{sec:logging_unify}
-		Platforma Unify loguje veškerý průběh do souborových audit logů. Protože celá integrace je založena na Javě, je využit logovací framework Log4j \cite{log4j}. Knihovna Log4j umožňuje nastavit si pattern logování \cite{log4jPatternLayout}. Na Unify je použit pattern \todo{Přidat pattern Log4j}. 
+		Abychom nenarušil novou komponentou provoz platformy, budou veškeré zprávy, které přes ni budou vedeny čteny z logu. Platforma Unify loguje veškerý průběh do souborových logů. Protože celá integrace je založena na Javě, je využit logovací framework Log4j \cite{log4j}.
+		Každý požadavek, který na platformu přijde je zalogován do audit.logu. Zpráva je vždy na jedné řádce a zároveň na jedné řádce je povolena pouze jedna zpráva.
 		
-		Každý požadavek, který na platformu příde je zalogován do audit.logu. Zpráva je vždy na jedné řádce a zároveň na jedné řádce je povolena pouze jedna.
+		\begin{minipage}{\linewidth}
+			\begin{lstlisting}[caption={Část řádky v auditovém logu Unify}, label={lst:log}]
+REQ;20170117;16:03:01;WorkRequestMgmtService;
+cancelOrderedService;esb1-1484665381312-5369
+			\end{lstlisting}
+		\end{minipage}
 		
+		Jedna řádka auditového logu obsahuje:
 		
-		\todo{Ukázka logu}
+		\begin{itemize} 
+			\item informaci o čase zápisu,
+			\item závažnost z pohledu javy, 
+			\item název třídy, který uložil řádku do logu,
+			\item název vlákna, který zapisovanou část zpracovával,
+			\item informaci zda je o požadavek (REQ) nebo odpověď (RES), či chyby (ERR),
+			\item datum přijetí požadavku,
+			\item čas přijetí požadavku,
+			\item název logující komponenty,
+			\item název operace,
+			\item jednoznačný identifikátor požadavku,
+			\item obsah požadavku.		
+		\end{itemize}
 		
-		\todo{Popsat ukázku logu}
+		Jednotlivé části logu jsou od sebe odděleny středníkem.
 		
 		Vzhledem k tomuto principu jsem se rozhodl přistoupit k tomu, že se vybrané logovací soubory budou kontinuálně číst, kde se bude ke každému řádku přistupovat jako k samostatné zprávě, která bude následně zpracována dál.
 		
-		Díky této volbě nebude nutné nijak zasahovat do integrační platformy Unify a minimalizuje se tím riziko, jakéhokoliv nebezpečí ze strany mojí aplikace.
+		Díky této volbě nebude nutné nijak zasahovat do integrační platformy Unify a minimalizuje se tím riziko, jakéhokoliv nebezpečí ze strany této aplikace.
 		
-		Unify využívá pro některé služby logování do Oracle databáze. Ale vzhledem k tomu, že jde pouze o několik málo určených služeb, připojení na databázy by tak kromě případných komplikací ani nepřineslo žádaný účinek.
-		
-		
-	\section{Ukládání dat}
-		\label{sec:data_storing}
-		\todo{Porovnání SQL/NoSQL}
-		Rozhodl jsem se pro ukládání dat využít NoSQL databázi. Protože aplikace Unify momentálně ukládá veškerý svůj provoz do souborů (vyjímečně jsou některé konkrétní služby journalovány do DB), bude databáze využita i pro ukládání veškeré komunikace. To zpřístupní do budoucna snažší operování s jednotlivými zprávami. Popřípadě snažší zpětnou analýzu.
-		\todo{Schéma DB}
-		
-		Protože se bude ukládat veškerá komunikace, rozhodl jsem se v databázi mít uvedené následující informace:
-		
-		\todo{Byt je to na pohled jasne, tak popsat co ktery param. je}
-		\begin{itemize} 
-			\item ObjectId - automaticky generováno z MongoDB
-			\item timestamp- časové razítko uložení záznamu do DB
-			\item original-message - nezměněná zpráva
-			\item normalized-message - zpráva po normalizaci
-			\item platformId - jedinečný identifikátor platformy
-			\item assignment - skupina, kterou azure vyhodnotil pro zprávu jako správnou 		
-		\end{itemize}
+		Unify využívá pro některé služby logování do Oracle databáze. Ale vzhledem k tomu, že jde pouze o několik málo určených služeb, připojení na databázi by tak kromě případných komplikací ani nepřineslo žádaný účinek. Veškerá komunikace ukládaná do databáze je stejně duplikovaná i v logovacích souborech.
 					
 	\section{Předzpracování dat}
 		\label{sec:preprocessing}
 		
-		\todo{Dopsat čištění dat}
+		Pro snazší práci s informacemi z logů jsem se rozhodl pro normalizaci jednotlivých požadavků. Normalizace je jeden z požadavků při zpracovávání textu \cite{txtNrmlztn}.
 		
-		Pro snažší prácí s informacemi z logů jsem se rozhodl pro normalizaci jednotlivých požadavků. Normalizace je jeden z požadavků při zpracovávání textu \cite{txtNrmlztn}.
-		
-		V kapitole \ref{sec:logging_unify} jsou vidět informace, které se kromě samotné zprávy logují. V každé zprávě se objevuje takzvaná integrační hlavička. V té jsou základní údaje, jako čas odeslání, jednoznačné identifikátory, zdrojové a cilové systémy. Položka jako je timestamp bude zpravidla pro každý požadavek jiná, stejně na tom budou jednoznačné identifikátory. Z tohoto důvodu jsem se rozhodl zvolit jejich nahrazení.
+		V kapitole \ref{sec:logging_unify} jsou vidět informace, které se kromě samotné zprávy logují. V každé zprávě se objevuje takzvaná integrační hlavička. V té jsou základní údaje, jako čas odeslání, jednoznačné identifikátory, zdrojové a cílové systémy. Položka jako je časové razítko bude zpravidla pro každý požadavek jiná, stejně na tom budou jednoznačné identifikátory. Z tohoto důvodu jsem se rozhodl zvolit jejich nahrazení.
 		
 		Při normalizaci dat jsem se podobně jako ve zdroji \cite{Li_2013} rozhodl použít následovně:
 		
 		\begin{itemize} 
-			\item Nahrazení všech čísel - Pomocí speciálního symbolu nahradím všechny výskyty čísel.
-			\item Velikost písmem - Všechna písmena jsou z velkých znaků převedena na znaky malé.
-			\item Odstranění speciálních znaků - Veškeré znaky jako jsou čárka, tečka \ldots jsou odstraněny
-			\item Odstranění xml tagů - Rozhodl jsem pro zpracovávat jen obsah zpráv bez xml tagů.	
+			\item nahrazení všech čísel - pomocí speciálního symbolu \uv{\#} nahradím všechny výskyty čísel,
+			\item velikost písmem - všechna písmena jsou z velkých znaků převedena na znaky malé,
+			\item nahrazení speciálních znaků -veškeré znaky jako jsou čárka, tečka \ldots jsou nahrazeny mezerou,
+			\item odstranění xml tagů - rozhodl jsem zpracovávat jen obsah zpráv bez XML tagů.	
 		\end{itemize}
 	
-		Nahrazení čísel se mi jeví jako logický krok. V jednotlivejch požadavcích jsou čísla například výsledky různých měření na sítí nebo právě čas v časovém razítku. Pro další využití považuji za podstatné vědět, že se v daném místě vystkytovalo číslo, než že to bylo nějaké konkrétní číslo.
+		Nahrazení čísel se mi jeví jako logický krok. V jednotlivých požadavcích jsou čísla výsledky různých měření na sítí nebo právě časové razítko. Pro další využití považuji za podstatné vědět, že se v daném místě vyskytovalo číslo, než že to bylo nějaké konkrétní číslo.
 		
 		Převod písmen na malá zajistí, aby slova, lišící se právě jen ve velikosti nějakých písmen byla vyhodnocena jako stejná.
 		
-		Všechna komunikace na platformě je převedena do xml (není-li již od počátku vedena v xml). Protože téměř u všech zpráv stejného druhu se používají ty samé xml tagy, nebudou pro další zpracování podstatné a budou zcela odstraněny. Algoritmus bude dále pracovat jen s reálným obsahem zprávy. 
+		Veškerá komunikace na platformě je převedena do XML (není-li již od počátku vedena v XML). Protože téměř u všech zpráv stejného druhu se používají ty samé XML tagy, nebudou pro další zpracování podstatné a budou zcela odstraněny. Algoritmus bude dále pracovat jen s reálným a normalizovaným obsahem zprávy. 
 		
-		Na obrázku \ref{fig:normalized_message} je ukázka originálu zprávy a její normalizované alternativy.
+	 	Pro ilustraci normalizace poslouží následující ilustrační příklad:
+	 	
+	 	\begin{minipage}{\linewidth}
+	 		\begin{lstlisting}[caption={Ilustrační příklad XML požadavku}, label={lst:xml-example}]
+<WebService>
+  <header>
+    <timestamp>2016-08-09T11:11:11</timestamp>
+  </header>
+  <body>
+    <firstElement>Hello world!</firstElement>
+    <secondElement>0</secondElement>
+  </body>
+</WebService>
+	 		\end{lstlisting}
+	 	\end{minipage}
+			
+			ten by normalizaci vypadal následovně:
+			
+			\begin{minipage}{\linewidth}
+				\begin{lstlisting}[caption={Ilustrační příklad po normalizaci}, label={lst:xml-example-normalized}]
+# # #T# # # hello world #
+				\end{lstlisting}
+			\end{minipage}
 		
-		\begin{figure}[htb]\centering
-			\tmpframe{\includegraphics[width=\textwidth]{./img/todo}}		
-			\caption{Original and normalized message}
-			\label{fig:normalized_message}
-		\end{figure}
+		Čištění dat probíhá na straně aplikace. Do MS Azure tedy chodí už pouze korektní vstupní data. Vyčištění se stará o to, že nekorektní požadavky nejsou zpracovány. Je to pojistka proto, kdyby nějaká zpráva byla více řádková (například nechtěnou změnou logování). V takovém případě se nepodaří pomocí regulárního výrazu najít jednoznačný identifikátor platformy a \uv{požadavek} je ignorován.
 			
 	\section{Vytvoření vektoru}
 		\label{sec:construct_vector}
-		V okamžik, kdy máme předzpracovaná, znormalizovaná textová data je nutné najít vhodný způsob pro jejich převod do numerické podoby. To umožní snažší zpracování jak v případě clusteringu, tak i v případě detekce outlinerů.
-		
-		Cílem tedy je vytvořit vekotr, který bude dostatečně jednotlivé zprávy reprezentovat.
-		
-		\subsection{TF-IDF algoritmus}
-		\label{subsec:tf-idf}
-		Při clusteringu dokumentů lze využívat algoritmus TF-IDF (term frequency - inverse document frequency) \cite{Neto_0}. 
-		
-		\todo{Trošku lépe pořešit}
-		\subsubsection{Frekvence slova}
-		Ten funguje na principu, že se spočíta frekvence daného slova \textit{w} v dokumentu \textit{d}, označujeme $TF(w,d)$. Vypočteme se tak, že se spočítá suma výskytů slova \textit{w} v dokumentu \textit{d}. Výšší číslo znamená častější výskyt a tedy o to více \textit{w} charakterizuje \textit{d}.
-		
-		\subsubsection{Frekvence dokumentu}
-		Frekvence dokumentu pro slovo \textit{w} DF(w) je počet dokumentů, ve kterých se slovo \textit{w} nachází.
-		
-		\subsubsection{Inverzní frekvence dokumentu}
-		IDF neboli inverzní frekvence dokumentu je daná následující formulí \cite{Ramos_0}:
-		
-		$$ IDF(w) = \log{\frac{|D|}{DF(w)}}$$  
-		
-		Kde $|D|$ je počet souborů.
-		
-		\subsubsection{TF-IDF}
-		Samotný vzorec na výpočet TF-IDF je \cite{Neto_0}: 
-		
-		$$TFIDF(w,d) = TF(w,d) * IDF(w) $$
-		
-		\subsubsection{Použití}
-		Pro své účeli budu předpokládat, že jednotlivé zprávy jsou soubory a slova budou mezerou oddělený obsah zprávy. 
-		
-		Protože slov může být velké množství, rozhodl jsem se najít nějakou hranici, například takovou, že do výsledného vektoru zanesu TF-IDF pro taková slova, která se vyskytují nejvíce v 95\% zpráv, ale minimálně v 10\%.
 		
 		\subsection{Forma vektoru}
 		V sekci \ref{subsec:tf-idf} jsem navrhl, jak textová data převést do vektoru. Tím je zaručené, že bodou-li se data přenášet přes internet do Microsoft Azure, budou anonymizována. Z vektoru nedokážeme zpětně zprávu vyčíst.
@@ -673,6 +670,24 @@ S roustoucím významem informačních systémů a informací jenž jsou zpracov
 			\label{fig:anomaly_detection_azure}
 		\end{figure}
 		\todo {jak jsem zjistil nejlepší vhodné nastavení}
+		
+	\section{Ukládání dat}
+	\label{sec:data_storing}
+	Rozhodl jsem se pro ukládání dat využít NoSQL databázi. Protože aplikace Unify momentálně ukládá veškerý svůj provoz do souborů (výjimečně jsou některé konkrétní služby journalovány do DB), bude databáze využita i pro ukládání veškeré komunikace. To zpřístupní do budoucna snazší operování s jednotlivými zprávami. Popřípadě jednoduší zpětnou analýzu.
+	\todo{Schéma DB}
+	
+	
+	Protože se bude ukládat veškerá komunikace, rozhodl jsem se v databázi mít uvedené následující informace:
+	
+	
+	\begin{itemize} 
+		\item ObjectId - automaticky generováno z MongoDB,
+		\item timestamp- časové razítko uložení záznamu do DB,
+		\item original-message - nezměněná zpráva,
+		\item normalized-message - zpráva po normalizaci,
+		\item platformId - jedinečný identifikátor platformy,
+		\item assignment - skupina, kterou azure vyhodnotil pro zprávu jako správnou. 		
+	\end{itemize}
 		
 	\section{Prezentace dat}
 		\label{sec:data_prezentation}
