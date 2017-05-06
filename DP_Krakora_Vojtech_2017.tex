@@ -109,9 +109,9 @@ S roustoucím významem informačních systémů a informací jenž jsou zpracov
 				Integrační platforma je složena z mnoha modulů, který tvoří její celek. S rostoucím množstvím softwaru a použitých knihoven jsou šance na skrytou chybu velmi vysoké. 
 			
 			\subsubsection{Odepření služby}
-				Útoky, jenž se snaží o znemožnění užívání nějaké služby jejími uživateli označujeme jako DoS. Zkratka DoS \todo{Zkratka DoS} pochází z anglického názvu \textit{Denial of service}, přeloženo jako odepření služby. Poddruhem DoS útoku je DDoS (z anglického \textit{distributed denial of service}). Při DDoS je použito velké množství různých zařízení, které požadovanou službu zahltí požadavky. Cílem je, aby služba nedokázala požadavky odbavovat a došlo tím k tomu, aby nové požadavky odmítala \cite{dosAndDdos}.
+				Útoky, jenž se snaží o znemožnění užívání nějaké služby jejími uživateli označujeme jako DoS. Zkratka DoS pochází z anglického názvu \textit{Denial of service}, přeloženo jako odepření služby. Poddruhem DoS útoku je DDoS (z anglického \textit{distributed denial of service}). Při DDoS je použito velké množství různých zařízení, které požadovanou službu zahltí požadavky. Cílem je, aby služba nedokázala požadavky odbavovat a došlo tím k tomu, aby nové požadavky odmítala \cite{dosAndDdos}.
 				
-				Ukázka rozdílu mezi DoS a DDoS je na obrázku \ref{fig:ddos}. V části s DoS je znázorněn útočník, který se snaží znepřístupnit službu. U DDoS útočník využije nakažené PC \todo{zkratka PC} ( obecně to mohou být i mobilní telefony, tablety, či jiná zařízení s přístupem do sítě) a následně jejich pomocí zahlcuje cílovou službu.	
+				Ukázka rozdílu mezi DoS a DDoS je na obrázku \ref{fig:ddos}. V části s DoS je znázorněn útočník, který se snaží znepřístupnit službu. U DDoS útočník využije nakažené PC ( obecně to mohou být i mobilní telefony, tablety, či jiná zařízení s přístupem do sítě) a následně jejich pomocí zahlcuje cílovou službu.	
 				
 				\begin{figure}[htb]\centering
 					\tmpframe{\includegraphics[width=\textwidth]{./img/ddos}}		
@@ -127,7 +127,7 @@ S roustoucím významem informačních systémů a informací jenž jsou zpracov
 			\subsubsection{Nevalidní dotazy}
 				Riziko, které je třeba hlídat, ale není nutně vytvořené za účelem poškodit někoho nebo něco. Integrační platforma musí zpracovávat různé požadavky od konzumentů a ty zpravidla přeposílat poskytovatelům služeb. Mohou nastat situace, kdy konzument posílá nevalidní požadavek.
 			
-				V případě, že požadavky jsou v xml formě, lze definovat přesné znění zprávy. V případě, že je její validita narušena dochází k nekompatibilnímu dotazu na rozhraní poskytovatele. To může vyústit v nevyřízené a odmítnuté požadavky. Z této situace mohou vzniknout nechtěné útoky odepření služeb. V případě, že požadavek nebude zamítnut, možným důsledkem může být zisk nevalidních dat nebo dokonce i dat, která se ke konzumentovi neměla dostat.
+				V případě, že požadavky jsou v XML formě, lze definovat přesné znění zprávy. V případě, že je její validita narušena dochází k nekompatibilnímu dotazu na rozhraní poskytovatele. To může vyústit v nevyřízené a odmítnuté požadavky. Z této situace mohou vzniknout nechtěné útoky odepření služeb. V případě, že požadavek nebude zamítnut, možným důsledkem může být zisk nevalidních dat nebo dokonce i dat, která se ke konzumentovi neměla dostat.
 			
 				Tyto popřípadě i jiné neočekávané situace je třeba včas odhalit a řešit.
 				
@@ -175,7 +175,7 @@ S roustoucím významem informačních systémů a informací jenž jsou zpracov
 			
 			Podobný přístup je i pro partnery mimo domovskou organizaci, kde je Unify provozováno. Každý takový partner je připojen na B2B sběrnici (business to business). Ta stejně jako ESB vystavuje interfacy a následně volá rozhraní ESB. Význam B2B je takový, že se zpravidla vyskytuje takzvaně demilitarizované zóně. Z tohoto důvodu je nutné zde dbát na vyšší bezpečnost provozu.
 			
-			Mimo zmíněných sběrnic je Unify složeno i z dalších komponent. Například notifikační engine slouží k rozesílání mailových nebo po připojení na SMS konektor i SMS zpráv \todo{Zkratka SMS}. Komponenta ETL (extract transform load) zpravidla transformuje data z jednoho uložiště do druhého. SFE (secure file exchange) má za úkol přenos souborů. Tento přenos se hlavně využívá mezi demilitarizovanou zónou a vnitřní sítí.
+			Mimo zmíněných sběrnic je Unify složeno i z dalších komponent. Například notifikační engine slouží k rozesílání mailových nebo po připojení na SMS konektor i SMS zpráv. Komponenta ETL (extract transform load) zpravidla transformuje data z jednoho uložiště do druhého. SFE (secure file exchange) má za úkol přenos souborů. Tento přenos se hlavně využívá mezi demilitarizovanou zónou a vnitřní sítí.
 			
 		\subsection{Technologie}
 			\label{sec:unify-technologi}
@@ -191,7 +191,7 @@ S roustoucím významem informačních systémů a informací jenž jsou zpracov
 			
 			
 		\subsection{Architektura Unify}
-			Architektura již byla z části popsána v sekci \ref{sec:meaning-unify}. Skládá se tedy ze dvou sběrnic, kde jedna slouží pro komunikaci vnitřních systémů a druhá pro komunikaci se systémy partnerů. Dále Unify obsahuje různé komponenty pro prací s daty nebo jejich přenos, popřípadě rozesílání emailů a sms zpráv.
+			Architektura již byla z části popsána v sekci \ref{sec:meaning-unify}. Skládá se tedy ze dvou sběrnic, kde jedna slouží pro komunikaci vnitřních systémů a druhá pro komunikaci se systémy partnerů. Dále Unify obsahuje různé komponenty pro prací s daty nebo jejich přenos, popřípadě rozesílání emailů a SMS zpráv.
 			Architekturu přibližuje obrázek \ref{fig:esb}. 
 			
 			\begin{figure}[htb]\centering
@@ -227,9 +227,9 @@ S roustoucím významem informačních systémů a informací jenž jsou zpracov
 	\section{Strojové učení}
 		Strojové učení patří jako jedna podkapitola do znalostního inženýrství. Jde o algoritmy a metody, které pomáhají stroji, aby se učil. Učením je myšleno, kdy stroj je schopen na základě zkušenosti se rozhodovat. Toto rozhodování dokáže vyvodit automaticky bez pomoci člověka. \cite{what-is-machine-learning}
 		
-		Strojové učení využíváno například ve spamových filtrech, v algoritmech rozpoznávajících obličej nebo jako automatické třídění článků.
+		Strojové učení využíváno například ve spamových filtrech, v algoritmech rozpoznávajících obličej nebo jako automatické třídění článků \cite{machine-learning}.
 		
-		Základem jsou tři techniky:
+		Základem jsou tři techniky \cite{machin-learning-and-opt}:
 		
 			\begin{itemize} 
 				\item učení s učitelem - algoritmus má na vstupu učící množinu dat a validační množinu
@@ -243,11 +243,7 @@ S roustoucím významem informačních systémů a informací jenž jsou zpracov
 				\item regrese - nalezení správných hodnot pro vstupní data
 				\item shlukování - rozdělení dat do skupin vzhledem k jejich vzájemné podobnosti
 			\end{itemize}
-		
-		
-		\todo{Zadnej zazrak} \cite{machine-learning}
-		\todo{Obecny zacatek} \cite{machin-learning-and-opt}
-		
+			
 	\subsection{Těžení textu}
 		V logách integrační platformy je veškerá komunikace v textovém formátu. Kromě zpráv ve formátu XML jsou zde i zprávy ve formátu JSON, popřípadě výpisy chyb, pokud nějaká nastala. Protože v prací řeším analýzu takových logů, tak následující kapitola přiblíží těžení znalostí z textu. 
 		
@@ -448,14 +444,11 @@ S roustoucím významem informačních systémů a informací jenž jsou zpracov
 			\subsubsection{Činitel anomálie objektu p (LOF)}
 				LOF objektu $p$ je definován jako 
 				
-				$$LOF_{N_k}(p) = \frac{\sum_{o \in N_k(p)} \frac{lrd_{N_k}(o)}{lrd_{N_k}(p)}}{|N_k(p)|} $$
-			
-			
-		
+				$$LOF_{N_k}(p) = \frac{\sum_{o \in N_k(p)} \frac{lrd_{N_k}(o)}{lrd_{N_k}(p)}}{|N_k(p)|} $$		
 		
 		\subsection{Analýza hlavních komponent}
 		\label{sec:pca}
-		Analýza hlavních komponent, častěji označována jako PCA z anglického překladu \textit{Principal Component Analysis}. \todo{Zkratka PCA} PCA provede analýzu vstupních dat. Tyto data se skládají z mnoha proměnných, které na sobě mohou být závislé. Účelem je vybrat z těchto proměnných důležitou informaci tu reprezentovat jako nové proměnné zvané hlavní komponenty \cite{PCA_book}. Tyto hlavní komponenty jsou lineární kombinací originálních hodnot.
+		Analýza hlavních komponent, častěji označována jako PCA z anglického překladu \textit{Principal Component Analysis}. PCA provede analýzu vstupních dat. Tyto data se skládají z mnoha proměnných, které na sobě mohou být závislé. Účelem je vybrat z těchto proměnných důležitou informaci tu reprezentovat jako nové proměnné zvané hlavní komponenty \cite{PCA_book}. Tyto hlavní komponenty jsou lineární kombinací originálních hodnot.
 		
 	
 
@@ -493,7 +486,7 @@ S roustoucím významem informačních systémů a informací jenž jsou zpracov
 		\label{sec:ms_azure}
 		Na integrační platformě Unify \cite{unify} je předpokládaný maximální provoz 20 požadavků za vteřinu. Vzhledem k takto silnému provozu bude potřeba i přiměřeně velký výpočetní výkon. 
 			
-		Spolupráce se společností Miscrosof \cite{microsoft} mi umožnila jako řešení vyzkoušet její cloudové služby Microsfot Azure \cite{msAzure}.
+		Spolupráce se společností Miscrosof \cite{microsoft} mi umožnila jako řešení vyzkoušet její cloudové služby Microsfot Azure \cite{msAzure}. Dostupné na stránkách \url{https://studio.azureml.net}.
 			
 		Microsoft Azure je sada integrovaných cloudových služeb. Azure nabízí cloudová řešení pro mnoho činností. Motivací k použití této služby k detekci bezpečnostních rizik je nástroj Microsoft Azure Machine Learning Studio \cite{msAzureStudio}.
 			
@@ -577,7 +570,7 @@ cancelOrderedService;esb1-1484665381312-5369
 			\item nahrazení všech čísel - pomocí speciálního symbolu \uv{\#} nahradím všechny výskyty čísel,
 			\item velikost písmem - všechna písmena jsou z velkých znaků převedena na znaky malé,
 			\item nahrazení speciálních znaků -veškeré znaky jako jsou čárka, tečka \ldots jsou nahrazeny mezerou,
-			\item odstranění xml tagů - rozhodl jsem zpracovávat jen obsah zpráv bez XML tagů.	
+			\item odstranění XML tagů - rozhodl jsem zpracovávat jen obsah zpráv bez XML tagů.	
 		\end{itemize}
 	
 		Nahrazení čísel se mi jeví jako logický krok. V jednotlivých požadavcích jsou čísla výsledky různých měření na sítí nebo právě časové razítko. Pro další využití považuji za podstatné vědět, že se v daném místě vyskytovalo číslo, než že to bylo nějaké konkrétní číslo.
@@ -614,90 +607,105 @@ cancelOrderedService;esb1-1484665381312-5369
 			
 	\section{Vytvoření vektoru}
 		\label{sec:construct_vector}
+		V sekci \ref{subsub:tf-idf} jsem navrhl, jak textová data převést do vektoru. Tím je zaručené, že budou-li se data přenášet přes internet do Microsoft Azure, budou anonymizována. Z vektoru nedokážeme zpětně zprávu vyčíst. Jediným vodítkem, které vektor spojuje zpět s původní zprávou je jednoznačný identifikátor \textit{platform-id}.
 		
 		\subsection{Forma vektoru}
-		V sekci \ref{subsec:tf-idf} jsem navrhl, jak textová data převést do vektoru. Tím je zaručené, že bodou-li se data přenášet přes internet do Microsoft Azure, budou anonymizována. Z vektoru nedokážeme zpětně zprávu vyčíst.
+		Pokud by nedošlo k žádné změně, vektor by byl tak velký, kolik unikátních slov by se v rámci zpráv našlo. Takový vektor by byl velmi obsáhlí. Mnoho dat by nemělo ani smysl, neboť slova, která se vyskytují ve všech zprávách nebo například pouze v jedné nemají příliš velký informační smysl. Z tohoto důvodu jsem vytvořil dva konfigurační parametry, které stanovují horní a spodní procentní hranici. Tyto hranice vymezují pouze ty slova, jejichž procentuální výskyt ve zprávách je právě v intervalu vytyčeném hranicemi.  
 		
-		I když z Azure dostáváme synchronně odpověď zpět, a je tedy jasné, ke které zpráve dostávám výsledek, rozhodl jsem se odesílat i jednoznačný identifikátor platformy. To vede k tomu, že pro znalého člověka lze jednotlivé požadavky sledovat i uvnitř MS Azure. Identifikátor sám o sobě vypovídající hodnotu žádnou nemá, ale máme-li k dispozici původní zprávu, jsem ji schopni dohledat.
+		Při jednom z experimentů jsem pro horní hranici 85\%, spodní hranici 10\%  a velikost vektoru $|v| = 10$ získal slova uvedené v tabulce \ref{tab:vector-err}. Tato slova budou následně použita v algoritmu TF-IDF. Výsledek bude tvořit vektor o velikost rovnému počtu slov v tabulce \ref{tab:vector-err}.
 		
-		\todo{Ukázka vektoru}
+		\begin{table}[htb]\centering
+			\centering
+			\caption{Výběr slov a hodnoty vektoru pro zpravu err1-1490865735867-8212}
+			\label{tab:vector-err}
+			\begin{tabular}{|c|c|l|}
+				\hline
+				\textbf{četnost výskytu v \%} & \textbf{slovo} & \multicolumn{1}{c|}{\textbf{hodnota ve vektoru}} \\ \hline
+				79                            & esb\#          & 0.0                                                               \\ \hline
+				36                            & \#\#           & 0.0                                                               \\ \hline
+				43                            & res            & 0.0                                                               \\ \hline
+				16                            & err            & 0.0114536341484269                                                \\ \hline
+				16                            & org            & 0.0687218048905616                                                \\ \hline
+				19                            & zis            & 0.0                                                               \\ \hline
+				18                            & threads        & 0.0107174901755745                                                \\ \hline
+				82                            & thread         & 0.0                                                               \\ \hline
+				16                            & err\#          & 0.0114536341484269                                                \\ \hline
+				18                            & default        & 0.0107174901755745                                                \\ \hline
+			\end{tabular}
+		\end{table}
+		
 		
 	\section{Konstrukce clusteringu}
-		\label{sec:construc_clustering}
-		Microsoft Azure nabízí k přípravě experimentů svoje studio dostupné na adrese \url{https://studio.azureml.net}.
+		\label{sec:construc_clustering}		
+		Ve studiu Azure machine learning je možné vytvářet své projekty, do projektů umístit své experimenty a ty následně vystavit jako webovou službu.
 		
-		Ve studiu Azureml je možné vytvářet své projekty, do projektů umístit své experimenty a ty následně vystavit jako webovou službu.
-		
-		Základem úspěšného experimentu je vytvořit učící model. To je takový model, pro který máme zvolený cílový algoritmus a na předpřipravených datech ho naučíme aby dokázal v našem případě co nejlépe rozdělovat zprávy do clusterů.
+		Základem úspěšného experimentu je vytvořit učící model. To je takový model, pro který máme zvolený cílový algoritmus a na připravených datech ho naučíme aby dokázal v našem případě co nejlépe rozdělovat zprávy do clusterů.
 		
 		\subsubsection{Předzpracování}
-		Veškeré předzpracování a čištění dat probíhá v mojí aplikaci i přesto jsem základní předzpracování zvolil i do experimentu samotného.
+		Veškeré předzpracování a čištění dat probíhá v mojí aplikaci tak jak je uvedeno v kapitole \ref{sec:preprocessing}. I přes to jsem se rozhodl umístit základní předzpracování dat i trénovacího modelu.
 		
-		Po načtení vstupních dat dochází odstranění duplicitních řádků. Jako další metoda je využití modulu, který smaže řádky, jimž chybí nějaká data.
+		Na obrázku \ref{fig:k-means_azure} jsou dva moduly předzpracování:
 		
-		\todo{Mohl bych použít zároven s klasifikacnim modelem, ale nevim.}
-		\subsubsection{Zpracování}
-		Pro zpracování jsem zvolil K-Means modul, který je připojený na modul pro trénování clusterovacích modulů.
-		
-		Po natrénování přiřadíme zbytku testovacích dat clustery a může zhlédnout výsledek.
-		
-		Na obrázku \ref{fig:k-means_azure} je vidět celý vytvořený trénovací experiment.
-		
+		\begin{itemize} 
+			\item \textbf{Remove Duplicate Rows} - odstraní duplicitní řádky,
+			\item \textbf{Clean Missing Data} - odstraní nekompletní řádky.	
+		\end{itemize}
+	
+		Modul \textbf{Split Data} slouží k náhodnému rozdělení vstupních dat. Zde to má smysl takový, že 80\% požadavků je zpracováno učícím algoritmem. Zbylých 20\% je použito pro otestování naučeného algoritmu. 
 		
 		\begin{figure}[htb]\centering
-			\tmpframe{\includegraphics[width=\textwidth]{./img/todo}}	
+			\tmpframe{\includegraphics[width=\textwidth]{./img/azureTrainingKmeans}}	
 			\caption{Clustering k-means v prostředí MS AZURE ML Studio.}
 			\label{fig:k-means_azure}
 		\end{figure}
+	
+		\subsubsection{Zpracování}
+		Pro zpracování jsem zvolil K-Means shlukování. Jeho ideální nastavení je řešením kapitoly \ref{chap:analyse}. Z modulu \textbf{Train Clustering Model} je možné získat naučený model a výsledek přiřazení vstupních dat. Pro lepší zobrazení výsledku přiřazení vstupních dat jsem zvolil pro finální zobrazení pouze sloupec s identifikátorem zprávy a informaci o clusteru, do kterého zpráva spadá. Modul \textbf{Edit Metadata} umožňuje přejmenovávat sloupce a měnit jejich datové typy. Také je dobrým nástrojem pro vizualizaci dat. Naučený model je propojen s modulem \textbf{Assign Data to Clusters}. Do toho to modulu je zavedeno i zbývajících 20\% vstupních dat. Výsledný algoritmus je na nich otestován.
 		
-		\todo{Doplnit sem ukázku přiřazení dat a grafy z azure}
-		\todo {jak jsem zjistil nejlepší vhodné nastavení}
-		
+		Na obrázku \ref{fig:k-means_azure} je vidět celý vytvořený trénovací experiment.
+	
 	\section{Konstrukce detekce anomálie}
 		\label{sec:construc_anomaly}
-		Druhou možností, kterou bych rád vyzkoušel je detekce anomálie.
-		To, že chybné požadavky nebo bezpečnostní požadavky se budou výrazněji lišit od běžných zpráv se dá předpokládat.
+		Druhou možností, kterou jsem vyzkoušel je detekce anomálie. Jedním z předpokladů je, že korektní požadavky se od podezřelých budou lišit dostatečně na to, aby bylo možné je detekovat jako anomálie.
 		
-		Princip předzpracování dat v Azureml studiu je stejný jako v při konstrukci modelu pro clustering. Řádky s chybějícími hodnotami a duplikované pro trénování nebudeme používat.
+		Princip předzpracování dat v Azure ML studiu je stejný jako v při konstrukci modelu pro shlukování. Řádky s chybějícími hodnotami a duplikované pro trénování nebudeme používat.
 		
-		Kromě výše uvedené předzpracující části i zde je část učící a část vyhodnovací.
+		Kromě výše uvedené předzpracující části i zde je část učící a část vyhodnocovací. Hlavním rozdílem je, že na vstupu jsou dva datasety. Jeden množina dat je pouze korektních. Druhá množina jsou data korektní i nekorektní v poměru 87:13. Algoritmus je naučen pouze na nepodezřelých vzorcích. Mixovaná data jsou pak použita při zkoušení naučeného modelu v \textbf{Score Model}.
 		
 		Trénovací model je vidět na obrázku \ref{fig:anomaly_detection_azure}.
 		
 		\begin{figure}[htb]\centering
-			\tmpframe{\includegraphics[width=\textwidth]{./img/todo}}	
+			\tmpframe{\includegraphics[width=\textwidth]{./img/azureTrainingAnomaly}}	
 			\caption{Detekce anomálií v prostředí MS AZURE ML Studio.}
 			\label{fig:anomaly_detection_azure}
 		\end{figure}
-		\todo {jak jsem zjistil nejlepší vhodné nastavení}
+		
+		Ideální nastavení i vhodný algoritmus jsou předmět kapitoly \ref{chap:analyse}.
 		
 	\section{Ukládání dat}
 	\label{sec:data_storing}
-	Rozhodl jsem se pro ukládání dat využít NoSQL databázi. Protože aplikace Unify momentálně ukládá veškerý svůj provoz do souborů (výjimečně jsou některé konkrétní služby journalovány do DB), bude databáze využita i pro ukládání veškeré komunikace. To zpřístupní do budoucna snazší operování s jednotlivými zprávami. Popřípadě jednoduší zpětnou analýzu.
-	\todo{Schéma DB}
-	
-	
-	Protože se bude ukládat veškerá komunikace, rozhodl jsem se v databázi mít uvedené následující informace:
-	
-	
-	\begin{itemize} 
-		\item ObjectId - automaticky generováno z MongoDB,
-		\item timestamp- časové razítko uložení záznamu do DB,
-		\item original-message - nezměněná zpráva,
-		\item normalized-message - zpráva po normalizaci,
-		\item platformId - jedinečný identifikátor platformy,
-		\item assignment - skupina, kterou azure vyhodnotil pro zprávu jako správnou. 		
-	\end{itemize}
+		Pro potřeby aplikace je nutné v co nejrychlejším možném čase ukládat jednotlivé requesty. Při ohromném provoze, který se na integrační platformě vyskytuje to je nutná podmínka pro to, aby bylo možné v reálném čase jednotlivé požadavky zpracovávat.
+
+		Rozhodl jsem se za tímto účelem využít MongoDB \cite{mongoDB}, protože se očekává, že bude třeba ukládat v mimořádném případě až 30 záznamů za sekund. Zpravidla bude docházet k více zapisům než čtením.
+
+		\subsection{NoSQL}
+			MongoDB patří do takzvaných NoSQL databází \cite{mongoDB}. NoSQL v angličtině znamená \uv{Not Only SQL} \cite{Moniruzzaman_2013}, v překladu \uv{Nikoliv pouze SQL}. Jde o skupinu nerelačních databází. Takové databáze nejsou primárně postavené na principu tabulek a zpravidla nepoužívají SQL pro práci s daty \cite{Moniruzzaman_2013}.
+
+		\subsection{O MongoDB}
+			MongoDB je licencovaná pod  GNU AGPL v3.0 \cite{mongo_gnu} licencí. Data jsou ukládána ve formátu BSON. BSON je binárně zakódovaná JSON \cite{bsonspec.org}.
+
+			V MongoDB se vytvářejí kolekce, každá kolekce obsahuje soubory. Soubory mají parametry \cite{mongoDB}. Soubory a jejich parametry lze v čase libovolně měnit nebo přidávat. Což je výhoda, pokud zjistíme, že aktuální návrh není finální, vyhneme se problémům s migrací do nového schématu.
+
+			V rámci souboru je možné definovat čítač, který se využije k tomu, aby automaticky generoval jednoznačný identifikátor k souborům nebo lze využít parametr souboru \textbf{\_id}. Ten vygeneruje jednoznačnou identifikaci, ze které jsme schopni například získat i čas vložení dokumentu do kolekce. 
+
 		
 	\section{Prezentace dat}
 		\label{sec:data_prezentation}
-		Vzhledem k tomu, že by aplikace měla být schopna určovat bezpečnostní rizika, je třeba nějakým způsobem prezentovat její výstupy. Moninitoring na aplikaci Unify je momentálně postaven na tom, že konkrétní lidé hlídají logy a v případě vyskytu chyb, varování nebo jiné netypické události zjišťují co bylo příčinou.
+		Vzhledem k tomu, že by aplikace měla být schopna určovat bezpečnostní rizika, je třeba nějakým způsobem prezentovat její výstupy. Monitoring na aplikaci Unify je momentálně postaven na tom, že konkrétní specializovaní lidé kontrolují logy a v případě výskytu chyb, varování nebo jiné netypické události zjišťují co bylo příčinou.
 		
-		Rozhodl jsem se tedy, že nejlepší bude grafické znázornění. Kromě údajů o tom, že byl zaznamenán požadavek, který je podezřelý budu grafy využívat i k prezentaci základního monitoringu. 
+		Rozhodl jsem se tedy, že nejlepší bude grafické znázornění. Kromě údajů o tom, že byl zaznamenán požadavek, který je podezřelý budu grafy využívat i k prezentaci základního monitoringu.Jelikož se bude veškerá komunikace ukládat, bude vhodné prezentovat například i kolik požadavků na jednotlivé komponentě proběhlo za poslední hodinu a podobně.
 		
-		Vzhledem k tomu, že se bude veškerá komunikace ukladát bude vhodné prezentovat například i kolik požadavků na jednotlivé komponentě proběhlo za poslední hodinu a podobně.
-		
-		Společnost Cetin a.s. \cite{cetin} ve které bude aplikace testována a jenž je uživatelem integrační platformy používá pro různá grafická znázornění grafy od Google Charts\cite{googleCharts}. 
+		Společnost Cetin \cite{cetin} ve které bude aplikace testována a jenž je uživatelem integrační platformy používá pro různá grafická znázornění grafy od Google Charts\cite{googleCharts}. 
 		
 		Tyto grafy jsou napsané v jazyce Javascript. Je tedy možné jejich umístění například na intranetové stránky, kde se vysoce postavení lidé společnosti vyznají lépe než v jednotlivých monitorovacích aplikacích.
 		
@@ -706,19 +714,22 @@ cancelOrderedService;esb1-1484665381312-5369
 	\section{Využití dát systémy 3. stran}
 		Do budoucna je potřeba počítat s rozšířením monitoringu a je proto vhodné aplikaci připravit tak, aby její výsledky mohly být využity v aplikacích 3. stran.
 		
-		Lze předpokládat, že k monirování bezpečnosti provozu budou použity systémy SIEM (Security Information and Event Management) \cite{siem}.
-		SIEM funguje na principu, kdy zpracovává co nejvíce údajú, na jejichž základě pak rozeznává neočekávané situace a rizika \cite{howDesSiemWork}.
+		Lze předpokládat, že k monitorování bezpečnosti provozu budou použity systémy SIEM (Security Information and Event Management) \cite{siem}.
+		SIEM funguje na principu, kdy zpracovává co nejvíce údajů, na jejichž základě pak rozeznává neočekávané situace a rizika \cite{howDesSiemWork}.
 		
 		Tím, že jsem se rozhodl data ukládat tak, jak uvádím v kapitole \ref{sec:data_storing} bude libovolný SIEM po připojení do DB schopen získat jak originální zprávu, tak její normalizovanou verzi popřípadě i výsledek vyhodnocení mé aplikace.
 		
 		Dále je možnost napojit SIEM i na REST API obdobně jako Google Charts v kapitole \ref{sec:data_prezentation}.
 		
+		Tyto možnosti se vztahují i na jiné různé aplikace. Vznikne tím systém, který bude moct být využíván vývojáři. Díky tomu nebudou muset řešit problematiku detekce bezpečnostního rizika a bude jim stačit pouze aplikovat svůj problém a následně se připojit do databáze nebo využít webové rozhraní. 
+		
 \chapter{Realizace}
-	\todo{Sem vepsat nějaký úvod k této kapitole}
 	
-	\section{Nutné přípravy pro jboss}
+	\section{Nutné přípravy pro JBoss}
+		Aby aplikace mohla fungovat na aplikačním serveru, bylo potřeba provést některé konfigurační změny. Před každým nasazením je potřeba provést následující konfigurace.
+		
 		\subsection{Připravení modulů}
-		V aplikaci využívám různé java knihovny, abych k nim měl přístup i v aplikačním serveru, je nutné do něj přidat speciální modul.
+		V aplikaci využívám různé Java knihovny, abych k nim měl přístup i v aplikačním serveru, je nutné do něj přidat speciální modul.
 		
 		Jboss umožňuje snadné přidání modulů. Veškeré moduly jsou umístěny v \textit{wildfly/jboss-eap-7.0/modules/system/layers}. Zde jsem vytvořil svůj modul s konkrétními java knihovnami:
 		\begin{itemize} 
@@ -726,236 +737,221 @@ cancelOrderedService;esb1-1484665381312-5369
 			\item json-simple-1.1.1.jar
 			\item mongo-java-driver-3.4.2.jar		
 		\end{itemize}
+	
+		Moduly se pak musí zaregistrovat v konfiguračním souboru \textit{layers.conf}. Následně je možné, aby deploymenty uvnitř aplikačního serveru s tímto modulem využívali uvedené knihovny.
 		
 		\subsection{Port offset}
 		\todo{Je možné, že offset ve finále ještě změním.}
-		Dále bylo nutné pro jboss nastavit portový offset. Protože na serveru není jedinou aplikací, je běžný problém v kolizi portů. Z tohoto důvodu jsem zvolil offset 10000. Webové služby tedy místo portu 8080 běží na portu 18080.
+		Dále bylo nutné pro JBoss nastavit portový posun. Protože na serveru z pravidla běží více aplikací, je běžný problém v kolizi portů. Z tohoto důvodu jsem zvolil posun o 10000. Webové služby na tomto aplikačním serveru tedy místo portu 8080 běží na portu 18080 a podobně.
 		
 		\subsection{Zapnutí CORS}
-		CORS (Cross-origin resource sharing) neboli \textit{sdílené zdroje odjinud} umožňuje odesílání odpovědí na požadavky z jiné domény \cite{CORS}. V aplikaci je to potřebné pro rest api, kterého se následně dotazuje Google charts.
+		CORS (Cross-origin resource sharing) neboli \textit{sdílené zdroje odjinud} umožňuje odesílání odpovědí na požadavky z jiné domény \cite{CORS}. V aplikaci je to potřebné pro REST API, kterého se následně dotazuje Google charts.
 		
 		Corse se v Jboss povoluje v konfiguračním souboru pro standalone aplikaci \textit{standalone.xml} pro doménovou \textit{domain.xml}.
 		
 	
 	\section{Vytvoření modelu na Azure}
-		\todo{Ukázka URL}
-		\todo{Ukázka Vstupního JSONu a výstupního}
-		\todo{V této části bude Prediktivní algoritmus}
+		Již bylo uvedeno, jak jsem navrhl vytvoření trénovacího algoritmu v Azure ML studiu. Po natrénování algoritmu je vhodné z něj udělat prediktivní model. Tedy takový, který se pokouší správně detekovat výstup na základě nového vstupu. V Azure ML je toto možné udělat z trénovacího modelu na několik kliknutí. Vznikne model, který se liší od trénovacího tím, že vstup přijímá z webové služby a stejně tak na webovou službu odesílá i výstup. Je možné i v prediktivním modelu spustit na vstupu uložený dataset místo webové služby.
+		
 		\subsection{Clustering v Azure}
-			\todo{Popsat prediktivní experiment}
-			\blind[1]
+			Na obrázku \ref{fig:predict_clustering_azure} je k dispozici náhled na prediktivní model shlukování. Modul nesoucí název \textbf{JakeTheLogger} je natrénovaný model z kapitoly \ref{sec:construc_clustering}. Ten je přiveden na vstup modulu, který na základě natrénovaného algoritmu přiřadím datům (druhý vstup) shluky, do kterých spadají. Výsledek je odeslán pomocí webové služby. 
+			
 		\begin{figure}[htb]\centering
-			\tmpframe{\includegraphics[width=\textwidth]{./img/todo}}	
-			\caption{Prediktivní model clusteringu v Azure.}
-			\label{fig:training_clustering_azure}
+			\tmpframe{\includegraphics[width=\textwidth]{./img/azureK-meansPredict}}	
+			\caption{Prediktivní model shlukování v Azures}
+			\label{fig:predict_clustering_azure}
 		\end{figure}
 		
 		\subsection{Detekce anomálií v Azure}
-			\todo{Popsat prediktivní experiment}
-			\blind[1]
+			Detekce anomálií má v případě prediktivního modelu velmi podobný model jako shlukování. Na obrázku \ref{fig:predict_anomaly_azure} je \textbf{AnomalyService}, což je název trénovacího algoritmu z kapitoly \ref{sec:construc_anomaly}. Vstupem je opět webová služba. Méně zvýrazněný vstup je dataset, který by se použil, pokud bychom na vstupu nechtěli dostávat data z webové služby.
+			 
 		\begin{figure}[htb]\centering
-			\includegraphics[width=\textwidth]{./img/todo}
+			\includegraphics[width=\textwidth]{./img/azureAnomalyPredict}
 			\caption{Prediktivní model v detekci anomálií v Azure.}
-			\label{fig:training_anomaly_azure}
+			\label{fig:predict_anomaly_azure}
 		\end{figure}
 	
 		\subsection{Webová služba}
-			Po dokončení prediktivního modelu je třeba experiment vystavit tak, abychom ho mohli používat z vlastní sítě.
-			
-			Azure umožňuje takový model spustit jako webovou službu.
-			
-			  \begin{figure}[htb]\centering
-			  	\includegraphics[width=\textwidth]{./img/todo}
-			  	\caption{Vytvoření webové služby pomocí stisku tlačítka.}
-			  	\label{fig:azure_create_web_servise}
-			  \end{figure}
-		  
 		  Po vytvoření webové služby získáme takzvaný \uv{API key}. Tento řetězec bude sloužit pro přihlášení se do Azure, při dotazování se na konkrétní službu.
 		  
-		  Také je možné službu otestovat. Otevře se nám okno s očekávanýma políčkama (obr. \ref{fig:azure_test_web_service}). Po vyplnění políček se zobrazí odpověď z prediktivního modelu. Tímto způsobem můžeme otestovat funkčnost nebo pár vzorků. Jiná použití by byla velmi časově a zdrojově nevýhodná.
+		  Také je možné službu otestovat. Otevře se nám okno s očekávanými políčky (obr. \ref{fig:azure_test_web_service}). Po vyplnění políček se zobrazí odpověď z prediktivního modelu. Tímto způsobem můžeme otestovat funkčnost nebo pár vzorků. Jiná použití by byla velmi časově a zdrojově nevýhodná.
 		  
 		  \begin{figure}[htb]\centering
-		  	\includegraphics[width=\textwidth]{./img/todo}
+		  	\includegraphics[width=\textwidth]{./img/testPredictive}
 		  	\caption{Zobrazené okno pro otestování prediktivního modelu jako webové služby}
 		  	\label{fig:azure_test_web_service}
 		  \end{figure}
+% -----------------------------------------------------------------------------------------------------------------------------------------------------------------------	
+	\section{Databáze}
+	\label{sec:database}	
+	Jak již bylo uvedeno, pro ukládání dat byla zvolena MongoDB. Základ pro běh aplikace jsou tyto kolekce:
+		
+	\begin{itemize} 
+		\item \textbf{messages} - veškerá komunikace,
+		\item \textbf{terms} - slova pro použití v TF-IDF algoritmu,
+		\item \textbf{used-messages} - zprávy ze kterých byly vypočteny slova v kolekci terms (podstatné pro výpočet TF-IDF).	
+	\end{itemize} 
 	
-	\section{MongoDB}
-	\todo{Celkově z této sekce jsem rozpačitý}
-		Pro potřeby aplikace je nutné v co nejrychlejším možném čase ukládat jednotlivé requesty. Při ohromném provoze, který se na integrační platformě vyskytuje to je nutná podmínka pro to, aby bylo možné v reálném čase jednotlivé požadavky zpracovávat.
+	
+	\subsection{Kolekce terms}
+		V práci využívám databázi k ukládání všech slov, ze kterých se tvoří vektor, jenž reprezentuje konkrétní požadavek ( více v kapitole \ref{sec:construct_vector}). Tím není potřeba je mít v paměti a při případném výpadku je znova vypočítávat.
+	
+		V kolekci \textit{terms} ukládám soubory jejichž struktura je automatický identifikátor, slovo pro konstrukci vektoru, časové razítko přidání dokumentu do kolekce a hodnota v procentech vyjadřující v kolika souborech kolekce used-messages se slovo vyskytuje.
+	
+	\subsection{Kolekce messages a used-messages}
+		Další kolekcí je kolekce \textit{messages}, která má stejnou strukturu jako \textit{used-messages}. V té jsou uložené veškeré požadavky, které byly přečteny z logů integrační platformy. Protože ještě před uložením do kolekce dochází v Azure k vyhodnocení, je zpráva uložené i s informací, která určuje zdali je požadavek vyhodnocen jako bezpečností riziko nebo není. 
+	
+		Struktura každého souboru je: 
+	
+		\begin{itemize} 
+			\item \textbf{\_id} - automaticky generovaný identifikátor
+			\item \textbf{timestamp} - čas uložení souboru
+			\item \textbf{original-message} - původní požadavek, tak jak byl převzat z logu integrační platformy
+			\item \textbf{normalized-message} - požadavek ve znormalizované podobě
+			\item \textbf{platform-id} - jednoznačný identifikátor v rámci integrační platformy
+			\item \textbf{assignment} - informace od Azure s výsledkem přiřazení katogire 	
+		\end{itemize}
+	
+		Význam kolekce \textit{used-messages} je pro výpočet slov do kolekce \textit{terms} a pro následný výpočet TF-IDF algoritmu.
+
+	\subsection{Práce s MongoDB v Javě}
+		V implementaci jsem vytvořil třídu \textit{MongoClientService} (aby bylo možné třídy využívat i v jiných modulech, musí se taková třída skládat z interfacu a jeho implementace, v textu se budu bavit o celku implementace a interfacu dohromady například jako o třídě MongoClientService). Tato třída umožňuje distribuci konkrétní databáze napříč celou aplikací. 
+	
+		V jednotlivých modulech si vyvoláme instanci konkrétní databáze a nad tou jsme schopni pracovat. Ovladače pro MongoDB nám umožňují jak data vkládat, tak je číst.
+
+% ---------------------------------------------------------------------------------------------------------------------------------------------------------------------	
+	\section{Uložení dat}
+		V sekci \ref{sec:database} byla představena databáze, která bude využívána. V programu dochází k ukládání dat v následujících krocích.
 		
-		\begin{figure}[htb]\centering
-			\tmpframe{\includegraphics[width=0.2\linewidth]{./img/todoSmall}}	
-			\caption{Logo MongoDB. \cite{mongoDB}}
-			\label{fig:mongodb_logo}
-		\end{figure}
-		
-		Rozhodl jsem se za tímto účelem využít MongoDB \cite{mongoDB}, protože se očekává, že bude třeba ukládat v mimořádném případě až 30 záznamů za sekundu, zpravidla bude docházet k více zapisům než čtením.
-		
-		\subsection{NoSQL}
-			MongoDB patří do takzvaných NoSQL databází \cite{mongoDB}. NoSQL v angličtině znamená \uv{Not Only SQL} \cite{Moniruzzaman_2013}, v překladu \uv{Nikoliv pouze SQL}. Jde o skupinu nerelačních databází. Takové databáze nejsou primárně postavené na principu tabulek a zpravidla nepoužívají SQL pro práci s daty \cite{Moniruzzaman_2013}.
+		\subsection{Použité zprávy}
+			Pokud program detekuje, že kolekce terms je prázdná, zpravidla se jedná o první start a je třeba vypočítat vhodné slova pro výpočet vektoru. Protože výpočet vektoru je přes již zmiňovaný algoritmus TF-IDF, je nutné mít zachované jak slova ze kterých vektor vypočteme, tak zprávy, ze kterých jsme vypočetli tato slova. 
 			
-		\subsection{O MongoDB}
-			MongoDB je licencovaná pod  GNU AGPL v3.0 \cite{mongo_gnu} licencí. Data jsou ukládána ve formátu BSON. BSON je binárně zakódovaná JSON \cite{bsonspec.org}.
+			Proto při prvním spuštění se $k$ zpráv, kde $k > 0$, uloží do kolekce used-messages.
 			
-			V MongoDB se vytvářejí kolekce, každá kolekce obsahuje soubory. Soubory mají parametry \cite{mongoDB}. Soubory a jejich parametry lze v čase libovlně měnit nebo přidávat. Což je výhoda, pokud zjistíme, že aktuální návrh není finální, vyhneme se problémům s migrací do nového schématu.
+		\subsection{Vektorová slova}
+			Dále přichází zápis do kolekce terms. Po uložení všech zpráv v kolekci used-messages zjistíma v kolika dokumentech se nachází (vyjádřeno procenty). Na tento výpočet stačí použít převrácenou hodnotu IDF \uv{zbavenou} logaritmu:
 			
-			V rámci souboru je možné definovat čítač, který se využije k tomu, aby automaticky generoval jednoznačný identifikátor k souborům nebo lze využít parametr souboru \textbf{\_id}. Ten vygeneruje jednoznačnou identifikaci, ze které jsme schopni například získat i čas vložení dokumentu do kolekce. 
+			$$\frac{1}{e^{idf(docs,term)}},$$
 			
-		\subsection{Využití v práci}
-			\subsubsection{Kolekce terms}
-			V práci využívám databázi k ukládání všech slov, ze kterých se tvoří vektor, jenž reprezentuje konkrétní požadavek ( více v kapitole \ref{sec:construct_vector}). Tím není potřeba je mít v paměti a při připadném výpadku je znova vypočítávat.
+			kde $idf$ je funkce popsaná v sekci \ref{subsub:tf-idf}, $docs$ je množina všech dokumentů (v tomto případě dokumenty z kolekce used-messages) a $term$ je konkrétní slovo z kolekce terms, pro které děláme tento výpočet.
 			
-			 V kolekci \textit{terms} ukládám soubory jejichž struktura je automatický identifikátor, slovo pro konstrukci vekotru a timestamp přidání dokumentu do kolekce.
+		\subsection{Zprávy}
+			Všechny zprávy poté, co znají svůj shluk nebo zdali jsou anomálií jsou uloženy do kolekce messages. 
+		
+		\subsection{Proces ukládání dat}
+			Kolekce messages je plněna teprve po té, co se vrátí odpověď z MS Azure. Celá zpráva je ve třídě \textit{LogListener} ukládána do formátu \textit{AuditLogMessage}. Ta kopíruje svým obsahem právě kolekci messages. \textit{AuditLogMessage} je vlastníkem metody \textit{toDBObject}, která obsah třídy vrátí ve vhodném formátu pro uložení do MongoDB.
 			
-			\subsubsection{Kolekce messages}
-			Další kolekcí je kolekce \textit{messages}. V té jsou uložené veškeré požadavky, které byly přečteny z logů integrační platformy. Protože ještě před uložením do kolekce dochází v Azure k vyhodnocení, je zpráva uložené i s informací, která určuje zdali je požadavek vyhodnocen jako bezpečností riziko nebo není. 
-			
-			Struktura každého souboru je: 
-			
-			\begin{itemize} 
-				\item \textbf{\_id} - automaticky generovaný identifikátor
-				\item \textbf{timestamp} - čas uložení souboru
-				\item \textbf{original-message} - původní požadavek, tak jak byl převzat z logu integrační platformy
-				\item \textbf{normalized-message} - požadavek ve znormalizované podobě
-				\item \textbf{platform-id} - jednoznačný identifikátor v rámci integrační platformy
-				\item \textbf{assignment} - informace od Azure s výsledkem přiřazení katogire 	
-			\end{itemize}
+			Proces uložení zpráv je na zobrazen na obrázku \ref{fig:dataStoring-seq}. Nejdříve jsou data přečtena z cílové platformy. Dalším krokem je výpočet vektoru. Vektor je odeslán do Azure ML a je přijat výsledek. Nakonec je zpráva i s výsledkem uložena do kolekce messages.
+
+			\begin{figure}[htb]\centering
+				\tmpframe{\includegraphics[width=\textwidth]{./img/messagesStoring}}	
+				\caption{Sekvenční diagram ukazující proces získání a uložení zpráv}
+				\label{fig:dataStoring-seq}
+			\end{figure}
+	
+% ---------------------------------------------------------------------------------------------------------------------------------------------------------------------		
+				
+	\section{Čtení dat z logů}				
+		Při návrhu zisku jednotlivých požadavků z integrační platformy jsem vycházel z toho, že nová aplikace musí minimálně, či spíše vůbec nezatěžovat Unify \cite{unify}. Vzhledem k tomu, že přes integraci proudí veškerý provoz, je sama o sobě dosti vytížená a v případě, že by touto aplikací byl způsoben výpadek došlo by k silnému ztížení veškerých business procesů, což si nelze dovolit.
 		
-		\todo{Lépe vysvětlit assignment}
-		\todo{Konfigurační kolekce}
+		Unify veškeré požadavky ukládá do logovacích souborů. Některé, převážně rizikové, služby se zároveň ukládají do Oracle databáze. Ale vzhledem k tomu, že nejde o všechny dostupné služby rozhodl jsem se toho nevyužít.
 		
-		\subsection{Práce s MongoDB v Javě}
-		V implementaci jsem vytvořil třídu \textit{MongoClientService} (aby bylo možné třídy využívat i v jiných modulech, musí se taková třída skládat z interfacu a jeho implementace, v textu se budu bavit o celku implementace a interfacu dohromady například jako o třídě MongoClientService). Tato třída umožňuje distribuci konkrétní databáZe napříč celou aplikací. 
-		
-		V jednotlivých modulech si vyvoláme instanci konkrétní databáze a nad tou jsme schopni pracovat. Ovladače pro MongoDB nám umožňují jak data v kládat, tak je číst.
-		
-		
-		
-		
-	\section{Čtení dat z logů}
-		\todo{Popis}				
-		Při návrhu zisku jednotlivých požadavků z integrační platformy jsem vycházel z toho, že nový aplikace musí minimálně, či spíše vůbec nezatěžovat Unify \cite{unify}. Vzhledem k tomu, že přes integraci proudí veškerý provoz, je sama o sobě dosti vytížená a v případě, že by touto aplikací byl způsoben výpadek došlo by k silnému ztížení veškerých bussiness procesů, což si nelze dovolit.
-		
-		Unify veškeré požadavky ukládá do logovacích souborů. Některé, převážně rizikové, služby se zároveň ukládají Oracle databáze. Ale vzhledem k tomu, že nejde o všechny dostupné služby rozhodl jsem se toho nevyužít.
-		
-		Princip získání dat proudicích přes integrační platformu je založen na čtení jednotlivých logovacích souborů. Jako vhodný nástroj jsem vybral Java třídu Tailer z dostupné knihovny org.apache.commons.io \cite{tailerClass}.
+		Princip získání dat proudících přes integrační platformu je založen na čtení jednotlivých logovacích souborů. Jako vhodný nástroj jsem vybral Java třídu \textit{Tailer} z dostupné knihovny org.apache.commons.io \cite{tailerClass}.
 		
 		Třída \textit{Tailer}, po implementaci listeneru, se chová stejně jako linuxový příkaz tail \cite{tailLinux}. Průběžně kontroluje čtený soubor a každou nově zapsanou řádku zpracovává.
 		
 		Tímto řešením získáváme data z integrační platformy, aniž bychom jí zatěžovali. 
 		
-	\section{Předzpracování a odeslání do Azure}
+		 Jednou z věcí, které bylo potřeba vyřešit byla situace, kdy třída Tailer během čekání na nový přírůstek logovacího souboru zcela zablokovala program. Situaci jsem vyřešil tím, že procesu, který čte z logu integrační platformy jsem pomocí \textit{ExecutorService} \cite{javaExecutorService} umožnil běžet na pozadí aplikace. Tím jsem neblokoval řízení programu.
+% ---------------------------------------------------------------------------------------------------------------------------------------------------------------------		
+	\section{Odeslání dat do Azure}
 		\label{sec:send_to_azure}
-		\todo{Možná rozdělit na dvě sekce}
 		
-		Protože jsou data odesílána do cloudu, předzpracováváme je lokálně a přímo do Microsfot Azure odesíláme už jen identifikátor zprávy a vypočtený vektor.
+		Protože jsou data odesílána do cloudu, předzpracováváme je lokálně. Přímo do Microsoft Azure odesíláme už jen identifikátor zprávy a vypočtený vektor. To vede k tomu, že veškerá data jsou anonymizována.
 		
 		Po přečtení zprávy z auditového logu Unify je zpráva předzpracována (\ref{sec:preprocessing}) a následně je z ní vytvořen vektor (\ref{sec:construct_vector}).
-		
-		\subsection{Start aplikace}
-			První start aplikace je komplikovanější v tom, že pro výpočet finálního vektoru ještě nemáme známá vhodná slova, pro která se budou TF a IDF vypočítávat.
-			
-			Pro případ, kdy je databáze zcela prázdná jsou nejdříve načteny nějaké zprávy (dle konfigurace), z těch jsou vypočetent vhodné termy.
-			V případě, že databáze nějaké zprávy již obsahuje je možné využít je. Nedoporučovaný způsob je vložení slov přímo do databáze. Tato metoda může být vhodná v případě, že například chceme databázi migrovat a nechceme se zdržovat znovu výpočtem.
-		
-		\subsection{Získání dat z logu}
-		 Samotný zisk dat z logu je řešen pomocí Java knihovny Tailer \cite{javaTailer}. Jednou z věcí, které bylo potřeba vyřešit byla situace, kdy třída Tailer během čekání na nový přírustek logovacího souboru zcela zablokovala program. Situaci jsem vyřešil tím, že procesu, který čte z logu integrační platformy jsem pomocí \textit{ExecutorService} \cite{javaExecutorService} umožnil běžet na pozadí aplikace. Tím jsem neblokoval řízení programu.
 		 
-		\subsection{Předzpracování dat}
-		Celý proces předzpracování zpráv probíhá v implementované třídě \textit{LogListener}. Po získání dat, jako textového řetězce, jsou uložena do struktury třídy \textit{AuditLogMessage} (obr \ref{fig:auditLogMessage}). 
+		Celý proces předzpracování zpráv probíhá v implementované třídě \textit{LogListener}. Po získání dat, jako textového řetězce, jsou uložena do struktury třídy \textit{AuditLogMessage}. 
 		
-		Následuje proces vytvoření vektoru, který je odesílán do MS Azure. Vektor se vytváří dle pravidel uvedených v sekci \ref{sec:construct_vector} včetně všech procesů předzpracování . Metody pro výpočet TF a IDF jsou implementované ve třídě \textit{WeightsCounterService}.  
+		Následuje proces vytvoření vektoru, který je odesílán do MS Azure. Vektor se vytváří dle pravidel uvedených v sekci \ref{sec:construct_vector} včetně všech procesů předzpracování. Metody pro výpočet TF a IDF jsou implementované ve třídě \textit{WeightsCounterService}.  
 		
 		Vektor samotný je reprezentován jako seznam \textit{Double} čísel.
 		
-		\begin{figure}[htb]\centering
-			\tmpframe{\includegraphics[width=0.2\linewidth]{./img/todoSmall}}	
-			\caption{Struktura třídy AuditLogMessage.}
-			\label{fig:auditLogMessage}
-		\end{figure}
+		Pro odeslání dat bylo třeba vytvořit třídu \textit{AzureWebService}. Vytvoření vhodného požadavku na Azure je podmíněno přihlášením se do služby. Proto do hlavičky je přidána \textit{Basic Access authentication} (jednoduché ověření přístupu).
 		
-		Pro odeslání dat bylo třeba vytvořit třídu \textit{AzureWebService}. Vytvoření vhodného požadavku na Azure je podmíněno přihlášením se do služby. Proto do hlavičky je přidána \textit{Basic Access authentication} (jednoduché ověření přístup).
+		Na požadavek ihned dostaneme synchronní odpověď s výsledkem. Výsledek je zpracován a přiložen k datům načteným z logu.
 		
-		Na požadavek ihned dostaneme synchroní odpověď s výsledkem. Výsledek je zpracován a přiložen k datům načteným z logu.
+		Ukázka příkladu pro vektor o velikosti 3 je vidět v kódu \ref{lst:azure-example}.
+		
+		
+			\begin{lstlisting}[caption={Požadavek na webovou službu Azure ML}, label={lst:azure-example}]
+{
+	"Inputs": {
+		"input1": {
+			"ColumnNames": [
+				"platform-id",
+				"No0",
+				"No1",
+				"No2"
+			],
+		"Values": [
+			[
+				"esb1-123456",
+				"0.012",
+				"0.512",
+				"0.003"
+			]
+		]
+	}
+},
+	"GlobalParameters": {}
+}
+			\end{lstlisting}
+	
 					
-		
-	\section{Uložení dat}
-	
-		\subsection{Kolekce}
-		Do databáze se dvě kolekce:
-		
-		\begin{itemize} 
-			\item terms	
-			\item messages			
-		\end{itemize}
-	
-		Tyto kolekce (znázornění také na obrázku \ref{fig:colections}) jsou využívány při běhu programu. 
-		
-		Kolekce \textit{terms} slouží k uchování výrazů, které se používají pro výpočet TF-IDF (kapitola \ref{sec:construct_vector}). \todo{Popsat strukturu kolekce}
-		
-		Kolekce \textit{messages} uchovává veškeré požadavky a to jak v jejich originální podobě (parametr original-message), tak její normalizovanou metodu (normalized-message). Podstatným identifikátorem každého požadavku je jeho unikátní ID v rámci platformy Unify. Pro tento účel je použit parametr platformId. Posledním parametrem této kolekce je assignment. Tento parametr uchovává informaci o tom, do jaké (rizikové) kategorie byl dle algoritmu běžícím v MS Azure zařazen.
-				 
-		
-		\begin{figure}[htb]\centering
-			\tmpframe{\includegraphics[width=\textwidth]{./img/todo}}	
-			\caption{Kolekce v MongoDB využité pro běh programu.}
-			\label{fig:colections}
-		\end{figure}
-	
-		\subsection{Proces ukládání dat}
-			Do kolekce terms jsou výrazy ukládán ihned po tom, co je určeno, že jsou správným termem. \todo{Lépe popsat dle kodu}
-			
-			Kolekce messages je plněna teprve po té, co se vrátí odpověď z MS Azure. Celá zpráva je ve třídě \textit{LogListener} ukládána do formátu \textit{AuditLogMessage}. Ta kopíruje svým obsahem právě kolekci messages. \textit{AuditLogMessage} je vlastníkem metody \textit{toDBObject}, která obsah třídy vráti ve vhodném formátu pro uložení do MongoDB.
-			
-			\begin{figure}[htb]\centering
-				\tmpframe{\includegraphics[width=\textwidth]{./img/todo}}	
-				\caption{Sekvenční diagramy ukazující proces uložení dat do kolekcí terms a messages.}
-				\label{fig:dataStoring-seq}
-			\end{figure}
+
 		
 	\section{Napojení na Google Charts}
-		Google vystavuje dokumentaci k produktu Google Charts na adrese \todo{Dodat adresu}. Samotné grafy jsou generovány pomoc javascriptu. Z knihovny grafů lze vybrat nepřeberné množství různorodých grafů. 
+		Google vystavuje dokumentaci k produktu Google Charts na adrese \url{https://developers.google.com/chart/}. Samotné grafy jsou generovány pomocí javascriptu. Z knihovny grafů lze vybrat nepřeberné množství různorodých grafů. 
 		
 		\subsection{Rest API}
-		Aby grafy byly generovány s daty z databáze bylo vytvořeno REST api. Toto api je postavené na míru Google Charts. Ovšem zpravidla není problém postavit další aplikaci tak, aby dokázala přijímat data z REST stejně popřípadě se je dokázala samostatně transformovat.
+			Aby grafy byly generovány s daty z databáze bylo vytvořeno REST API. Toto API je postavené na míru Google Charts. Ovšem zpravidla není problém postavit další aplikaci tak, aby dokázala přijímat data z REST stejně, popřípadě je dokázala samostatně transformovat.
 		
-		Za tímto účelem vznikl kompletně celý modul aplikace. Tento modul má dovětek \textit{web-services}. Je složen ze dvou tříd:
+			Za tímto účelem vznikl kompletně celý modul aplikace. Tento modul má dovětek \textit{web-services}. Je složen ze dvou tříd:
 		
 		\begin{itemize} 
 			\item DataProviderService
 			\item ChartsProviderService			
 		\end{itemize}
-	
-		Každá třída je chápana jako samostatná služba. 
 		
-		DataProviderService vystavuje webové služby na konkrétních URL adresách. Tím také poskytuje na jednotlivé GET \todo{Definovat zkratku GET} požadavky na zmíněné URL \todo{Definovat zkratku URL} odpovědi s daty z databáze. 
+		DataProviderService vystavuje webové služby na konkrétních URL adresách. Tím také poskytuje na jednotlivé GET požadavky na zmíněné URL odpovědi s daty z databáze. 
 		
-		Data z databáze ve správné struktuře vybíra služba promítnutá ve třídě ChartsProvderService.
+		Data z databáze, ve správné struktuře, vybírá třída ChartsProvderService.
 		
-		Jak bylo zmíněno, grafy z Google Charts očekávají konkrétní odpověď v předem určeném formátu JSON \todo{definovat JSON}. Ukázka projekce dat ve formátu JSON pro použití v grafu druhu Gauge \todo{Bud vlozit zdroj nebo url} je na obrázku \ref{fig:googleCharts-json}.
-		
-		\begin{figure}[htb]\centering
-			\tmpframe{\includegraphics[width=\textwidth]{./img/todo}}	
-			\caption{Data ve formátu json pro použití v Google Charts.}
-			\label{fig:googleCharts-json}
-		\end{figure}
+		Grafy z Google Charts očekávají konkrétní odpověď v předem určeném formátu JSON.
 
 \chapter{Analýza a vyhodnocení dat}
-	\todo{Sem vepsat nějaký úvod k této kapitole}
-	\blind[1]
-	\todo{Popsat systém, na který to bylo nasazené}
-	\blind[1]
+	\label{chap:analyse}
+	V této kapitole jsou popsány experimenty, které zkoumali hlavně ideální nastavení algoritmů. Protože v návrhu jsou algoritmy pro shlukování a pro detekci anomálie, je potřeba vybrat pouze jeden, který bude použit.
+	
+	Experimenty byly provedeny V prostředí Microsoft Azure ML. Vstupní data na všech experimentech jsou reálná data z testovacího prostředí Unify ve společnosti CETIN. Data byla převedena na vektory pomocí uvedených metod a přes již implementovanou aplikaci pracovně nazývanou JakeTheLogger. Pro jejich snazší export byla vytvořena nová kolekce, která se rovnala obrazu výstupu. Tato kolekce následně byla exportována do formátu CSV a nahrána do Microsoft Azure ML jako dataset.
+	
+	Pro experimenty byly použity metody trénovacích modulu popsaných v kapitolách \ref{sec:construc_clustering} a \ref{sec:construc_anomaly} s tím rozdílem, že například byly testovány dvě metody najednou. Pro ilustraci poslouží obrázek \ref{fig:azure-experiment}. Na obrázku je vidět, že se různé experimenty na shlukování prováděli na stejných vstupních datech. 
+	
+	\begin{figure}[htb]\centering
+		\tmpframe{\includegraphics[width=\textwidth]{./img/MSAzureExperimentKMeans}}	
+		\caption{Experimentování se shlukováním v Azure ML}
+		\label{fig:azure-experiment}
+	\end{figure}
+	
 	\section{Analýza K-Means}
-		V této části je popsán celkový proces vytváření nejlepšího možného nastavení pro clusterovací k-means algoritmus. Jako základ jsem vybral trénovací data. U těchto dat jsem se rozhodl určit 1000 trénovacích vzorků. Protože cílem je detekovat bezpečnostní rizika a to jak ve formě špatných requestů tak i například podvržených zpráv, vybral z testovacích dat 500 vzorků, které dopadli chybou a 500 vzorků, které proběhli v pořádku. První množina slouží jako reprezentanti skupiny zpráv, které chceme rozpoznávat. Druhá množina 500 prvků je reprezentantem klasických zpráv, které by měli přes integrační platformu proudit.
+		V této části je popsán celkový proces vytváření nejlepšího možného nastavení pro shlukovací k-means algoritmus. Jako základ jsem vybral trénovací data. U těchto dat jsem se rozhodl určit 1000 trénovacích vzorků. Protože cílem je detekovat bezpečnostní rizika a to jak ve formě špatných requestů tak i například podvržených zpráv, vybral z testovacích dat 500 vzorků, které dopadli chybou a 500 vzorků, které proběhli v pořádku. První množina slouží jako reprezentanti skupiny zpráv, které chceme rozpoznávat. Druhá množina 500 prvků je reprezentantem klasických zpráv, které by měli přes integrační platformu proudit.
 		
 		Pro poměr 50:50 jsem se rozhodl, aby byla dostatečně velká pravděpodobnost, že shluky v k-means najdou správná místa. Pokud bych zvolil poměr ve kterém by se podezřelé zprávy vyskytovali v malém množství nebo dokonce vůbec, algoritmus k-means by mohl pomocí shluků například rozpoznávat jednotlivé služby nebo najít zcela jiné vzory v datech. Takové vzory by se nemuseli hodit pro analýzu bezpečnostních rizik.
 		
-		Trénovací data jsem rozdělil náhodně poměrem 80:20 na trénovací a testovací. Testovací budou použita k odhadu správnosti shlukování. Vzhledem k tomu, že jsem jednoznačný identifikátor podezřelých zpráv označil, je možné na první pohled dokázat odlišit takovou zprávu od zprávy korektní.
+		Data jsem rozdělil náhodně poměrem 80:20 na trénovací a testovací. Testovací budou použita k odhadu správnosti shlukování. Vzhledem k tomu, že jsem jednoznačný identifikátor podezřelých zpráv označil, je možné na první pohled dokázat odlišit takovou zprávu od zprávy korektní.
 		
-		Následující sekce se zabívají jednotlivýma možnostma, jak ovlivnit běh algoritmu k-means. Pro všechny sekce byla použita stejná vstupní data.
-		
-		\todo{Když vznikne prosto, mohl by se vyzkoušet nějaký reálnější poměr.}
+		Následující sekce se zabývají jednotlivými možnostmi, jak ovlivnit běh algoritmu k-means. Pro všechny sekce byla použita stejná vstupní data.
 
 		\subsection{Počet shluků}
 			K-means shlukuje data do $k$ shluků vhledem k podobnosti jednotlivých dat. V experimentu bezpečnostních rizik lze očekávat, že by rozdělení mohlo být na dvě skupiny:
@@ -968,19 +964,17 @@ cancelOrderedService;esb1-1484665381312-5369
 			I přes tuto myšlenku byl proveden experiment na různá množství shluků. Konkrétně na 2, 3, 4, 10 a 20. Všechny experimenty byly spuštěny současně na totožných vstupních datech. Hodnoty ostatních konfiguračních parametrů (samozřejmě mimo počtu shluků) byly zvoleny následující:
 			
 			\begin{itemize} 
-				\item \textbf{výběr prvotních středových bodů: } náhodný
-				\item \textbf{metrika: } eukleidova vzdálenost
-				\item \textbf{počet běhů: } 100		
+				\item \textbf{výběr prvotních středových bodů: } náhodný,
+				\item \textbf{metrika: } eukleidova vzdálenost,
+				\item \textbf{počet běhů: } 100.	
 			\end{itemize}
-		
-				Výsledky jsou hromadně ilustrovány na obrázku \ref{fig:k-means-training}. Na ose x vždy pozorujeme shluky označené přirozeným číslem. Osa y zaznamená počet zpráv ve shluku.
 				
 				\subsubsection{2 shluky}
 				
-				Pro volby dvou shluků vznikly dva na počet zpráv téměr shodné shluky. Protože poměr vstupních dat 50:50 jde očekávaný výsledek \todo{očekávaný?}. Při kontrole konečných přiřazení shluků jsem narazil na zprávu, která by měla být označená jako podezřelá, ale bylo vyhodnocena jako zpráva korektní. V celé množině šlo o jedinou zprávu. Tato zpráva oznamovala, že došlo ke špatnému zadání hesla k jedné ze služeb. Jiná chyba nebyla nalezena \todo{asi ne uplne nazyvat chybou}. Lze tedy říci, že dochází k rozdělení na podezřelé zprávy a zprávy korektní. \todo{zkusit shrnout proč vznikla chyba}
+					Pro volby dvou shluků vznikly dva, na počet zpráv, téměř shodné shluky. Protože poměr vstupních dat byl 50:50 jde o očekávaný výsledek. Při kontrole konečných přiřazení shluků jsem narazil na zprávu, která by měla být označená jako podezřelá, ale bylo vyhodnocena jako zpráva korektní. V celé množině šlo o jedinou zprávu. Tato zpráva oznamovala, že došlo ke špatnému zadání hesla k jedné ze služeb. Jiná chyba nebyla nalezena. Lze tedy říci, že dochází k rozdělení na podezřelé zprávy a zprávy korektní.
 				
 				\subsubsection{3 shluky}
-				Vizualizace výsledků přiřazení clusterů pro $k = 3$ nám ukazuje, že tři vzniklé shluky jsou o velikostech 35, 409 a 355 vzorků. Zde je rozdělení shluků takové, že jeden obsahuje pouze zprávy podezřelé. Další shluk obsahuje pouze zprávy v pořádku a stejně jako v případě dvou shluků podezřelou zprávu o špatném zadání hesla. Poslední, nejmenší shluk je kombinací. Po detailnějším rozboru vyplynulo, že zprávy v tomto shluku jsou oproti ostatním zprávám kratší. Normalizovaná zpráva se skláda zpravidla z několika slov. Výsledkem rozdělení trénovací množiny byly shluky podezřelých zpráv, korektních zpráv a velmi krátkých zpráv.
+					Vizualizace výsledků přiřazení clusterů pro $k = 3$ nám ukazuje, že tři vzniklé shluky jsou o velikostech 35, 409 a 355 vzorků. Zde je rozdělení shluků takové, že jeden obsahuje pouze zprávy podezřelé. Další shluk obsahuje pouze zprávy v pořádku a stejně jako v případě dvou shluků i podezřelou zprávu o špatném zadání hesla. Poslední, nejmenší shluk je kombinací. Po detailnějším rozboru vyplynulo, že zprávy v tomto shluku jsou oproti ostatním zprávám kratší. Normalizovaná zpráva se skládá zpravidla z několika slov. Výsledkem rozdělení trénovací množiny byly shluky podezřelých zpráv, korektních zpráv a velmi krátkých zpráv.
 				
 				\begin{figure}[htb]\centering
 					\tmpframe{\includegraphics[width=\textwidth]{./img/todo}}	
@@ -992,18 +986,18 @@ cancelOrderedService;esb1-1484665381312-5369
 				Čtyři shluky ukázaly pro jejich velikost podobný výsledek jako když $k = 3$. Největší cluster obsahuje zprávy většinu korektních zpráv a již zmiňované krátké chybové zprávy. Druhý shluk obsahuje pouze chyby. Charakteristikou jde spíše o kratší zprávy převážně způsobené komponentou notifikačního enginu. Dále je přítomen shluk, jehož obsahem jsou jen zprávy chybové. Převážně jde o zprávy, které jsou delší a nesou například informaci o tom proč chyba nastala, nikoli pouze upozornění, že nastala. Poslední, obsahově nejmenší, shluk obsahuje pouze několik málo korektních požadavků. 
 				
 				\subsubsection{10 shluků}
-				Experiment s deseti shluky ukazuje na trend, kdy se k-means přizpůsobuje jednotlivým službám. U dvou shluků došlo ke kolizi korektních a podezřelých požadavků. Oba tyto clustery shlukovali převážně kratší zprávy. U těch je větší pravděpodobnost, že jejich vektor bude převážně nulový. Ostatní shluky obsahují buď chyby nebo správné požadavky, jen se přizpůsobují ke konkrétním službám. Je zde možné například rozpoznávat shluk, který obsahuje chyby hlásící špatný KMS \todo{zkratka KMS} překlad a stejně tak shluk s chybami špatného přihlášení.
+				Experiment s deseti shluky ukazuje na trend, kdy se k-means přizpůsobuje jednotlivým službám. U dvou shluků došlo ke kolizi korektních a podezřelých požadavků. Oba tyto clustery shlukovali převážně kratší zprávy. U těch je větší pravděpodobnost, že jejich vektor bude převážně nulový. Ostatní shluky obsahují buď chyby nebo správné požadavky, jen se přizpůsobují ke konkrétním službám. Je zde možné například rozpoznávat shluk, který obsahuje chyby hlásící špatný KMS překlad a stejně tak shluk s chybami špatného přihlášení.
 				
 				\subsubsection{20 shluků}
 				K-means s $k = 20$ potvrzuje vývoj, který se udál již při $k = 10$. Pouze jeden shluk je ze smíšených korektních zpráv a z podezřelých. Ten obsahuje pouze jeden záznam z podezřelých. Jednotlivé clustery více rozpoznávají jednotlivé služby a chyby. U chyb, jejichž druhů je ve vstupních dat méně než služeb se to projevuje více.
 				
 				\subsubsection{Shrnutí}
-				Z celého vývoje dat, která byla použita na testování, plyne, že nejlepším je nechat dva shluky. Tím dokážeme rozlišit podezřelé zprávy od korektních. To zcela naplňuje požadavky detekce bezpečnostních rizik. Další možností je vytvořit shluků více a pokusit se i detekovat různé druhy chyb. Při této volbě bude vyžadováno více starostí organizováním, které clustery patří do jaké skupiny. Při velkém počtu shluků by mohlo docházet k přeučení, kdy by sice byly rozpoznávany konkrétní chyby konkrétní služby, ovšem s dalším nasazením nové služby by byly potíže.
+					Z celého vývoje dat, která byla použita na testování, plyne, že nejlepší je nechat dva shluky. Tím dokážeme rozlišit podezřelé zprávy od korektních. To zcela naplňuje požadavky detekce bezpečnostních rizik. Další možností je vytvořit shluků více a pokusit se i detekovat různé druhy chyb. Při této volbě bude vyžadováno více starostí s organizováním, které clustery patří do jaké skupiny. Při velkém počtu shluků by mohlo docházet k přeučení, kdy by sice byly rozpoznávány konkrétní chyby a konkrétní služby, ovšem s dalším nasazením nové služby by byly potíže.
 		
 		\subsection{Metrika}
-			Pro porovnání různých způsobů měření vzdálenosti jsem zvolil na MS Azure dostnou eucleidovu vzdálenost (\ref{sec:eukleid_distance}) a cosinovu vzdálenost (\ref{sec:cosine_distance}). Protože celá analýza ideálního počtu shluků byla založena na eucleidově vzdálenosti, další měření stačí provést už pouze na cosinově vzdálenosti.
+			Pro porovnání různých způsobů měření vzdálenosti jsem zvolil na MS Azure ML eucleidovu vzdálenost (\ref{sec:eukleid_distance}) a cosinovu vzdálenost (\ref{sec:cosine_distance}). Protože celá analýza ideálního počtu shluků byla založena na eucleidově vzdálenosti, další měření stačí provést už pouze na cosinově vzdálenosti.
 			
-			Pro následující výsledky platí, že velikosti shluků jsou průměrovány z 10 spuštení programu. Nastavení k-means je následovné:
+			Nastavení k-means je následovné:
 			\begin{itemize} 
 				\item \textbf{výběr prvotních středových bodů: } náhodný
 				\item \textbf{metrika: } cosinova vzdálenost
@@ -1012,13 +1006,13 @@ cancelOrderedService;esb1-1484665381312-5369
 		
 			Při zkoumání výsledků se objevil jev, kdy některé zprávy nebyly přiřazený do žádného clusteru. Po hlubší analýze jsem zjistil, že jde o zprávy, které pochází z B2B brány. Tyto požadavky po normalizaci mají velikost nula. To vede k tomu, že jejich vektor je nulový. S takovým vektorem má cosinova vzdálenost problém. Nelze jej vypočítat, tak zpráva není označena žádným shlukem.
 			
-			Kromě těchto nulových dat dochází k falešně pozitivnímu označení některých výrazně menších zpráv jako bezpečnostní rizika. Konkrétně pro případ, kde $k = 3$ došlo rozdělení dat žádného shluku (prázndé zprávy), podezřelé zprávy, korektní a další skupinu korektních. V této skupině dominovali zprávy z REST rozhraních. Ty se od ostatních požadavků liší, že nejsou v XML zápisu ale v JSON.
+			Kromě těchto nulových dat dochází k falešně pozitivnímu označení některých výrazně menších zpráv jako bezpečnostní rizika. Konkrétně pro případ, kde $k = 3$ došlo rozdělení dat žádného shluku (prázdné zprávy), podezřelé zprávy, korektní a další skupinu korektních. V této skupině dominovali zprávy z REST rozhraních. Ty se od ostatních požadavků liší, že nejsou v XML zápisu ale v JSON.
 			
 			Při náhledu, jak byly zprávy rozděleny do clusterů, při 4 shlucích lze opět pozorovat, že podezřelé zprávy jsou všechny z testovacích dat zahrnuty v jednom shluku. Ostatní shluky jsou složeny už pouze ze zpráv z běžné komunikace. Jejich rozdělení je pak závislé na charakteru zprávy.
 			
 			Deset shluků také vykazuje dokonalé rozdělení testovacích na rizika a ostatní zprávy. Obě skupiny jsou rozloženy do stejného počtu shluků.
 			
-			V případě $ k = 20$ jsou data opět rozdělena. Ovšem narozdíl od testovaných $k < 20$ se zde objevují clustery, které obsahují například jen jednu zprávu. 
+			V případě $ k = 20$ jsou data opět rozdělena. Ovšem na rozdíl od testovaných $k < 20$ se zde objevují clustery, které obsahují například jen jednu zprávu. 
 			
 			Z výsledků analýzy, kdy porovnáváme metriku euikleidovu a cosinovu je pozorovatelná lepší přesnost u cosinovy délky. Problém zde nastává se zprávy, které mají nulový vektor. Tyto zprávy je třeba ošetřit nebo nahradit normalizační funkci tak, aby nulový vektor negenerovala. 			
 			
@@ -1026,22 +1020,23 @@ cancelOrderedService;esb1-1484665381312-5369
 			Vliv na běh algoritmu má i počáteční nastavení středů jednotlivých shluků. MS Azure ve svém modulu pro k-means nabízí možnosti \cite{MSAzure-kmeans}:
 			
 			\begin{itemize} 
-				\item \textbf{Prvních N}. $N \in \mathbb{N} $ prvních vzorků z dat je určeno jako střed shluku. 
-				\item \textbf{Náhodné}. Jsou vybrány náhodné body ze vstupních vzorků jako středy.
-				\item \textbf{K-Means++}. Algoritmus definovaná Davidem Arthurem a Sergeiem Vassilvitskii \cite{kmeans++}
-				\item \textbf{K-Means++Fast}. Optimalizovaná verze K-Means++.	
-				\item \textbf{Rovnoměrně}. Středy jsou rozmístěné ve stejné vzdálenosti v prostoru.		
-				\item \textbf{Dle popisku sloupce}. Algoritmus, který na základě popisu sloupe dat rozhoduje o tom, jak budou středy umístěny.			
+				\item \textbf{Prvních N}: $N \in \mathbb{N} $ prvních vzorků z dat je určeno jako střed shluku, 
+				\item \textbf{Náhodné}: jsou vybrány náhodné body ze vstupních vzorků jako středy,
+				\item \textbf{K-Means++}: algoritmus definovaný Davidem Arthurem a Sergeiem Vassilvitskii \cite{kmeans++},
+				\item \textbf{K-Means++Fast}: optimalizovaná verze K-Means++,	
+				\item \textbf{Rovnoměrně}: středy jsou rozmístěné ve stejné vzdálenosti v prostoru,		
+				\item \textbf{Dle popisku sloupce}: algoritmus, který na základě popisu sloupce dat rozhoduje o tom, jak budou středy umístěny.			
 			\end{itemize}
 		
-		Z experimentu jsem se rozhodl vyřadit K-Means++Fast, jenž je optimalizovanou verzí K-Means++ a inicializaci dle popisku sloupce, neboť jsem nedohledal oficiální dokumentaci k metodě, jak funguje.
+		Z experimentu jsem se rozhodl vyřadit K-Means++Fast, jenž je optimalizovanou verzí K-Means++ a inicializaci dle popisku sloupce, neboť jsem nedohledal oficiální dokumentaci k metodě.
 		
 		Pro experiment jsem zvolil následující nastavení:
+		
 		\begin{itemize} 
-			\item \textbf{výběr prvotních středových bodů: } výběr pomocí komponenty Sweep K-means \todo{Přidat sweep k-means do volby počtu shluků.}
-			\item \textbf{výběr prvotních středových bodů: } předmětem experimentu
-			\item \textbf{metrika: } eukleidova i cosinova vzdálenost
-			\item \textbf{počet běhů: } 100		
+			\item \textbf{výběr prvotních středových bodů: } výběr pomocí komponenty Sweep K-means,
+			\item \textbf{výběr prvotních středových bodů: } předmětem experimentu,
+			\item \textbf{metrika: } eukleidova i cosinova vzdálenost,
+			\item \textbf{počet běhů: } 100.	
 		\end{itemize}
 	
 		\todo{kmeans++ U kosinu 1 FP, ale ve skutecnosti slo o chybu, ze dms nenasla soubor!}
@@ -1052,13 +1047,13 @@ cancelOrderedService;esb1-1484665381312-5369
 		\todo{even. e - 11}
 		\todo{even. c - 22}
 		
-		Výsledky experimentu ukazuje tabulka \ref{tab:clustering_errors}. V tabulce se vyskytují počty zpráv, které byly v jednotlivých metodách označeny falešně pozitivní (dobrá zpráva označená jako podezřelá) a falešně negativní (podezřelá zpráva označená jako korektní). U všech běhů pro cosinovu metriku bylo 20 vždy 20 zpráv neoznačeno žádným číslem shluku. Jde o nulové vektory, které cosinova vzdálenost nedokáže vypočítat.
+		Výsledky experimentu ukazuje tabulka \ref{tab:clustering_errors}. V tabulce se vyskytují počty zpráv, které byly v jednotlivých metodách označeny falešně pozitivní (dobrá zpráva označená jako podezřelá) a falešně negativní (podezřelá zpráva označená jako korektní). U všech běhů pro cosinovu metriku bylo vždy 20 zpráv neoznačeno žádným číslem shluku. Jde o nulové vektory, které cosinova vzdálenost nedokáže vypočítat.
 		
-		Z tabulky (\ref{tab:clustering_errors}) se jeví nejlepší metoda prvních N. Porovnáme-li výsledky této tabulky s obrázkem \ref{fig:k-means-num-clusters}, který ukazuje graf závislosti počtu shluků na konkrétní metodě inicializace (výpočítané pomocí metody sweep clustering) je vidět, že metoda prvních vytváří velký počet shluků. Maximální počet byl stanoven na 30. Až na této hranici se prvních N zastavila. Vzniklo tím mnoho méně obsazených shluků. Jednotlivé zprávy byly rozděleny korektně na podezřelé a nepodezřelé. Velká počet shluků pak vedl i k většímu počtu rozeznaných chyb. Problém by mohl nastat s novou, v trénovacích datech neexistující, chybou. Proto i přes skvělý výsledek neshledávám tuto metodu ideální.
+		Z tabulky (\ref{tab:clustering_errors}) se jeví nejlepší metoda prvních N. Porovnáme-li výsledky této tabulky s obrázkem \ref{fig:k-means-num-clusters}, který ukazuje graf závislosti počtu shluků na konkrétní metodě inicializace (vypočítané pomocí metody sweep clustering) je vidět, že metoda prvních vytváří velký počet shluků. Maximální počet byl stanoven na 30. Až na této hranici se prvních N zastavila. Vzniklo tím mnoho méně obsazených shluků. Jednotlivé zprávy byly rozděleny korektně na podezřelé a nepodezřelé. Velký počet shluků pak vedl i k většímu počtu rozeznaných chyb. Problém by mohl nastat s novou, v trénovacích datech neexistující, chybou. Proto i přes skvělý výsledek neshledávám tuto metodu ideální.
 		
 		Ve všech ostatních metodách inicializace se při měření eukleidovou metrikou objevila jedna stejná podezřelá zpráva, která byla označena jako nepodezřelá. Jde o chybu, která se svého druhu v trénovacích datech objevuje jediná. Celkově to ukazuje na slabost při zjišťování nových chyb.
 		
-		Cosinova metrika si vedla značně lépe, než eukleidova. Ve vstupních datech měla jen jeden případ špatného určení. Šlo o případ, kdy korektní zpráva byla označená za chybnou. Při bližším zkoumání jsem zjistil, že jde zprávu, která hlásí nenalezení dokumentu v uložišti. Ve skutečnosti algoritmus našel a označil jako chybu zprávu, která nesla informaci o chybě. Z pohledu administrátora platformu může jít o zajímavou informaci, neboť dotazuje-li se někdo na neexistující soubor jde také o bezpečnostní riziko.
+		Cosinova metrika si vedla značně lépe, než eukleidova. Ve vstupních datech měla jen jeden případ špatného určení. Šlo o případ, kdy korektní zpráva byla označená za chybnou. Při bližším zkoumání jsem zjistil, že jde zprávu, která hlásí nenalezení dokumentu v uložišti. Ve skutečnosti algoritmus našel a označil jako chybu zprávu, která nesla informaci o chybě. Z pohledu administrátora platformy může jít o zajímavou informaci, neboť dotazuje-li se někdo na neexistující soubor jde také o bezpečnostní riziko.
 		
 		\begin{table}[htb]\centering
 			\centering
@@ -1085,22 +1080,27 @@ cancelOrderedService;esb1-1484665381312-5369
 		Při detekci anomálie jsem kromě experimentů s ideálním nastavením vytvořil i experiment mezi dvěma metodami. Jedna je detekce anomálie založená na principu PCA, jejíž princip je přiblížen v kapitole \ref{sec:pca}. Druhou metodou je One-Class Support Vector Machine \todo{Udělat kapitolku.}, dále bude označována zkratkou SVM.
 	
 		\subsection{Popis vstupních dat}
-		Rozdíl v přístupu mezi shlukováním a detekce anomálie je v trénovacích datech. Při detekování anomálií byla jako testovací data použita pouze data, která byla manuálně určena jako nezávadná. Dále byla připravena i množina dat testovacích. Testovací data obsahují v poměru 87:13 korektní zprávy a podezřelé.
+			Rozdíl v přístupu mezi shlukováním a detekce anomálie je v trénovacích datech. Při detekování anomálií byla jako testovací data použita pouze data, která byla manuálně určena jako nezávadná. Dále byla připravena i množina dat testovacích. Testovací data obsahují v poměru 87:13 korektní zprávy a podezřelé.
 		
-		Velikost obou množin je 1000 požadavků. Vstupy byly vybrány náhodným výběrem z téměř 50000 požadavků velké množiny na ESB. Zprávy, které integrační platformou v pořádku prošli byly hodnoceny jako korektní. Zprávy, které vyvolávali chyby byly označené jako podezřelé. Nevýhodou tohoto přístupu může být přehlédnutí rizikové zprávy, která běžným pohledem se může jevit v pořádku.
-		
-		\subsection{Velikost vstupního vektoru}
-			Při detekci anomálií jsem se jako jedním z konfiguračních parametrů zabýval s velikostí vstupního vektoru. Vliv, který má velikost vektoru byl zkoumán vždy pro ohodnocení klasifikace metodou \textit{Přesnost} (více v kapitole \ref{subsec:classification_performance}). Zkoumány byly metody detekce anomálie s využitím PCA a metoda s využitím SVM.
+			Velikost obou množin je 1000 požadavků. Vstupy byly vybrány náhodným výběrem z téměř 50000 požadavků velké množiny na ESB. Zprávy, které integrační platformou v pořádku prošli byly hodnoceny jako korektní. Zprávy, které vyvolávali chyby byly označené jako podezřelé. Nevýhodou tohoto přístupu může být přehlédnutí rizikové zprávy, která se běžným pohledem může jevit, že je v pořádku.
 		
 		\subsection{Ohodnocení klasifikace}
 			\label{subsec:classification_performance}
 			Pro dosažení nejlepšího možného výsledku používám MS Azure komponentu nazvanou \uv{Tune Model Hyperparameters.} Jde o komponentu, která se snaží optimalizovat parametry modelu, tak aby našla ideální nastavení \cite{msAzure}. Na základě toho je nutné být schopen rozeznat, jestli předchozí ohodnocení parametrů je horší než stávající. K tomu poslouží tyto možnosti nastavení \cite{powers-precision}:
 			
 			\begin{itemize} 
-				\item \textbf{Přesnost: }  lze vyjádřit vzorcem $\frac{tp+tn}{tp+tn+fp+fn}$
-				\item \textbf{Správnost: } lze vyjádřit vzorcem $\frac{tp}{tp+fp}$
-				\item \textbf{Podíl: } lze vyjádřit vzorcem $\frac{tp}{tp+fn}$
-				\item \textbf{F-score: } \todo{todo powers-precision}				
+				\item \textbf{Přesnost: }  lze vyjádřit vzorcem $\frac{tp+tn}{tp+tn+fp+fn}$,
+				\item \textbf{Správnost: } lze vyjádřit vzorcem $\frac{tp}{tp+fp}$,
+				\item \textbf{Podíl: } lze vyjádřit vzorcem $\frac{tp}{tp+fn}$,
+				\item \textbf{F-score: } \todo{todo powers-precision}.				
+			\end{itemize}
+		
+			Proměnné ve vzorcích jsou zkratky:
+			\begin{itemize} 
+				\item tp - true positive (korektní zprávy označené jako korektní),
+				\item tn - true negative (podezřelé zprávy označené jako podezřelé),
+				\item fp - false positive (podezřelé zprávy označené jako korektní),
+				\item fn - false negative (korektní zprávy označené jako podezřelé).				
 			\end{itemize}
 		
 			Experiment s ohodnocením klasifikace na základě přesnosti je zobrazen v tabulce \ref{table:anomaly_accuracy}. Lze pozorovat, že ani při jedné z použitých metod nedošlo k označení podezřelé zprávy ve zprávu korektní. Z hlediska bezpečnosti je lepší prověřovat správné zprávy, než ignorovat podezřelé. Jediný rozdíl je v tom, že SVM hodnotí méně korektních zpráv jako podezřelé. Při bližším pohledu na takové zprávy jde převážně o kratší požadavky.
@@ -1186,7 +1186,31 @@ cancelOrderedService;esb1-1484665381312-5369
 \chapter{Acronyms}
 % \printglossaries
 \begin{description}
+	\item[API] Application programming interface
+	\item[B2B] Business to business
+	\item[CORS] Cross origin resource sharing
+	\item[CSV] Comma separated valies
+	\item[DDoS] Distributed denial of service
+	\item[DoS] Denial of service
+	\item[ESB] Enterprise service bus
+	\item[ETL] Extract, transform, load
 	\item[GUI] Graphical user interface
+	\item[HLD] High level desing
+	\item[IDF] Inverse document frequency
+	\item[JSON] Javascipt object notation
+	\item[KMS] Key management system
+	\item[LOF] Local outlier factor
+	\item[ML] Machine learning
+	\item[MS] Microsoft
+	\item[PC] Personal Computer
+	\item[PCA] Principal component analysis
+	\item[REST] Representational state transfer
+	\item[SIEM] Security information and event management
+	\item[SMS] Short message service
+	\item[SQL] Structured query language
+	\item[SVM] Support vector machines
+	\item[TF] Term frequency
+	\item[URL] Uniform resource locator
 	\item[XML] Extensible markup language
 \end{description}
 
