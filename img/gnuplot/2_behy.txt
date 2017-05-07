@@ -1,0 +1,4 @@
+0 "prvních N"       30
+1 "náhodné"      11
+2 "rovnoměrné" 11
+3 "k-means++" 11
