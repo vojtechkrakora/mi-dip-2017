@@ -98,7 +98,6 @@ S roustoucím významem informačních systémů a informací jenž jsou zpracov
 		V práci řeším kybernetickou bezpečnost pro konkrétní část informačního systému. Podstatná tedy jsou bezpečností rizika na integrační platformě Unify. Definice integrační platformy a její popis je v sekci \ref{sec:unify}.
 		
 		\subsection{Bezpečnostní rizika}
-		\todo{Nadefinovat bezpečnostní rizika}
 			Jak již bylo uvedeno pro tuto práci jsou podstatná bezpečností rizika na konkrétní integrační platformě. Cílem je hledat pouze ta, která vznikají na straně programu. Zabezpečení přístupů fyzicky k serverům Unify a podobně nebudou probírána.
 			
 			\subsubsection{Zero day útoky}
@@ -204,8 +203,6 @@ S roustoucím významem informačních systémů a informací jenž jsou zpracov
 			
 			Z použitých technologí v kapitole \ref{sec:unify-technologi} plyne, že hlavním stavebním kamenem pro implementaci je Java EE 6.
 		
-		\todo{Zkratky B2B,ESB}
-		
 		\subsection{Komunikace na Unify}
 			Jak bylo zmíněno, na Unify je komunikace jak pomocí XML zpráv, JSON zpráv, tak například i přenosem souborů. Největší provoz je zpravidla na sběrnici ESB. Požadavky na ESB lze rozdělit na tři druhy:
 			
@@ -232,16 +229,16 @@ S roustoucím významem informačních systémů a informací jenž jsou zpracov
 		Základem jsou tři techniky \cite{machin-learning-and-opt}:
 		
 			\begin{itemize} 
-				\item učení s učitelem - algoritmus má na vstupu učící množinu dat a validační množinu
-				\item učení bez učitele - algoritmus získá na vstupu pouze neoznačená vstupní data
-				\item zpětnovazebné učení - algoritmus se učí pomocí zpětné vazby	
+				\item učení s učitelem - algoritmus má na vstupu učící množinu dat a validační množinu,
+				\item učení bez učitele - algoritmus získá na vstupu pouze neoznačená vstupní data,
+				\item zpětnovazebné učení - algoritmus se učí pomocí zpětné vazby.
 			\end{itemize}
 		
 		Zmíněné techniky se snaží implementovat jeden ze základních úkolů strojového učení:
 			\begin{itemize} 
-				\item klasifikace - rozdělení dat do konkrétních skupin
-				\item regrese - nalezení správných hodnot pro vstupní data
-				\item shlukování - rozdělení dat do skupin vzhledem k jejich vzájemné podobnosti
+				\item klasifikace - rozdělení dat do konkrétních skupin,
+				\item regrese - nalezení správných hodnot pro vstupní data,
+				\item shlukování - rozdělení dat do skupin vzhledem k jejich vzájemné podobnosti.
 			\end{itemize}
 			
 	\subsection{Těžení textu}
@@ -458,7 +455,6 @@ S roustoucím významem informačních systémů a informací jenž jsou zpracov
 	Návrh řešení plyne z toho, že hlavním stavebním kamenem je integrační platforma Unify. Tato platforma využívá již některé metody a standarty. 
 	
 	\section{Architektura aplikace}
-	\todo{Lze rozdělit na podsekce}
 	Požadavkem na aplikaci je, aby zprávy zpracovávala a predikovala v reálném časem. Proto je princip položen na čtení požadavků proudících přes platformu. Jejich předzpracování a odeslání do cloudového řešení Microsoft Azure (Více v sekci \ref{sec:ms_azure}). Po přijetí odpovědi je výsledek uložen do databáze. Pro vizualizaci dat slouží REST API \cite{rest}, které vypisuje předem definované informace v ideálním formátu pro zobrazení v Google Charts \cite{googleCharts}.
 	
 	Pro snazší představu o architektuře aplikace poslouží obrázek \ref{fig:hld_architecture}, na kterém je vidět High Level Desing \cite{hld_johnson}.
@@ -635,7 +631,7 @@ cancelOrderedService;esb1-1484665381312-5369
 		\end{table}
 		
 		
-	\section{Konstrukce clusteringu}
+	\section{Konstrukce shlukování}
 		\label{sec:construc_clustering}		
 		Ve studiu Azure machine learning je možné vytvářet své projekty, do projektů umístit své experimenty a ty následně vystavit jako webovou službu.
 		
@@ -804,12 +800,12 @@ cancelOrderedService;esb1-1484665381312-5369
 		Struktura každého souboru je: 
 	
 		\begin{itemize} 
-			\item \textbf{\_id} - automaticky generovaný identifikátor
-			\item \textbf{timestamp} - čas uložení souboru
-			\item \textbf{original-message} - původní požadavek, tak jak byl převzat z logu integrační platformy
-			\item \textbf{normalized-message} - požadavek ve znormalizované podobě
-			\item \textbf{platform-id} - jednoznačný identifikátor v rámci integrační platformy
-			\item \textbf{assignment} - informace od Azure s výsledkem přiřazení katogire 	
+			\item \textbf{\_id} - automaticky generovaný identifikátor,
+			\item \textbf{timestamp} - čas uložení souboru,
+			\item \textbf{original-message} - původní požadavek, tak jak byl převzat z logu integrační platformy,
+			\item \textbf{normalized-message} - požadavek ve znormalizované podobě,
+			\item \textbf{platform-id} - jednoznačný identifikátor v rámci integrační platformy,
+			\item \textbf{assignment} - informace od Azure s výsledkem přiřazení kategorie. 	
 		\end{itemize}
 	
 		Význam kolekce \textit{used-messages} je pro výpočet slov do kolekce \textit{terms} a pro následný výpočet TF-IDF algoritmu.
@@ -976,12 +972,6 @@ cancelOrderedService;esb1-1484665381312-5369
 				\subsubsection{3 shluky}
 					Vizualizace výsledků přiřazení clusterů pro $k = 3$ nám ukazuje, že tři vzniklé shluky jsou o velikostech 35, 409 a 355 vzorků. Zde je rozdělení shluků takové, že jeden obsahuje pouze zprávy podezřelé. Další shluk obsahuje pouze zprávy v pořádku a stejně jako v případě dvou shluků i podezřelou zprávu o špatném zadání hesla. Poslední, nejmenší shluk je kombinací. Po detailnějším rozboru vyplynulo, že zprávy v tomto shluku jsou oproti ostatním zprávám kratší. Normalizovaná zpráva se skládá zpravidla z několika slov. Výsledkem rozdělení trénovací množiny byly shluky podezřelých zpráv, korektních zpráv a velmi krátkých zpráv.
 				
-				\begin{figure}[htb]\centering
-					\tmpframe{\includegraphics[width=\textwidth]{./img/todo}}	
-					\caption{Zobrazené grafy s počtem zpráv v jednotlivých shlucích.}
-					\label{fig:k-means-training}
-				\end{figure}
-				
 				\subsubsection{4 shluky}
 				Čtyři shluky ukázaly pro jejich velikost podobný výsledek jako když $k = 3$. Největší cluster obsahuje zprávy většinu korektních zpráv a již zmiňované krátké chybové zprávy. Druhý shluk obsahuje pouze chyby. Charakteristikou jde spíše o kratší zprávy převážně způsobené komponentou notifikačního enginu. Dále je přítomen shluk, jehož obsahem jsou jen zprávy chybové. Převážně jde o zprávy, které jsou delší a nesou například informaci o tom proč chyba nastala, nikoli pouze upozornění, že nastala. Poslední, obsahově nejmenší, shluk obsahuje pouze několik málo korektních požadavků. 
 				
@@ -1020,12 +1010,12 @@ cancelOrderedService;esb1-1484665381312-5369
 			Vliv na běh algoritmu má i počáteční nastavení středů jednotlivých shluků. MS Azure ve svém modulu pro k-means nabízí možnosti \cite{MSAzure-kmeans}:
 			
 			\begin{itemize} 
-				\item \textbf{Prvních N}: $N \in \mathbb{N} $ prvních vzorků z dat je určeno jako střed shluku, 
-				\item \textbf{Náhodné}: jsou vybrány náhodné body ze vstupních vzorků jako středy,
-				\item \textbf{K-Means++}: algoritmus definovaný Davidem Arthurem a Sergeiem Vassilvitskii \cite{kmeans++},
-				\item \textbf{K-Means++Fast}: optimalizovaná verze K-Means++,	
-				\item \textbf{Rovnoměrně}: středy jsou rozmístěné ve stejné vzdálenosti v prostoru,		
-				\item \textbf{Dle popisku sloupce}: algoritmus, který na základě popisu sloupce dat rozhoduje o tom, jak budou středy umístěny.			
+				\item \textbf{prvních N}: $N \in \mathbb{N} $ prvních vzorků z dat je určeno jako střed shluku, 
+				\item \textbf{náhodné}: jsou vybrány náhodné body ze vstupních vzorků jako středy,
+				\item \textbf{k-means++}: algoritmus definovaný Davidem Arthurem a Sergeiem Vassilvitskii \cite{kmeans++},
+				\item \textbf{k-means++Fast}: optimalizovaná verze K-Means++,	
+				\item \textbf{rovnoměrně}: středy jsou rozmístěné ve stejné vzdálenosti v prostoru,		
+				\item \textbf{dle popisku sloupce}: algoritmus, který na základě popisu sloupce dat rozhoduje o tom, jak budou středy umístěny.			
 			\end{itemize}
 		
 		Z experimentu jsem se rozhodl vyřadit K-Means++Fast, jenž je optimalizovanou verzí K-Means++ a inicializaci dle popisku sloupce, neboť jsem nedohledal oficiální dokumentaci k metodě.
@@ -1033,51 +1023,48 @@ cancelOrderedService;esb1-1484665381312-5369
 		Pro experiment jsem zvolil následující nastavení:
 		
 		\begin{itemize} 
-			\item \textbf{výběr prvotních středových bodů: } výběr pomocí komponenty Sweep K-means,
+			\item \textbf{výběr prvotních středových bodů: } výběr pomocí komponenty Sweep Clustering (hledá nejlepší nastavení shlukování \cite{sweep-clustering}),
 			\item \textbf{výběr prvotních středových bodů: } předmětem experimentu,
 			\item \textbf{metrika: } eukleidova i cosinova vzdálenost,
 			\item \textbf{počet běhů: } 100.	
 		\end{itemize}
-	
-		\todo{kmeans++ U kosinu 1 FP, ale ve skutecnosti slo o chybu, ze dms nenasla soubor!}
-		\todo{PrvníchN eukl - 30 shluku}
-		\todo{PrvníchN cosi - 30 shluku}
-		\todo{Náhod. e - 11}
-		\todo{Náhod. c - 12}
-		\todo{even. e - 11}
-		\todo{even. c - 22}
 		
 		Výsledky experimentu ukazuje tabulka \ref{tab:clustering_errors}. V tabulce se vyskytují počty zpráv, které byly v jednotlivých metodách označeny falešně pozitivní (dobrá zpráva označená jako podezřelá) a falešně negativní (podezřelá zpráva označená jako korektní). U všech běhů pro cosinovu metriku bylo vždy 20 zpráv neoznačeno žádným číslem shluku. Jde o nulové vektory, které cosinova vzdálenost nedokáže vypočítat.
 		
-		Z tabulky (\ref{tab:clustering_errors}) se jeví nejlepší metoda prvních N. Porovnáme-li výsledky této tabulky s obrázkem \ref{fig:k-means-num-clusters}, který ukazuje graf závislosti počtu shluků na konkrétní metodě inicializace (vypočítané pomocí metody sweep clustering) je vidět, že metoda prvních vytváří velký počet shluků. Maximální počet byl stanoven na 30. Až na této hranici se prvních N zastavila. Vzniklo tím mnoho méně obsazených shluků. Jednotlivé zprávy byly rozděleny korektně na podezřelé a nepodezřelé. Velký počet shluků pak vedl i k většímu počtu rozeznaných chyb. Problém by mohl nastat s novou, v trénovacích datech neexistující, chybou. Proto i přes skvělý výsledek neshledávám tuto metodu ideální.
+		Z tabulky (\ref{tab:clustering_errors}) se jeví nejlepší metoda prvních N. Porovnáme-li výsledky této tabulky s obrázkem \ref{fig:k-means-num-clusters-euklid} a \ref{fig:k-means-num-clusters-cosine}, který ukazuje graf závislosti počtu shluků na konkrétní metodě inicializace (vypočítané pomocí metody sweep clustering) je vidět, že metoda prvních vytváří velký počet shluků. Maximální počet byl stanoven na 30. Až na této hranici se prvních N zastavila. Vzniklo tím mnoho méně obsazených shluků. Jednotlivé zprávy byly rozděleny korektně na podezřelé a nepodezřelé. Velký počet shluků pak vedl i k většímu počtu rozeznaných chyb. Problém by mohl nastat s novou, v trénovacích datech neexistující, chybou. Proto i přes skvělý výsledek neshledávám tuto metodu ideální.
 		
-		Ve všech ostatních metodách inicializace se při měření eukleidovou metrikou objevila jedna stejná podezřelá zpráva, která byla označena jako nepodezřelá. Jde o chybu, která se svého druhu v trénovacích datech objevuje jediná. Celkově to ukazuje na slabost při zjišťování nových chyb.
+		Ve všech ostatních metodách inicializace se při měření euklidovou metrikou objevila jedna stejná podezřelá zpráva, která byla označena jako nepodezřelá. Jde o chybu, která se svého druhu v trénovacích datech objevuje jediná. Celkově to ukazuje na slabost při zjišťování nových chyb.
 		
-		Cosinova metrika si vedla značně lépe, než eukleidova. Ve vstupních datech měla jen jeden případ špatného určení. Šlo o případ, kdy korektní zpráva byla označená za chybnou. Při bližším zkoumání jsem zjistil, že jde zprávu, která hlásí nenalezení dokumentu v uložišti. Ve skutečnosti algoritmus našel a označil jako chybu zprávu, která nesla informaci o chybě. Z pohledu administrátora platformy může jít o zajímavou informaci, neboť dotazuje-li se někdo na neexistující soubor jde také o bezpečnostní riziko.
+		Cosinova metrika si vedla značně lépe, než euklidova. Ve vstupních datech měla jen jeden případ špatného určení. Šlo o případ, kdy korektní zpráva byla označená za chybnou. Při bližším zkoumání jsem zjistil, že jde zprávu, která hlásí nenalezení dokumentu v uložišti. Ve skutečnosti algoritmus našel a označil jako chybu zprávu, která nesla informaci o chybě. Z pohledu administrátora platformy může jít o zajímavou informaci, neboť dotazuje-li se někdo na neexistující soubor jde také o bezpečnostní riziko.
 		
 		\begin{table}[htb]\centering
 			\centering
-			\caption{Zobrazení chyb při shlukování 800 vzorků, při rovnoměrném rozdělení korektních a podezřelých zpráv.}
+			\caption{Zobrazení chyb při shlukování 800 vzorků, při rovnoměrném rozdělení korektních a podezřelých zpráv}
 			\label{tab:clustering_errors}
 			\begin{tabular}{|l|llllllll}
 				\hline
 				\multirow{2}{*}{}  & \multicolumn{2}{l|}{Prvních N}                    & \multicolumn{2}{l|}{Náhodné}                      & \multicolumn{2}{l|}{K-Means++}                    & \multicolumn{2}{l|}{Rovnoměrně}                   \\
 				& \multicolumn{1}{l|}{FP} & \multicolumn{1}{l|}{FN} & \multicolumn{1}{l|}{FP} & \multicolumn{1}{l|}{FN} & \multicolumn{1}{l|}{FP} & \multicolumn{1}{l|}{FN} & \multicolumn{1}{l|}{FP} & \multicolumn{1}{l|}{FN} \\ \hline
-				Eukleidova metrika & 0                       & 0                       & 0                       & 1                       & 0                       & 1                       & 0                       & 1                       \\ 
-				Cosinova metrika   & 0                       & 0                       & 0                       & 0                       & 1                       & 0                       & 0                       & 0                       \\ 
+				Eukleidova metrika & 0                       & 0                       & 0                       & 1                       & 0                       & 1                       & 0                       & 1                       \\ \hline
+				Cosinova metrika   & 0                       & 0                       & 0                       & 0                       & 1                       & 0                       & 0                       & 0                       \\ \hline
 			\end{tabular}
 		\end{table}
 	
 		\begin{figure}[htb]\centering
-			\tmpframe{\includegraphics[width=\textwidth]{./img/todo}}	
-			\caption{Počty clusterů, které jako ideální vyhodnotila metoda sweep k-means.}
-			\label{fig:k-means-num-clusters}
+			\tmpframe{\includegraphics[width=\textwidth]{./img/euklide-sweep-clusters}}	
+			\caption{Počty clusterů, které jako ideální vyhodnotila metoda sweep clustering při euklidově vzdálenosti}
+			\label{fig:k-means-num-clusters-euklid}
+		\end{figure}
+	
+		\begin{figure}[htb]\centering
+			\tmpframe{\includegraphics[width=\textwidth]{./img/cosine-sweep-clusters}}	
+			\caption{Počty clusterů, které jako ideální vyhodnotila metoda sweep clustering při cosinově vzdálenosti}
+			\label{fig:k-means-num-clusters-cosine}
 		\end{figure}
 	
 		
 	\section{Analýza detekce anomálie}
-		\todo{Link do 2. kapitoly}
-		Při detekci anomálie jsem kromě experimentů s ideálním nastavením vytvořil i experiment mezi dvěma metodami. Jedna je detekce anomálie založená na principu PCA, jejíž princip je přiblížen v kapitole \ref{sec:pca}. Druhou metodou je One-Class Support Vector Machine \todo{Udělat kapitolku.}, dále bude označována zkratkou SVM.
+		Při detekci anomálie jsem kromě experimentů s ideálním nastavením vytvořil i experiment mezi dvěma metodami. Jedna je detekce anomálie založená na principu PCA, jejíž princip je přiblížen v kapitole \ref{sec:pca}. Druhou metodou je One-Class Support Vector Machine, dále bude označována zkratkou SVM. Jde o metodu, která rozděluje n-dimenzionální data lineárně do dvou tříd \cite{svm}.
 	
 		\subsection{Popis vstupních dat}
 			Rozdíl v přístupu mezi shlukováním a detekce anomálie je v trénovacích datech. Při detekování anomálií byla jako testovací data použita pouze data, která byla manuálně určena jako nezávadná. Dále byla připravena i množina dat testovacích. Testovací data obsahují v poměru 87:13 korektní zprávy a podezřelé.
@@ -1089,10 +1076,10 @@ cancelOrderedService;esb1-1484665381312-5369
 			Pro dosažení nejlepšího možného výsledku používám MS Azure komponentu nazvanou \uv{Tune Model Hyperparameters.} Jde o komponentu, která se snaží optimalizovat parametry modelu, tak aby našla ideální nastavení \cite{msAzure}. Na základě toho je nutné být schopen rozeznat, jestli předchozí ohodnocení parametrů je horší než stávající. K tomu poslouží tyto možnosti nastavení \cite{powers-precision}:
 			
 			\begin{itemize} 
-				\item \textbf{Přesnost: }  lze vyjádřit vzorcem $\frac{tp+tn}{tp+tn+fp+fn}$,
-				\item \textbf{Správnost: } lze vyjádřit vzorcem $\frac{tp}{tp+fp}$,
-				\item \textbf{Podíl: } lze vyjádřit vzorcem $\frac{tp}{tp+fn}$,
-				\item \textbf{F-score: } \todo{todo powers-precision}.				
+				\item \textbf{přesnost: }  lze vyjádřit vzorcem $\frac{tp+tn}{tp+tn+fp+fn}$,
+				\item \textbf{správnost: } lze vyjádřit vzorcem $\frac{tp}{tp+fp}$,
+				\item \textbf{podíl: } lze vyjádřit vzorcem $\frac{tp}{tp+fn}$,
+				\item \textbf{F-míra: } lze vyjádřit vzorcem $2 * \frac{Přesnost*Podíl}{Přesnost + Podíl}$.				
 			\end{itemize}
 		
 			Proměnné ve vzorcích jsou zkratky:
@@ -1107,7 +1094,7 @@ cancelOrderedService;esb1-1484665381312-5369
 			
 			\begin{table}[htb]\centering
 				\centering
-				\caption{My caption}
+				\caption{Výsledky při ohodnocení pomocí metody \textit{přesnost}}
 				\label{table:anomaly_accuracy}
 				\begin{tabular}{|l|l|l|l|l|}
 					\hline
@@ -1118,11 +1105,11 @@ cancelOrderedService;esb1-1484665381312-5369
 				\end{tabular}
 			\end{table}
 		
-			Po změně hodnotícího vzorce na Správnost se výsledná data příliš nezměnila. V tabulce \ref{table:anomaly_precision} je vidět, že hodnoty pro SVM zůstali totožné, jako v případě použití Přesnosti. U PCA došlo k lehkému zhoršení. Toto zhoršení je rovno 14 korektním zprávám, které byly označené jako podezřelé.
+			Po změně hodnotícího vzorce na \textit{správnost} se výsledná data příliš nezměnila. V tabulce \ref{table:anomaly_precision} je vidět, že hodnoty pro SVM zůstali totožné, jako v případě použití Přesnosti. U PCA došlo k lehkému zhoršení. Toto zhoršení je rovno 14 korektním zprávám, které byly označené jako podezřelé.
 		
 			\begin{table}[htb]\centering
 				\centering
-				\caption{My caption}
+				\caption{Výsledky při ohodnocení pomocí metody \textit{správnost}}
 				\label{table:anomaly_precision}
 				\begin{tabular}{|l|l|l|l|l|}
 					\hline
@@ -1133,11 +1120,11 @@ cancelOrderedService;esb1-1484665381312-5369
 				\end{tabular}
 			\end{table}
 		
-			Změna hodnocení na Podíl pro výsledek příliš změnu neznamenal (hlavně v porovnání s hodnocením Správnost). Tabulka \ref{table:anomaly_recall} ukazuje, že jediná změna oproti hodnocení Správnost je o jednu zprávu víc, která byla chybně označena jako podezřelá v případě použití PCA. SVM si stejně jako v předchozích dvou experimentech drží stejné hodnoty.
+			Změna hodnocení na Podíl pro výsledek příliš změnu neznamenal (hlavně v porovnání s hodnocením \textit{správnost}). Tabulka \ref{table:anomaly_recall} ukazuje, že jediná změna oproti hodnocení Správnost je o jednu zprávu víc, která byla chybně označena jako podezřelá v případě použití PCA. SVM si stejně jako v předchozích dvou experimentech drží stejné hodnoty.
 			
 			\begin{table}[htb]\centering
 				\centering
-				\caption{My caption}
+				\caption{Výsledky při ohodnocení pomocí metody \textit{podíl}}
 				\label{table:anomaly_recall}
 				\begin{tabular}{|l|l|l|l|l|}
 					\hline
@@ -1148,11 +1135,11 @@ cancelOrderedService;esb1-1484665381312-5369
 				\end{tabular}
 			\end{table}
 		
-			Použití F-Score vedlo k totožným výsledkům jako experiment s Přesností. Více ji znázorněno v tabulce \ref{table:anomaly_f-score}
+			Použití \textit{F-míry} vedlo k totožným výsledkům jako experiment s \textit{přesností}. Více ji znázorněno v tabulce \ref{table:anomaly_f-score}
 		
 			\begin{table}[htb]\centering
 				\centering
-				\caption{My caption}
+				\caption{Výsledky při ohodnocení pomocí metody \textit{F-míra}}
 				\label{table:anomaly_f-score}
 				\begin{tabular}{|l|l|l|l|l|}
 					\hline
@@ -1163,13 +1150,56 @@ cancelOrderedService;esb1-1484665381312-5369
 				\end{tabular}
 			\end{table}
 		
-			Při porovnání výsledků klasifikace F-Score a Přesnosti došlo ke zcela totožným výsledkům. Obě tyto metody byly z výše uvedených i nejvýše úspěšné z pohledu PCA. SVM nezaznamenalo žádnou změnu na hodnocení klasifikace.
+			Při porovnání výsledků klasifikace \textit{F-míry} a \textit{přesnosti} došlo ke zcela totožným výsledkům. Obě tyto metody byly z výše uvedených i nejvýše úspěšné z pohledu PCA. SVM nezaznamenalo žádnou změnu na hodnocení klasifikace.
 		
 			
 	
-		\todo{Popsat vstupní parametry}
-		\todo{Ukázat výsledky na Prod logu}	
-		\todo{Dojít k závěru}						
+		\section{Shrnutí experimentů}
+			Pro výsledné nasazení jsem se rozhodl využít shlukování. Vzhledem k výsledkům z analytické části se úspěšně vedlo rozdělit data na shluky korektních a podezřelých zpráv.
+			
+			Určení vhodnější metriky je složité. Rozhodl jsem se využít euklidovu vzdálenost. Důvodem je, že nebude se stávající implementací vznikat ta část zpráv, které není přiřazen žádný shluk.
+			
+			Inicializaci prvních centroidů pro shluky jsem se rozhodl zvolit metodou k-means++. K tomuto rozhodnutí mě vede konkrétní příklad \uv{korektní} zprávy, který byla nositelem informace o chybě a byla označena za podezřelou. Toto odhalení se ovšem povedlo při měření vzdáleností pomocí cosinova vzorce. Vzhledem k tomu, že inicializace pro euklidovu vzdálenost měla podobné výsledky, bylo to impulzem pro výběr metody k-means++.
+			
+		\section{Nasazení}
+			Nasazení proběhlo na testovací ESB Unify. Pro natrénování modelu na MS Azure ML jsem z logů vzal veškeré korektní požadavky ze dne 5.5.2017 od 10 do 18 hodin. Získal jsem odhadem 14000 požadavků. To samé množství chyb jsem získal z logů za celý rok 2017. Dohromady jsem měl k učení algoritmu přes 28000 požadavků, v poměru 50:50 (korektní:chybné požadavky).
+			
+			Vektor o velikosti 10 používal následující slova:
+			
+			\begin{table}[htb]\centering
+				\centering
+				\caption{Výběr slov pro tvorbu vektoru při nasazení}
+				\label{tab:vector-real}
+				\begin{tabular}{|c|l|}
+					\hline
+					\textbf{četnost výskytu v \%} & \textbf{slovo} \\ \hline
+					45                            & exception   \\ \hline
+					47                            & esb\#   \\ \hline
+					23                            & notificationmessageservice     \\ \hline
+					11                            & without     \\ \hline
+					12                            & \#/mailhammer/mailhammerservice     \\ \hline
+					14                            & cancelorderedservice     \\ \hline
+					7                            & \#t\# \\ \hline
+					11                            & notificationalertjmsservice  \\ \hline
+					27                            & java   \\ \hline
+					14                           & apache \\ \hline
+				\end{tabular}
+			\end{table}
+			
+			Naučený shlukovací algoritmus algoritmus byl konfigurován na dva shluky. Za dobu provozu jednoho dne nebyl nalezen žádný podezřelý požadavek, který by byl označen jako korektní.
+			
+			Korektní požadavky označené jako podezřelé se v řádu jednotek požadavků vyskytly. Všechny tyto požadavky byly oznámení o chybě. Ovšem cílové systémy je odeslali jako korektní zprávu se statusem 200 (OK). Lze tedy tyto zprávy označit za bezpečnostní rizika. Pokud by se v logu hledalo na základě statusu zpráv, což je dost běžné, nebyly by tyto rizika odhaleny. Tím se ukazuje význam této aplikace.
+			
+			Při běhu aplikace jsem odhalil jeden nedostatek. Při implementaci jsem zapomněl uzavírat připojení do databáze. Při testovacím provozu se to projevilo a po vyčerpání všech připojení program nezpracovával další požadavky. Tuto chybu jsem ihned opravil a ověřil její, že již pracuje korektně.
+		
+		\section{Nedostatky a budoucnost práce}
+			Při experimentech jsem zjistil jeden nedostatek, kvůli kterému jsem zavrhl jinak úspěšnou cosinovu metriku. Problém je, že po normalizaci se u krátkých zpráv může stát, že jejich vektor bude nulový. S tím ovšem nepočítá vzorec pro cosinovu metriku.
+			
+			Oprava takového nedostatku může například spočívat v tom, že k hodnotám celého výsledného vektoru přičteme konstantu $k \neq 0$. Další možností je úprava normalizační funkce například tak, aby brala v potaz i názvy XML elementů. To ovšem samo o sobě stále nemusí zamezit výskytu nulových vektorů.
+			
+			Další vhodnou úpravou by bylo detekovat požadavek z logy jako celek, ale nikoliv na základě toho, že se celý vyskytuje na jedné řádce. Z provozu se zjistilo, že některé chyby vypisují své hlášky i se znaky pro označení konce řádky. Stávající algoritmus tak pracuje pouze s první řádkou a ostatní jsou ignorovány. To může zapříčinit, že přicházíme o užitečnou informaci, která by k detekci mohla pomoci. Jednou z možností by mohlo být využití regulárního výrazu.
+			
+			Práce by šla rozšířit o uživatelské rozhraní. Různé konfigurace, které se musí provádět by se pak mohly dělat jednodušeji. Příkladem takových úprav může být přidání do čtení logů aplikaci, jejíž logy nejsou strukturované tak, jak jsme z Unify zvyklý. 
 	
 \chapter{Závěr}
 
