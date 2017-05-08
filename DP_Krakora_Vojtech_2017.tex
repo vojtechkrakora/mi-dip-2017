@@ -78,11 +78,11 @@
 \chapter{Úvod}
 V~dnešní době rozvoje informačních technologií se lze častěji setkat s~problémem řešení bezpečnostních rizik. Jako jeden z~vývojářů integrační platformy Unify jsem se rozhodl na tento problém reagovat touto prací. 
 
-Unify integruje velké množství systému jak z~vnitřní sítě zákazníka, tak i napříč internetem. V~množství požadavků až 20000 za vteřinu se mohou různá rizika snadno ztratit. Dnes se lze setkat s~tím, že logy Unify jsou hlídány jednoduchými skripty a aplikací, jenž podle přesně určených vzorců reaguje. Tyto způsoby nemusí zachytit veškerá rizika a často jsou příliš pomalá. Proto cílem práce je prověřit jaká bezpečnostní rizika se mohou vyskytovat na integrační platformě.
+Unify integruje velké množství systémů z~vnitřní sítě zákazníka, ale i napříč internetem. V~množství požadavků až 7 za vteřinu se mohou různá rizika snadno ztratit. Dnes se lze setkat s~tím, že logy Unify jsou hlídány jednoduchými skripty a aplikací, jenž podle přesně určených vzorců reaguje. Tyto způsoby nemusí zachytit veškerá rizika a často jsou příliš pomalá. Proto jedním z cílů práce je prověřit, jaká bezpečnostní rizika se mohou vyskytovat na integrační platformě.
 
-První kapitola obsahuje teoretické informace. Seznamuje nás s~různými bezpečnostními riziky a známými způsoby jejich detekce. Dále přináší informace o~integrační platformě Unify, na které jsou prováděny experimenty a testování. Kapitola také ukazuje informace o~strojovém učení a jeho metodách. Je zde vysvětleno, proč jsem se rozhodl namísto těžení asociačních pravidel   rozhodl použít shlukování a detekci anomálií.
+První kapitola obsahuje teoretické informace. Seznamuje nás s~různými bezpečnostními riziky a známými způsoby jejich detekce. Dále přináší informace o~integrační platformě Unify, na které jsou prováděny experimenty a testování. Kapitola také ukazuje informace o~strojovém učení a jeho metodách. Je zde vysvětleno, proč jsem se rozhodl namísto těžení asociačních pravidel použít shlukování a detekci anomálií.
 
-Druhá kapitola přináší návrhy, které vedou k~cílové implementaci. Je představena architektura celé aplikace, včetně využití NoSQL databáze. Protože tato aplikace by měla rozšířit již funkční Unify, je zde uveden způsob přístupu k~provozu, popřípadě informace o~tom jak mohou aplikace třetích stran využívat zpracovaná data.
+Druhá kapitola přináší návrhy, které vedou k~cílové implementaci. Je zde představena architektura celé aplikace, včetně využití NoSQL databáze. Protože tato aplikace by měla rozšířit již funkční Unify, je zde uveden bezpečný způsob přístupu k~provozu platformy. Dále je uvedena informace o~tom, jak mohou aplikace třetích stran využívat zpracovaná data.
 
 Třetí kapitola popisuje realizaci. Vysvětluje nutná nastavení pro aplikační server, kolekce v~databázi a také vytvoření modelu na MS Azure ML.
 
@@ -225,12 +225,12 @@ Třetí kapitola popisuje realizaci. Vysvětluje nutná nastavení pro aplikačn
 				
 				\begin{figure}[htb]\centering
 					\tmpframe{\includegraphics[width=\textwidth]{./img/basic_esb_communication}}		
-					\caption{Běžné druhy komunikace na ESB, Unify - A) Synchronní, B) Asynchronní, C) Zprávy s~frontou}
+					\caption{Běžné druhy komunikace na ESB, Unify - A) synchronní, B) asynchronní, C) zprávy s~frontou}
 					\label{fig:esb_communication}
 				\end{figure}
 	
 	\section{Strojové učení}
-		Strojové učení patří jako podkapitola do znalostního inženýrství. Jde o~algoritmy a metody, které pomáhají stroji, aby se učil. Učením je myšleno to, kdy je stroj schopen na základě zkušenosti se rozhodovat. Toto rozhodování dokáže vyvodit automaticky bez pomoci člověka. \cite{what-is-machine-learning}
+		Strojové učení patří jako podkapitola do znalostního inženýrství. Jde o~algoritmy a metody, které pomáhají stroji, aby se učil. Učením je myšleno to, kdy je stroj schopen na základě zkušenosti se rozhodovat. Toto rozhodování dokáže vyvodit automaticky bez pomoci člověka \cite{what-is-machine-learning}. 
 		
 		Strojové učení je využíváno například ve spamových filtrech, v~algoritmech rozpoznávajících obličej nebo jako automatické třídění článků \cite{machine-learning}.
 		
@@ -252,7 +252,7 @@ Třetí kapitola popisuje realizaci. Vysvětluje nutná nastavení pro aplikačn
 	\subsection{Těžení textu}
 		V~logách integrační platformy je veškerá komunikace v~textovém formátu. Kromě zpráv ve formátu XML zde jsou i zprávy ve formátu JSON, popřípadě výpisy chyb, pokud nějaká nastala. Protože v~práci řeším analýzu takových logů, tak následující kapitola přiblíží těžení znalostí z~textu. 
 		
-		Těžení textu má velký význam, neboť 80\% informací uložených v~počítačích jsou textové formy \cite{IRWebTechniques}.
+		Těžení textu má velký význam, neboť 80~\% informací uložených v~počítačích jsou textové formy \cite{IRWebTechniques}.
 		
 		Těžení textu je metoda, která těží informace z~textu \cite{WittenTextMining}. Přesto, že text mining spadá do kategorie data miningových metod, rozdíl je v~tom, že nepracuje s~číselnými a většinou ani nominálními hodnotami. Data mining dokáže detekovat skryté informace ze vstupních dat. Text mining informace nemá většinou ve svých datech nijak skryté. Při zpracování textu jde o~automatizaci procesu tak, jak by ho zvládl člověk, počítačem. \cite{WittenTextMining}.
 		
@@ -274,7 +274,7 @@ Třetí kapitola popisuje realizaci. Vysvětluje nutná nastavení pro aplikačn
 			
 		\item \textbf{Extrakce informací}
 		
-			Extrakce informací je proces, kde jsou vytažena data ze vstupu a vložena do logických struktur.\cite{SankarSureshTextMining}
+			Extrakce informací je proces, kde jsou vytažena data ze vstupu a vložena do logických struktur \cite{SankarSureshTextMining}.
 		
 		
 		\item \textbf{Transformace textových dokumentů}
@@ -284,14 +284,14 @@ Třetí kapitola popisuje realizaci. Vysvětluje nutná nastavení pro aplikačn
 		\textbf{TF-IDF}
 			\label{subsub:tf-idf}
 			
-			TF-IDF je zkratka anglického názvu \textit{Term Frequency Inverse Document Frequency}. Snazší překlad bude, pokud název rozdělíme na Term Frequency, což je v~překladu četnost slova a Inverse document frequency, jenž znamená: převrácena četnost dokumentu \cite{RamosTF-IDF}.
+			TF-IDF je zkratka anglického názvu \textit{Term Frequency Inverse Document Frequency}. Překlad je snazší, pokud je rozdělen na Term Frequency, což je v~překladu četnost slova a Inverse document frequency, jenž znamená: převrácena četnost dokumentu \cite{RamosTF-IDF}.
 			
 			Četnost slova vyjádříme následovně: máme slovo $w$ a množinu dokumentů $D$, skládající se z~dokumentů $d_1, d_2 \ldots d_3 \in D$. Potom četnost slova $TF(w, d_x)$ vyjadřuje kolikrát se slovo $w$ vyskytlo v~dokumentu $d_x$.
 			
-			Převrácená četnost dokumentu vystihuje jak podstatné slovo $w$ je. Značíme ji jako $$IDF(w,D) = \log{\frac{|D|}{|D_w \subseteq D|}}$$ kde $|D|$ vyjadřuje velikost množiny všech dokumentů a $D_w$ množina všech dokumentů, ve kterých se slovo $w$. $|D_w|$ pak značí velikost takové množiny \cite{RamosTF-IDF}.
+			Převrácená četnost dokumentu vystihuje jak podstatné slovo $w$ je. Značíme ji jako $$IDF(w,D) = \log{\frac{|D|}{|D_w \subseteq D|}},$$ kde $|D|$ vyjadřuje velikost množiny všech dokumentů a $D_w$ množina všech dokumentů, ve kterých se slovo $w$. $|D_w|$ pak značí velikost takové množiny \cite{RamosTF-IDF}.
 			
 			Pro slovo $w$ v~dokumentu $d$ vypočteme TF-IDF následovně:
-			$$TF-IDF(w,d,D) = TF(w,d) * IDF(w,D)$$
+			$$TF-IDF(w,d,D) = TF(w,d) * IDF(w,D).$$
 			
 			Na základě uvedeného vzorce jsme schopni reprezentovat textový dokument pomocí vektoru. Vektor takového dokumentu bude vždy nezáporný a bez úprav bude mít tolik dimenzí, kolik má jednoznačných slov v~sobě.
 			
@@ -326,7 +326,7 @@ Třetí kapitola popisuje realizaci. Vysvětluje nutná nastavení pro aplikačn
 		
 		Velmi pravděpodobně bezpečnostní rizika budou přibývat. Tato možnost by šla využít pro již existující nebo alespoň několikrát se vyskytující případy.
 		
-		Z~těchto důvodů jsem tuto myšlenky zavrhl s~tím, že bude lepší vyzkoušet takové metody, které budou mít šanci rozpoznat špatný požadavek, i když ho uvidí poprvé. Tyto metody jsou rozepsány v~následujících sekcích. 		
+		Z~těchto důvodů jsem tuto myšlenku zavrhl s~tím, že bude lepší vyzkoušet takové metody, které budou mít šanci rozpoznat špatný požadavek, i když ho uvidí poprvé. Tyto metody jsou rozepsány v~následujících sekcích. 		
 	
 	\section{Shluková analýza}
 		Jako jednu z~možností vyřešení detekce bezpečnostních rizik na základě dat z~logů jsem si vybral shlukovou analýzu (dle anglického názvu také nazýván clustering). Clustering využívá znalosti ze vstupních dat k~tomu, aby dokázal vstupní požadavky rozdělit do shluků. Všechny informace jsou do těchto shluků přiřazovány na základě podobnosti. Podobnost lze definovat podle charakteristiky dat a požadovaném účelu shlukování. Jednotlivé shluky pak tvoří užitečné a logické skupinky .
@@ -350,7 +350,7 @@ Třetí kapitola popisuje realizaci. Vysvětluje nutná nastavení pro aplikačn
 				\label{fig:kMeansVSkMedoids}
 			\end{figure}
 		
-			Postup algoritmu pro K-means je nejdříve vybrat $K$ bodů jako centroidy. Tyto centroidy lze vybrat náhodně nebo prvních $N$. Volbou prvních centroidů se zabývá zdroj \cite{kMeansInit}. Po vybrání středů se všechny data přiřadí k~nejvhodnějšímu shluku. Výběr takové shluku často ovlivňuje například vzdálenost bodu k~centroidu. Následuje přepočet nových středů. Přiřazení do shluků a výpočet nových centroidů se opakuje, dokud shluky mění. Po té považujeme algoritmus za hotový a data rozdělená do skupin.
+			Postup algoritmu pro K-means je nejdříve vybrat $K$ bodů jako centroidy. Tyto centroidy lze vybrat náhodně nebo prvních $N$. Volbou prvních centroidů se zabývá zdroj \cite{kMeansInit}. Po vybrání středů se všechny data přiřadí k~nejvhodnějšímu shluku. Výběr takového shluku často ovlivňuje například vzdálenost bodu k~centroidu. Následuje přepočet nových středů. Přiřazení do shluků a výpočet nových centroidů se opakuje, dokud shluky mění. Po té považujeme algoritmus za hotový a data rozdělená do skupin.
 			
 			Algoritmus s~náhodným výběrem středů:
 			
@@ -374,7 +374,7 @@ Třetí kapitola popisuje realizaci. Vysvětluje nutná nastavení pro aplikačn
 				\label{sec:cosine_distance}
 				Cosinova vzdálenost se vypočítá následovně \cite{cosine-similarity}: Máme vektor $A = [A_1,A_2,\ldots,A_n]$ a vektor $B = [B_1,B_2,\ldots,B_n]$. Cosinovu vzdálenost vypočteme jako
 				
-				$$cos(A,B) = \frac{A*B}{||A|| * ||B||}$$,
+				$$cos(A,B) = \frac{A*B}{||A|| * ||B||},$$
 				
 				kde $||A||$ vyjadřuje velikost vektoru $A$. Stejně tak velikost vektoru $B$ je označena $||B||$.
 				
@@ -382,7 +382,7 @@ Třetí kapitola popisuje realizaci. Vysvětluje nutná nastavení pro aplikačn
 				
 				\subsubsection{Manhattanská vzdálenost}
 				Dalším příkladem měření vzdáleností bodů $p = (p_1, p_2, \ldots, p_n)$ a $q = (q_1, q_2, \ldots, q_n)$ v~eukleidově prostoru je manhattanská vzdálenost. Její výpočet je dle vzorce:
-				$$d_m(p,q) = \sum_{i = 1}^{n} |p_i - q_i| $$
+				$$d_m(p,q) = \sum_{i = 1}^{n} |p_i - q_i|.$$
 				
 		\subsection{Důvod využití}
 			Informace, které integrační platformou prochází jsou velmi různorodé. Požadavky je možné rozdělovat do různých skupin jako například:
@@ -422,7 +422,7 @@ Třetí kapitola popisuje realizaci. Vysvětluje nutná nastavení pro aplikačn
 			
 			Metody založené na hustotě vypočítávají takzvaný LOF (Local Outlier Factor). LOF je hodnota, která u~každého prvku určuje míru, jak moc je anomálií \cite{LOF}.
 			
-			Základ výpočtu LOF je, výpočet vzdálenosti ke $k > 0$ nejbližším sousedům. Tato vzdálenost je použita pro odhad hustoty. Následné porovnání hustoty elementu s~hustotami svých $k$ sousedů rozhoduje o~tom, bude-li označen za anomálii.
+			Základ výpočtu LOF je výpočet vzdálenosti ke $k > 0$ nejbližším sousedům. Tato vzdálenost je použita pro odhad hustoty. Následné porovnání hustoty elementu s~hustotami svých $k$ sousedů rozhoduje o~tom, bude-li označen za anomálii.
 			
 			Definice LOF dle \cite{LOF} je popsána pomocí několika dílčích definicích: 
 			
@@ -437,18 +437,18 @@ Třetí kapitola popisuje realizaci. Vysvětluje nutná nastavení pro aplikačn
 		
 			\subsubsection{Dosažitelná vzdálenost}
 				Nechť $k$ je přirozené číslo. Dosažitelná vzdálenost objektu $p$ s~ohledem na objekt $o$ je definována následovně: 
-				$$ reach-dist_k(p, o) = max (k-distance(o), d(p, o)) $$
+				$$ reach-dist_k(p, o) = max (k-distance(o), d(p, o)).$$
 				
 			\subsubsection{Hustota dosažitelnosti}
 				Hustota dosažitelnosti objektu $p$ je definována jako
-				$$ lrd_{N_k}(p) = \frac{1}{ \frac{\sum_{o \in N_k(p)} reach-dist_k(p,o}{|N_k(p)|}} $$
+				$$ lrd_{N_k}(p) = \frac{1}{ \frac{\sum_{o \in N_k(p)} reach-dist_k(p,o}{|N_k(p)|}}.$$
 				
 				Hustota dosažitelnosti lze popsat jako inverze průměru dosažitelné vzdálenosti $k$ nejbližších sousedů $p$.
 				
 			\subsubsection{Činitel anomálie objektu p (LOF)}
 				LOF objektu $p$ je definován jako 
 				
-				$$LOF_{N_k}(p) = \frac{\sum_{o \in N_k(p)} \frac{lrd_{N_k}(o)}{lrd_{N_k}(p)}}{|N_k(p)|} $$		
+				$$LOF_{N_k}(p) = \frac{\sum_{o \in N_k(p)} \frac{lrd_{N_k}(o)}{lrd_{N_k}(p)}}{|N_k(p)|}.$$		
 		
 		\subsection{Analýza hlavních komponent}
 		\label{sec:pca}
@@ -462,13 +462,13 @@ Třetí kapitola popisuje realizaci. Vysvětluje nutná nastavení pro aplikačn
 	Návrh řešení plyne z~toho, že hlavním stavebním kamenem je integrační platforma Unify. Tato platforma využívá již některé metody a standarty. 
 	
 	\section{Architektura aplikace}
-	Požadavkem na aplikaci je, aby zprávy zpracovávala a predikovala v~reálném časem. Proto je princip položen na čtení požadavků proudících přes platformu. Jejich předzpracování a odeslání do cloudového řešení Microsoft Azure (Více v~sekci \ref{sec:ms_azure}). Po přijetí odpovědi je výsledek uložen do databáze. Pro vizualizaci dat slouží REST API \cite{rest}, které vypisuje předem definované informace v~ideálním formátu pro zobrazení v~Google Charts \cite{googleCharts}.
+	Požadavkem na aplikaci je, aby zprávy zpracovávala a predikovala v~reálném časem. Proto je princip položen na čtení požadavků proudících přes platformu. Dále jsou předzpracovány a odeslány do cloudového řešení Microsoft Azure (více v~sekci \ref{sec:ms_azure}). Po přijetí odpovědi je výsledek uložen do databáze. Pro vizualizaci dat slouží REST API \cite{rest}, které vypisuje předem definované informace v~ideálním formátu pro zobrazení v~Google Charts \cite{googleCharts}.
 	
-	Pro snazší představu o~architektuře aplikace poslouží obrázek \ref{fig:hld_architecture}, na kterém je vidět High Level Desing \cite{hld_johnson}.
+	Pro snazší představu o~architektuře aplikace poslouží obrázek \ref{fig:hld_architecture}, na kterém je vidět high level desing \cite{hld_johnson}.
 	
 	\begin{figure}[htb]\centering
 		\tmpframe{\includegraphics[width=\textwidth]{./img/jake_HLD}}		
-		\caption{High Level Desing aplikace s~pracovním názvem JakeTheLogger}
+		\caption{high level desing aplikace s~pracovním názvem JakeTheLogger}
 		\label{fig:hld_architecture}
 	\end{figure}
 
@@ -521,7 +521,7 @@ Třetí kapitola popisuje realizaci. Vysvětluje nutná nastavení pro aplikačn
 		\label{sec:jboss}
 		Základem integrační platformy Unify je aplikační server JBoss AS 7 \cite{unify}. Je potřeba, aby cílová aplikace byla kompatibilní, proto se i její vývoj bude soustředit na nasazení na JBoss.
 		
-		Jboss AS je aplikační server pro Javu EE\cite{jboss}.
+		Jboss AS je aplikační server pro Javu EE\cite{jboss}. Aplikační server je mezivrstva mezi operačním systémem a aplikacemi. Pomáhá zjednodušovat vývoj aplikací. Umožňuje přístup na souborový systém, ale také transakční zpracování požadavků nebo ukládání dat do databáze. Je využíván takzvanými enterprise aplikacemi \cite{app_server}. 
 
 					
 	\section{Logování Unify}
@@ -615,11 +615,11 @@ cancelOrderedService;esb1-1484665381312-5369
 		\subsection{Forma vektoru}
 		Pokud by nedošlo k~žádné změně, vektor by byl tak velký, kolik unikátních slov by se v~rámci zpráv našlo. Takový vektor by byl velmi obsáhlý. Mnoho dat by nemělo ani smysl, neboť slova, která se vyskytují ve všech zprávách nebo například pouze v~jedné nemají příliš velký informační smysl. Z~tohoto důvodu jsem vytvořil dva konfigurační parametry, které stanovují horní a spodní procentní hranici. Tyto hranice vymezují pouze ty slova, jejichž procentuální výskyt ve zprávách je právě v~intervalu vytyčeném hranicemi.  
 		
-		Při jednom z~experimentů jsem pro horní hranici 85\%, spodní hranici 10\%  a velikost vektoru $|v| = 10$ získal slova uvedené v~tabulce \ref{tab:vector-err}. Tato slova budou následně použita v~algoritmu TF-IDF. Výsledek bude tvořit vektor o~velikost rovnému počtu slov v~tabulce \ref{tab:vector-err}.
+		Při jednom z~experimentů jsem pro horní hranici 85~\%, spodní hranici 10~\%  a velikost vektoru $|v| = 10$ získal slova uvedené v~tabulce \ref{tab:vector-err}. Tato slova budou následně použita v~algoritmu TF-IDF. Výsledek bude tvořit vektor o~velikost rovnému počtu slov v~tabulce \ref{tab:vector-err}.
 		
 		\begin{table}[htb]\centering
 			\centering
-			\caption{Výběr slov a hodnoty vektoru pro zpravu err1-1490865735867-8212}
+			\caption{Výběr slov a hodnoty vektoru pro zprávu err1-1490865735867-8212}
 			\label{tab:vector-err}
 			\begin{tabular}{|c|c|l|}
 				\hline
@@ -654,7 +654,7 @@ cancelOrderedService;esb1-1484665381312-5369
 			\item \textbf{Clean Missing Data} - odstraní nekompletní řádky.	
 		\end{itemize}
 	
-		Modul \textbf{Split Data} slouží k~náhodnému rozdělení vstupních dat. Zde to má smysl takový, že 80 \% požadavků je zpracováno učícím algoritmem. Zbylých 20\% je použito pro otestování naučeného algoritmu. 
+		Modul \textbf{Split Data} slouží k~náhodnému rozdělení vstupních dat. Zde to má smysl takový, že 80~\% požadavků je zpracováno učícím algoritmem. Zbylých 20~\% je použito pro otestování naučeného algoritmu. 
 		
 		\begin{figure}[htb]\centering
 			\tmpframe{\includegraphics[width=\textwidth]{./img/azureTrainingKmeans}}	
@@ -663,7 +663,7 @@ cancelOrderedService;esb1-1484665381312-5369
 		\end{figure}
 	
 		\subsubsection{Zpracování}
-		Pro zpracování jsem zvolil K-Means shlukování. Jeho ideální nastavení je řešením kapitoly \ref{chap:analyse}. Z~modulu \textbf{Train Clustering Model} je možné získat naučený model a výsledek přiřazení vstupních dat. Pro lepší zobrazení výsledku přiřazení vstupních dat jsem zvolil pro finální zobrazení pouze sloupec s~identifikátorem zprávy a informaci o~clusteru, do kterého zpráva spadá. Modul \textbf{Edit Metadata} umožňuje přejmenovávat sloupce a měnit jejich datové typy. Také je dobrým nástrojem pro vizualizaci dat. Naučený model je propojen s~modulem \textbf{Assign Data to Clusters}. Do tohoto modulu je zavedeno i zbývajících 20\% vstupních dat. Výsledný algoritmus je na nich otestován.
+		Pro zpracování jsem zvolil K-Means shlukování. Jeho ideální nastavení je řešením kapitoly \ref{chap:analyse}. Z~modulu \textbf{Train Clustering Model} je možné získat naučený model a výsledek přiřazení vstupních dat. Pro lepší zobrazení výsledku přiřazení vstupních dat jsem zvolil pro finální zobrazení pouze sloupec s~identifikátorem zprávy a informaci o~clusteru, do kterého zpráva spadá. Modul \textbf{Edit Metadata} umožňuje přejmenovávat sloupce a měnit jejich datové typy. Také je dobrým nástrojem pro vizualizaci dat. Naučený model je propojen s~modulem \textbf{Assign Data to Clusters}. Do tohoto modulu je zavedeno i zbývajících 20~\% vstupních dat. Výsledný algoritmus je na nich otestován.
 		
 		Na obrázku \ref{fig:k-means_azure} je vidět celý vytvořený trénovací experiment.
 	
@@ -673,7 +673,7 @@ cancelOrderedService;esb1-1484665381312-5369
 		
 		Princip předzpracování dat v~Azure ML studiu je stejný, jako při konstrukci modelu pro shlukování. Řádky s~chybějícími hodnotami a duplikované pro trénování nebudeme používat.
 		
-		Kromě výše uvedené předzpracující části i zde je část učící a část vyhodnocovací. Hlavním rozdílem je, že na vstupu jsou dva datasety. Jedna množina dat je složena pouze z~korektních požadavků. Druhá množina jsou data korektní i nekorektní v~poměru 87:13. Algoritmus je naučen pouze na nepodezřelých vzorcích. Mixovaná data jsou pak použita při zkoušení naučeného modelu v~\textbf{Score Model}.
+		Kromě výše uvedené předzpracující části i zde je část učící a část vyhodnocovací. Hlavním rozdílem je, že na vstupu jsou dva datasety. Jedna množina dat je složena pouze z~korektních požadavků. Druhá množina jsou data korektní i nekorektní v~poměru 87:13. Algoritmus je naučen pouze na nepodezřelých vzorcích. Mixovaná data jsou pak použita při zkoušení naučeného modelu ve~\textbf{Score Model}.
 		
 		Trénovací model je vidět na obrázku \ref{fig:anomaly_detection_azure}.
 		
@@ -706,9 +706,9 @@ cancelOrderedService;esb1-1484665381312-5369
 		\label{sec:data_prezentation}
 		Vzhledem k~tomu, že by aplikace měla být schopna určovat bezpečnostní rizika, je třeba nějakým způsobem prezentovat její výstupy. Monitoring na aplikaci Unify je momentálně postaven na tom, že konkrétní specializovaní lidé kontrolují logy a v~případě výskytu chyb, varování nebo jiné netypické události zjišťují co bylo příčinou.
 		
-		Rozhodl jsem se tedy, že nejlepší bude grafické znázornění. Kromě údajů o~tom, že byl zaznamenán požadavek, který je podezřelý budu grafy využívat i k~prezentaci základního monitoringu.Jelikož se bude veškerá komunikace ukládat, bude vhodné prezentovat například i kolik požadavků na jednotlivé komponentě proběhlo za poslední hodinu a podobně.
+		Rozhodl jsem se tedy, že nejlepší bude grafické znázornění. Kromě údajů o~tom, že byl zaznamenán požadavek, který je podezřelý budu grafy využívat i k~prezentaci základního monitoringu. Jelikož se bude veškerá komunikace ukládat, bude vhodné prezentovat například i kolik požadavků na jednotlivé komponentě proběhlo za poslední hodinu a podobně.
 		
-		Společnost Cetin \cite{cetin} ve které bude aplikace testována a jenž je uživatelem integrační platformy používá pro různá grafická znázornění grafy od Google Charts\cite{googleCharts}. 
+		Společnost Cetin \cite{cetin}, ve které bude aplikace testována a jenž je uživatelem integrační platformy používá pro různá grafická znázornění grafy od Google Charts\cite{googleCharts}. 
 		
 		Tyto grafy jsou napsané v~jazyce Javascript. Je tedy možné jejich umístění například na intranetové stránky, kde se vysoce postavení lidé společnosti vyznají lépe než v~jednotlivých monitorovacích aplikacích.
 		
@@ -720,7 +720,7 @@ cancelOrderedService;esb1-1484665381312-5369
 		Lze předpokládat, že k~monitorování bezpečnosti provozu budou použity systémy SIEM (Security Information and Event Management) \cite{siem}.
 		SIEM funguje na principu, kdy zpracovává co nejvíce údajů, na jejichž základě pak rozeznává neočekávané situace a rizika \cite{howDesSiemWork}.
 		
-		Tím, že jsem se rozhodl data ukládat tak, jak uvádím v~kapitole \ref{sec:data_storing} bude libovolný SIEM po připojení do DB schopen získat jak originální zprávu, tak její normalizovanou verzi popřípadě i výsledek vyhodnocení mé aplikace.
+		Tím, že jsem se rozhodl data ukládat tak, jak uvádím v~kapitole \ref{sec:data_storing}, bude libovolný SIEM po připojení do DB schopen získat jak originální zprávu, tak její normalizovanou verzi popřípadě i výsledek vyhodnocení mé aplikace.
 		
 		Dále je možnost napojit SIEM i na REST API obdobně jako Google Charts v~kapitole \ref{sec:data_prezentation}.
 		
@@ -736,9 +736,9 @@ cancelOrderedService;esb1-1484665381312-5369
 		
 		Jboss umožňuje snadné přidání modulů. Veškeré moduly jsou umístěny v~\textit{wildfly/jboss-eap-7.0/modules/system/layers}. Zde jsem vytvořil svůj modul s~konkrétními java knihovnami:
 		\begin{itemize} 
-			\item commons-codec-1.10.jar
-			\item json-simple-1.1.1.jar
-			\item mongo-java-driver-3.4.2.jar		
+			\item commons-codec-1.10.jar,
+			\item json-simple-1.1.1.jar,
+			\item mongo-java-driver-3.4.2.jar.		
 		\end{itemize}
 	
 		Moduly se pak musí zaregistrovat v~konfiguračním souboru \textit{layers.conf}. Následně je možné, aby deploymenty uvnitř aplikačního serveru s~tímto modulem využívali uvedené knihovny.
@@ -748,7 +748,7 @@ cancelOrderedService;esb1-1484665381312-5369
 		Dále bylo nutné pro JBoss nastavit portový posun. Protože na serveru z~pravidla běží více aplikací, je běžný problém v~kolizi portů. Z~tohoto důvodu jsem zvolil posun o~10000. Webové služby na tomto aplikačním serveru tedy místo portu 8080 běží na portu 18080 a podobně.
 		
 		\subsection{Zapnutí CORS}
-		CORS (Cross-origin resource sharing) neboli \textit{sdílené zdroje odjinud} umožňuje odesílání odpovědí na požadavky z~jiné domény \cite{CORS}. V~aplikaci je to potřebné pro REST API, kterého se následně dotazuje Google charts.
+		CORS (Cross-origin resource sharing), neboli \textit{sdílené zdroje odjinud}, umožňuje odesílání odpovědí na požadavky z~jiné domény \cite{CORS}. V~aplikaci je to potřebné pro REST API, kterého se následně dotazuje Google charts.
 		
 		Corse se v~Jboss povoluje v~konfiguračním souboru pro standalone aplikaci \textit{standalone.xml} pro doménovou \textit{domain.xml}.
 		
@@ -792,7 +792,7 @@ cancelOrderedService;esb1-1484665381312-5369
 	\begin{itemize} 
 		\item \textbf{messages} - veškerá komunikace,
 		\item \textbf{terms} - slova pro použití v~TF-IDF algoritmu,
-		\item \textbf{used-messages} - zprávy ze kterých byly vypočteny slova v~kolekci terms (podstatné pro výpočet TF-IDF).	
+		\item \textbf{used-messages} - zprávy, ze kterých byly vypočteny slova v~kolekci terms (podstatné pro výpočet TF-IDF).	
 	\end{itemize} 
 	
 	
@@ -965,7 +965,7 @@ cancelOrderedService;esb1-1484665381312-5369
 	\end{figure}
 	
 	\section{Analýza K-Means}
-		V~této části je popsán celkový proces vytváření nejlepšího možného nastavení pro shlukovací k-means algoritmus. Jako základ jsem vybral trénovací data. U~těchto dat jsem se rozhodl určit 1000 trénovacích vzorků. Protože cílem je detekovat bezpečnostní rizika a to jak ve formě špatných requestů tak i například podvržených zpráv, vybral z~testovacích dat 500 vzorků, které dopadli chybou a 500 vzorků, které proběhli v~pořádku. První množina slouží jako reprezentanti skupiny zpráv, které chceme rozpoznávat. Druhá množina 500 prvků je reprezentantem klasických zpráv, které by měli přes integrační platformu proudit.
+		V~této části je popsán celkový proces vytváření nejlepšího možného nastavení pro shlukovací k-means algoritmus. Jako základ jsem vybral trénovací data. U~těchto dat jsem se rozhodl určit 1000 trénovacích vzorků. Protože cílem je detekovat bezpečnostní rizika, a to jak ve formě špatných requestů tak i například podvržených zpráv, vybral z~testovacích dat 500 vzorků, které dopadli chybou a 500 vzorků, které proběhli v~pořádku. První množina slouží jako reprezentanti skupiny zpráv, které chceme rozpoznávat. Druhá množina 500 prvků je reprezentantem klasických zpráv, které by měli přes integrační platformu proudit.
 		
 		Pro poměr 50:50 jsem se rozhodl, aby byla dostatečně velká pravděpodobnost, že shluky v~k-means najdou správná místa. Pokud bych zvolil poměr, ve kterém by se podezřelé zprávy vyskytovali v~malém množství nebo dokonce vůbec, algoritmus k-means by mohl pomocí shluků například rozpoznávat jednotlivé služby nebo najít zcela jiné vzory v~datech. Takové vzory by se nemuseli hodit pro analýzu bezpečnostních rizik.
 		
@@ -977,8 +977,8 @@ cancelOrderedService;esb1-1484665381312-5369
 			K-means shlukuje data do $k$ shluků vhledem k~podobnosti jednotlivých dat. V~experimentu bezpečnostních rizik lze očekávat, že by rozdělení mohlo být na dvě skupiny:
 			
 			\begin{itemize} 
-				\item data v~pořádku
-				\item podezřelá data		
+				\item data v~pořádku,
+				\item podezřelá data.	
 			\end{itemize}
 		
 			I~přes tuto myšlenku byl proveden experiment na různá množství shluků. Konkrétně na 2, 3, 4, 10 a 20. Všechny experimenty byly spuštěny současně na totožných vstupních datech. Hodnoty ostatních konfiguračních parametrů (samozřejmě mimo počtu shluků) byly zvoleny následující:
@@ -1013,9 +1013,9 @@ cancelOrderedService;esb1-1484665381312-5369
 			
 			Nastavení k-means je následovné:
 			\begin{itemize} 
-				\item \textbf{výběr prvotních středových bodů: } náhodný
-				\item \textbf{metrika: } cosinova vzdálenost
-				\item \textbf{počet běhů: } 100		
+				\item \textbf{výběr prvotních středových bodů: } náhodný,
+				\item \textbf{metrika: } cosinova vzdálenost,
+				\item \textbf{počet běhů: } 100.		
 			\end{itemize}
 		
 			Při zkoumání výsledků se objevil jev, kdy některé zprávy nebyly přiřazené do žádného clusteru. Po hlubší analýze jsem zjistil, že jde o~zprávy, které pochází z~B2B brány. Tyto požadavky po normalizaci mají velikost nula. To vede k~tomu, že jejich vektor je nulový. S~takovým vektorem má cosinova vzdálenost problém. Nelze jej vypočítat, tak zpráva není označena žádným shlukem.
@@ -1028,7 +1028,7 @@ cancelOrderedService;esb1-1484665381312-5369
 			
 			V~případě $ k = 20$ jsou data opět rozdělena. Ovšem na rozdíl od testovaných $k < 20$ se zde objevují clustery, které obsahují například jen jednu zprávu. 
 			
-			Z~výsledků analýzy, kdy porovnáváme metriku euikleidovu a cosinovu je pozorovatelná lepší přesnost u~cosinovy délky. Problém zde nastává se zprávy, které mají nulový vektor. Tyto zprávy je třeba ošetřit nebo nahradit normalizační funkci tak, aby nulový vektor negenerovala. 			
+			Z~výsledků analýzy, kdy porovnáváme metriku euikleidovu a cosinovu je pozorovatelná lepší přesnost u~cosinovy délky. Problém zde nastává se zprávami, které mají nulový vektor. Tyto zprávy je třeba ošetřit nebo nahradit normalizační funkci tak, aby nulový vektor negenerovala. 			
 			
 		\subsection{Inicializace}
 			Vliv na běh algoritmu má i počáteční nastavení středů jednotlivých shluků. MS Azure ve svém modulu pro k-means nabízí možnosti \cite{MSAzure-kmeans}:
@@ -1065,7 +1065,7 @@ cancelOrderedService;esb1-1484665381312-5369
 			\centering
 			\caption{Zobrazení chyb při shlukování 800 vzorků, při rovnoměrném rozdělení korektních a podezřelých zpráv}
 			\label{tab:clustering_errors}
-			\begin{tabular}{|l|llllllll}
+			\begin{tabular}{|l|l|l|l|l|l|l|l|l|}
 				\hline
 				\multirow{2}{*}{}  & \multicolumn{2}{l|}{Prvních N}                    & \multicolumn{2}{l|}{Náhodné}                      & \multicolumn{2}{l|}{K-Means++}                    & \multicolumn{2}{l|}{Rovnoměrně}                   \\
 				& \multicolumn{1}{l|}{FP} & \multicolumn{1}{l|}{FN} & \multicolumn{1}{l|}{FP} & \multicolumn{1}{l|}{FN} & \multicolumn{1}{l|}{FP} & \multicolumn{1}{l|}{FN} & \multicolumn{1}{l|}{FP} & \multicolumn{1}{l|}{FN} \\ \hline
@@ -1093,7 +1093,7 @@ cancelOrderedService;esb1-1484665381312-5369
 		\subsection{Popis vstupních dat}
 			Rozdíl v~přístupu mezi shlukováním a detekce anomálie je v~trénovacích datech. Při detekování anomálií byla jako testovací data použita pouze data, která byla manuálně určena jako nezávadná. Dále byla připravena i množina dat testovacích. Testovací data obsahují v~poměru 87:13 korektní zprávy a podezřelé.
 		
-			Velikost obou množin je 1000 požadavků. Vstupy byly vybrány náhodným výběrem z~téměř 50000 požadavků velké množiny na ESB. Zprávy, které integrační platformou v~pořádku prošli byly hodnoceny jako korektní. Zprávy, které vyvolávali chyby byly označené jako podezřelé. Nevýhodou tohoto přístupu může být přehlédnutí rizikové zprávy, která se běžným pohledem může jevit, že je v~pořádku.
+			Velikost obou množin je 1000 požadavků. Vstupy byly vybrány náhodným výběrem z~téměř 50000 požadavků velké množiny na ESB. Zprávy, které integrační platformou v~pořádku prošly byly hodnoceny jako korektní. Zprávy, které vyvolávali chyby byly označené jako podezřelé. Nevýhodou tohoto přístupu může být přehlédnutí rizikové zprávy, která se běžným pohledem může jevit, že je v~pořádku.
 		
 		\subsection{Ohodnocení klasifikace}
 			\label{subsec:classification_performance}
@@ -1183,7 +1183,7 @@ cancelOrderedService;esb1-1484665381312-5369
 			
 			Určení vhodnější metriky je složité. Rozhodl jsem se využít euklidovu vzdálenost. Důvodem je, že nebude se stávající implementací vznikat ta část zpráv, které není přiřazen žádný shluk.
 			
-			Inicializaci prvních centroidů pro shluky jsem se rozhodl zvolit metodou k-means++. K~tomuto rozhodnutí mě vede konkrétní příklad \uv{korektní} zprávy, který byla nositelem informace o~chybě a byla označena za podezřelou. Toto odhalení se ovšem povedlo při měření vzdáleností pomocí cosinova vzorce. Vzhledem k~tomu, že inicializace pro euklidovu vzdálenost měla podobné výsledky, bylo to impulzem pro výběr metody k-means++.
+			Inicializaci prvních centroidů pro shluky jsem se rozhodl zvolit metodou k-means++. K~tomuto rozhodnutí mě vede konkrétní příklad \uv{korektní} zprávy, která byla nositelem informace o~chybě a byla označena za podezřelou. Toto odhalení se ovšem povedlo při měření vzdáleností pomocí cosinova vzorce. Vzhledem k~tomu, že inicializace pro euklidovu vzdálenost měla podobné výsledky, bylo to impulzem pro výběr metody k-means++.
 			
 		\section{Nasazení}
 			Nasazení proběhlo na testovací ESB Unify. Pro natrénování modelu na MS Azure ML jsem z~logů vzal veškeré korektní požadavky ze dne 5.5.2017 od 10 do 18 hodin. Získal jsem odhadem 14000 požadavků. To samé množství chyb jsem získal z~logů za celý rok 2017. Dohromady jsem měl k~učení algoritmu přes 28000 požadavků, v~poměru 50:50 (korektní:chybné požadavky).
@@ -1219,9 +1219,9 @@ cancelOrderedService;esb1-1484665381312-5369
 			
 			Oprava takového nedostatku může například spočívat v~tom, že k~hodnotám celého výsledného vektoru přičteme konstantu $k \neq 0$. Další možností je úprava normalizační funkce například tak, aby brala v~potaz i názvy XML elementů. To ovšem samo o~sobě stále nemusí zamezit výskytu nulových vektorů.
 			
-			Další vhodnou úpravou by bylo detekovat požadavek z~logy jako celek, ale nikoliv na základě toho, že se celý vyskytuje na jedné řádce. Z~provozu se zjistilo, že některé chyby vypisují své hlášky i se znaky pro označení konce řádky. Stávající algoritmus tak pracuje pouze s~první řádkou a ostatní jsou ignorovány. To může zapříčinit, že přicházíme o~užitečnou informaci, která by k~detekci mohla pomoci. Jednou z~možností by mohlo být využití regulárního výrazu.
+			Další vhodnou úpravou by bylo detekovat požadavek z~logu jako celek, ale nikoliv na základě toho, že se celý vyskytuje na jedné řádce. Z~provozu se zjistilo, že některé chyby vypisují své hlášky i se znaky pro označení konce řádky. Stávající algoritmus tak pracuje pouze s~první řádkou a ostatní jsou ignorovány. To může zapříčinit, že přicházíme o~užitečnou informaci, která by k~detekci mohla pomoci. Jednou z~možností by mohlo být využití regulárního výrazu.
 			
-			Práce by šla rozšířit o~uživatelské rozhraní. Různé konfigurace, které se musí provádět by se pak mohly dělat jednodušeji. Příkladem takových úprav může být přidání do čtení logů aplikaci, jejíž logy nejsou strukturované tak, jak jsme z~Unify zvyklý. 
+			Práce by šla rozšířit o~uživatelské rozhraní. Různé konfigurace, které se musí provádět by se pak mohly dělat jednodušeji. Příkladem takových úprav může být přidání do čtení logů aplikaci, jejíž logy nejsou strukturované tak, jak jsme z~Unify zvyklí. 
 			
 			Protože zejména pro shlukování je dobré mít učící data rovnoměrně rozdělená, doporučoval bych jednotlivá detekovaná rizika v~databázi uchovávat právě za účelem přeučení algoritmu. Přeučení bych vzhledem k~časové nenáročnosti (řádově minuty) doporučoval denně. Minimálně je nutné po každém novém přidání operace nebo služby.
 	
@@ -1267,7 +1267,7 @@ cancelOrderedService;esb1-1484665381312-5369
 	\item[ML] Machine learning
 	\item[MS] Microsoft
 	\item[NoSQL] Not only structured query language
-	\item[PC] Personal Computer
+	\item[PC] Personal computer
 	\item[PCA] Principal component analysis
 	\item[REST] Representational state transfer
 	\item[SIEM] Security information and event management
@@ -1279,6 +1279,142 @@ cancelOrderedService;esb1-1484665381312-5369
 	\item[XML] Extensible markup language
 \end{description}
 
+\chapter{Instalace lokálního prostředí}
+	Tato kapitola popisuje jak nainstalovat prostředí aplikace JakeTheLogger lokálně.
+	
+	\section{Očekávané podmínky}
+		\begin{enumerate}
+			\item \textbf{Operační systém:} instalace je připravena pro instalaci na~operační systémy založené na~Linuxu.
+			\item \textbf{Aplikační server:} je vyžadováno použití přiloženého aplikačního serveru, který je již nakonfigurován.
+		\end{enumerate}
+	
+	\section{Instalace databáze}
+		\begin{enumerate}
+			\item Nainstalujeme MongoDB 3.4.2.
+			\item V~MongoDB vytvoříme databázi \uv{jake-the-logger-test} příkazem \textit{use jake-the-logger-test}.
+			\item Vytvoříme kolekci příkazem \textit{db.createCollection('configurations')}.
+			\item Do~kolekce configurations vložíme základní konfiguraci:
+			\begin{lstlisting}[caption={Základní konfigurace}, label={lst:basic_conf}]
+db.getCollection('configurations').insert(
+	{
+		"component": "esb",
+		"azure-url": "<adresa na experiment v MS Azure ML",
+		"azure-api-key":"<api key>",
+		"log-file":"<input file>"
+	})
+			\end{lstlisting}
+		\end{enumerate}
+	
+	\section{Spuštění aplikačního serveru}
+		\begin{enumerate}
+			\item Aplikační server rozbalíme.
+			\item Deploymenty aplikace přesuneme do složky v aplikačním serveru: \textit{wildfly/jboss-eap-7.0/standalone/deployments}.
+			\item Spustíme server příkazem \textit{./wildfly/jboss-eap-7.0/bin/standalone.sh -c standalone-full.xml }.
+		\end{enumerate}
+	
+
+\chapter{Návod na experiment}
+	V~této kapitole je popsán postup vytvoření modelu v~MS Azure ML.
+	
+	\section{Nový dataset}
+		Po registraci~a~přihlášení se na stránce \url{https://studio.azureml.net/} vložíme nová data, ze~kterých~se~model bude trénovat. Lze využít přiložená data~na~disku. Jsou uložená v~\textit{data/experimental\_input\_data/mixed\_big.csv}.
+		
+		\begin{enumerate}
+			\item Postup na obrázku \ref{fig:azure-dataset01}
+			\item Postup na obrázku \ref{fig:azure-dataset02}
+		\end{enumerate}
+		
+		\begin{figure}[htb]\centering
+			\tmpframe{\includegraphics[width=\textwidth]{./img/azure/dataset01}}	
+			\caption{Vytvoření datasetu v~MS Azure ML}
+			\label{fig:azure-dataset01}
+		\end{figure}
+	
+		\begin{figure}[htb]\centering
+			\tmpframe{\includegraphics[width=\textwidth]{./img/azure/dataset02}}	
+			\caption{Konfigurace datasetu v~MS Azure ML}
+			\label{fig:azure-dataset02}
+		\end{figure}
+	
+	\section{Nový experiment}
+		Vytvoříme nový experiment, která vytrénujeme na vložený dataset.
+		
+		\begin{enumerate}
+			\item Postup na obrázku \ref{fig:azure-experiment01}.
+			\item Postup na obrázku \ref{fig:azure-experiment02}.
+			\item Postup na obrázku \ref{fig:azure-experiment03}.
+			\item Konfigurace \textbf{Split Data} je výchozí mimo: 
+				\begin{enumerate}
+					\item \textbf{Fraction of rows in the firist output dataset:} 0,8.
+				\end{enumerate}
+			\item Konfigurace \textbf{K-Means Clustering} je výchozí mimo:
+				\begin{enumerate}
+					\item \textbf{Initialization:} K-Means++,
+					\item \textbf{Metric:} Cosine,
+					\item \textbf{Iterations:} 2500.
+				\end{enumerate} 
+			\item Konfigurace \textbf{Train Clustering Model} je výchozí mimo: 
+				\begin{enumerate}
+					\item v \textbf{Launch column selector} je vybrán sloupec \textit{platform-id}.
+				\end{enumerate}
+			\item Konfigurace obou \textbf{Select Columns in Dataset} je výchozí mimo: 
+				\begin{enumerate}
+					\item v \textbf{Launch column selector} jsou vybrány sloupce \textit{Assignments,platform-id}.
+				\end{enumerate}
+			\item Konfigurace \textbf{Assign Data to Clusters} je výchozí.
+			\item Konfigurace obou \textbf{Edit Metadata} je výchozí mimo: 
+				\begin{enumerate}
+					\item v \textbf{Launch column selector} jsou vybrány sloupce \textit{Assignments,platform-id}.
+				\end{enumerate}
+			\item Postup na obrázku \ref{fig:azure-experiment04}.
+			\item Postup na obrázku \ref{fig:azure-experiment05}.
+			\item Postup na obrázku \ref{fig:azure-experiment06}.
+			\item Postup na obrázku \ref{fig:azure-experiment07}.
+			\item Postup na obrázku \ref{fig:azure-experiment08}.
+		\end{enumerate}
+		
+	\begin{figure}[htb]\centering
+		\tmpframe{\includegraphics[width=\textwidth]{./img/azure/experiment01}}	
+		\caption{Vytvoření nového experimentu v~MS Azure ML}
+		\label{fig:azure-experiment01}
+	\end{figure}	
+	\begin{figure}[htb]\centering
+		\tmpframe{\includegraphics[width=\textwidth]{./img/azure/experiment02}}	
+		\caption{Vytvoření nového experimentu v~MS Azure ML II}
+		\label{fig:azure-experiment02}
+	\end{figure}
+	\begin{figure}[htb]\centering
+		\tmpframe{\includegraphics[width=\textwidth]{./img/azure/experiment03}}	
+		\caption{Komponenty experimentu v~MS Azure ML}
+		\label{fig:azure-experiment03}
+	\end{figure}
+	\begin{figure}[htb]\centering
+		\tmpframe{\includegraphics[width=\textwidth]{./img/azure/experiment04}}	
+		\caption{Spuštění experimentu v~MS Azure ML}
+		\label{fig:azure-experiment04}
+	\end{figure}
+	\begin{figure}[htb]\centering
+		\tmpframe{\includegraphics[width=\textwidth]{./img/azure/experiment05}}	
+		\caption{Vytvoření webové služby v~MS Azure ML}
+		\label{fig:azure-experiment05}
+	\end{figure}
+	\begin{figure}[htb]\centering
+		\tmpframe{\includegraphics[width=\textwidth]{./img/azure/experiment06}}	
+		\caption{Spuštění webové služby v~MS Azure ML}
+		\label{fig:azure-experiment06}
+	\end{figure}
+	\begin{figure}[htb]\centering
+		\tmpframe{\includegraphics[width=\textwidth]{./img/azure/experiment07}}	
+		\caption{Deploy webové služby v~MS Azure ML}
+		\label{fig:azure-experiment07}
+	\end{figure}
+	\begin{figure}[htb]\centering
+		\tmpframe{\includegraphics[width=\textwidth]{./img/azure/experiment08}}	
+		\caption{Informace k webové službě v~MS Azure ML}
+		\label{fig:azure-experiment08}
+	\end{figure}
+
+	
 
 \chapter{Contents of enclosed CD}
 
@@ -1287,13 +1423,14 @@ cancelOrderedService;esb1-1484665381312-5369
 \begin{figure}
 	\dirtree{%
 		.1 readme.txt\DTcomment{the file with CD contents description}.
-		.1 exe\DTcomment{the directory with executables}.
-		.1 src\DTcomment{the directory of source codes}.
-		.2 wbdcm\DTcomment{implementation sources}.
+		.1 data\DTcomment{experimental data}.
+		.1 deployments\DTcomment{jar and war files ready for deployment}.
+		.1 src\DTcomment{sources}.
 		.2 thesis\DTcomment{the directory of \LaTeX{} source codes of the thesis}.
+		.2 thesis\DTcomment{the directory of source codes of the application}.
 		.1 text\DTcomment{the thesis text directory}.
 		.2 thesis.pdf\DTcomment{the thesis text in PDF format}.
-		.2 thesis.ps\DTcomment{the thesis text in PS format}.
+		.1 wildfly-jake-the-logger-SDK.zip\DTcomment{application server with all modules}.		
 	}
 \end{figure}
 
